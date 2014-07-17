@@ -91,13 +91,13 @@ static CGFloat const kTextFieldHeight         = 30.0f;
 
 - (void)requestToken
 {
-    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    AFHTTPRequestOperationManager* manager = [AFHTTPRequestOperationManager manager];
     AFJSONRequestSerializer* serializer = [AFJSONRequestSerializer serializer];
     [serializer setValue:kAppId forHTTPHeaderField:@"App-id"];
     [serializer setValue:kAppSecret forHTTPHeaderField:@"App-secret"];
     [manager setRequestSerializer:serializer];
 
-    NSDictionary *parameters = @{ @"data": @{
+    NSDictionary* parameters = @{ @"data": @{
                                           @"customer_email" : self.emailTextField.text,
                                           @"mobile" : @YES
                                           }
