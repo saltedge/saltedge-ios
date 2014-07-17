@@ -82,12 +82,11 @@ static CGFloat const kTextFieldHeight         = 30.0f;
 
 - (void)connectPressed
 {
-    if (self.emailTextField.text.length > 0) {
-        if (self.emailTextField.isFirstResponder) { [self dismissKeyboard]; }
-        [self setupConnectWebView];
-        [self showActivityIndicator];
-        [self requestToken];
-    }
+    if (self.emailTextField.text.length == 0) { return ; }
+    if (self.emailTextField.isFirstResponder) { [self dismissKeyboard]; }
+    [self setupConnectWebView];
+    [self showActivityIndicator];
+    [self requestToken];
 }
 
 - (void)requestToken
