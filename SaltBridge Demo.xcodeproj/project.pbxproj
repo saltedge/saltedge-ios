@@ -8,8 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		0A42BDC51977CE0B00F4E1BF /* NSURL+SBCallbacksAdditionsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A42BDC41977CE0B00F4E1BF /* NSURL+SBCallbacksAdditionsTests.m */; };
-		0A42BDCD1977F4A300F4E1BF /* NSURL+SBCallbacksAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A42BDC91977F4A300F4E1BF /* NSURL+SBCallbacksAdditions.m */; };
-		0A42BDCE1977F4A300F4E1BF /* SBWebView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A42BDCB1977F4A300F4E1BF /* SBWebView.m */; };
 		0A9E2C3D1977C25E001A8D0E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A9E2C3C1977C25E001A8D0E /* Foundation.framework */; };
 		0A9E2C3F1977C25E001A8D0E /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A9E2C3E1977C25E001A8D0E /* CoreGraphics.framework */; };
 		0A9E2C411977C25F001A8D0E /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A9E2C401977C25F001A8D0E /* UIKit.framework */; };
@@ -23,6 +21,8 @@
 		0A9E2C5D1977C25F001A8D0E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A9E2C3C1977C25E001A8D0E /* Foundation.framework */; };
 		0A9E2C5E1977C25F001A8D0E /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A9E2C401977C25F001A8D0E /* UIKit.framework */; };
 		0A9E2C661977C25F001A8D0E /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 0A9E2C641977C25F001A8D0E /* InfoPlist.strings */; };
+		0AC1B2BD19790B7200A7FEA5 /* NSURL+SBCallbacksAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AC1B2B919790B7200A7FEA5 /* NSURL+SBCallbacksAdditions.m */; };
+		0AC1B2BE19790B7200A7FEA5 /* SBWebView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AC1B2BB19790B7200A7FEA5 /* SBWebView.m */; };
 		704E0AF2C36C42BCBE99990B /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B1CFDD139014E6B9D4298D6 /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -38,11 +38,6 @@
 
 /* Begin PBXFileReference section */
 		0A42BDC41977CE0B00F4E1BF /* NSURL+SBCallbacksAdditionsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSURL+SBCallbacksAdditionsTests.m"; sourceTree = "<group>"; };
-		0A42BDC81977F4A300F4E1BF /* NSURL+SBCallbacksAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSURL+SBCallbacksAdditions.h"; sourceTree = "<group>"; };
-		0A42BDC91977F4A300F4E1BF /* NSURL+SBCallbacksAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSURL+SBCallbacksAdditions.m"; sourceTree = "<group>"; };
-		0A42BDCA1977F4A300F4E1BF /* SBWebView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBWebView.h; sourceTree = "<group>"; };
-		0A42BDCB1977F4A300F4E1BF /* SBWebView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBWebView.m; sourceTree = "<group>"; };
-		0A42BDCC1977F4A300F4E1BF /* SBWebViewDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBWebViewDelegate.h; sourceTree = "<group>"; };
 		0A9E2C391977C25E001A8D0E /* SaltBridge Demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "SaltBridge Demo.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0A9E2C3C1977C25E001A8D0E /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		0A9E2C3E1977C25E001A8D0E /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -61,6 +56,11 @@
 		0A9E2C5B1977C25F001A8D0E /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		0A9E2C631977C25F001A8D0E /* SaltBridge DemoTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "SaltBridge DemoTests-Info.plist"; sourceTree = "<group>"; };
 		0A9E2C651977C25F001A8D0E /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		0AC1B2B819790B7200A7FEA5 /* NSURL+SBCallbacksAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSURL+SBCallbacksAdditions.h"; sourceTree = "<group>"; };
+		0AC1B2B919790B7200A7FEA5 /* NSURL+SBCallbacksAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSURL+SBCallbacksAdditions.m"; sourceTree = "<group>"; };
+		0AC1B2BA19790B7200A7FEA5 /* SBWebView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBWebView.h; sourceTree = "<group>"; };
+		0AC1B2BB19790B7200A7FEA5 /* SBWebView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBWebView.m; sourceTree = "<group>"; };
+		0AC1B2BC19790B7200A7FEA5 /* SBWebViewDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBWebViewDelegate.h; sourceTree = "<group>"; };
 		8B1CFDD139014E6B9D4298D6 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		EC4EA77F9443414A91827911 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -90,29 +90,10 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		0A42BDC61977F4A300F4E1BF /* SBWebView */ = {
-			isa = PBXGroup;
-			children = (
-				0A42BDC71977F4A300F4E1BF /* NSURL+SBCallbackAdditions */,
-				0A42BDCA1977F4A300F4E1BF /* SBWebView.h */,
-				0A42BDCB1977F4A300F4E1BF /* SBWebView.m */,
-				0A42BDCC1977F4A300F4E1BF /* SBWebViewDelegate.h */,
-			);
-			path = SBWebView;
-			sourceTree = "<group>";
-		};
-		0A42BDC71977F4A300F4E1BF /* NSURL+SBCallbackAdditions */ = {
-			isa = PBXGroup;
-			children = (
-				0A42BDC81977F4A300F4E1BF /* NSURL+SBCallbacksAdditions.h */,
-				0A42BDC91977F4A300F4E1BF /* NSURL+SBCallbacksAdditions.m */,
-			);
-			path = "NSURL+SBCallbackAdditions";
-			sourceTree = "<group>";
-		};
 		0A9E2C301977C25E001A8D0E = {
 			isa = PBXGroup;
 			children = (
+				0AC1B2B619790B7200A7FEA5 /* SBWebView */,
 				0A9E2C421977C25F001A8D0E /* SaltBridge Demo */,
 				0A9E2C611977C25F001A8D0E /* SaltBridge DemoTests */,
 				0A9E2C3B1977C25E001A8D0E /* Frameworks */,
@@ -145,7 +126,6 @@
 		0A9E2C421977C25F001A8D0E /* SaltBridge Demo */ = {
 			isa = PBXGroup;
 			children = (
-				0A42BDC61977F4A300F4E1BF /* SBWebView */,
 				0A9E2C4B1977C25F001A8D0E /* AppDelegate.h */,
 				0A9E2C4C1977C25F001A8D0E /* AppDelegate.m */,
 				0A9E2C4E1977C25F001A8D0E /* Main.storyboard */,
@@ -184,6 +164,26 @@
 				0A9E2C641977C25F001A8D0E /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		0AC1B2B619790B7200A7FEA5 /* SBWebView */ = {
+			isa = PBXGroup;
+			children = (
+				0AC1B2B719790B7200A7FEA5 /* NSURL+SBCallbacksAdditions */,
+				0AC1B2BA19790B7200A7FEA5 /* SBWebView.h */,
+				0AC1B2BB19790B7200A7FEA5 /* SBWebView.m */,
+				0AC1B2BC19790B7200A7FEA5 /* SBWebViewDelegate.h */,
+			);
+			path = SBWebView;
+			sourceTree = "<group>";
+		};
+		0AC1B2B719790B7200A7FEA5 /* NSURL+SBCallbacksAdditions */ = {
+			isa = PBXGroup;
+			children = (
+				0AC1B2B819790B7200A7FEA5 /* NSURL+SBCallbacksAdditions.h */,
+				0AC1B2B919790B7200A7FEA5 /* NSURL+SBCallbacksAdditions.m */,
+			);
+			path = "NSURL+SBCallbacksAdditions";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -321,8 +321,8 @@
 			files = (
 				0A9E2C531977C25F001A8D0E /* ViewController.m in Sources */,
 				0A9E2C4D1977C25F001A8D0E /* AppDelegate.m in Sources */,
-				0A42BDCE1977F4A300F4E1BF /* SBWebView.m in Sources */,
-				0A42BDCD1977F4A300F4E1BF /* NSURL+SBCallbacksAdditions.m in Sources */,
+				0AC1B2BE19790B7200A7FEA5 /* SBWebView.m in Sources */,
+				0AC1B2BD19790B7200A7FEA5 /* NSURL+SBCallbacksAdditions.m in Sources */,
 				0A9E2C491977C25F001A8D0E /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
