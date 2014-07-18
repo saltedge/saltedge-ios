@@ -22,11 +22,11 @@ Copy the `SBWebView` folder into your project.
 ## Usage
 
 * Import the class and delegate files into your view controller
-* Add a new `SBWebView` instance to your view controller's view, also set a `stageDelegate` for the web view
+* Add a `SBWebView` instance to your view controllers' view, also set a `stageDelegate` for the web view
 * Implement the `SBWebViewDelegate` methods in delegates' class
 * Load the connect page in the web view
 
-**NOTE:** Do not use the `delegate` property on `SKWebView`, since an `SKWebView` acts like a proxy object. If your class does need to respond to the `UIWebView` delegate methods, just implement them and the `SKWebView` instance will forward them to its `stageDelegate`.
+**NOTE:** Do not use the `delegate` property on `SKWebView`, since an `SKWebView` acts like a proxy object. If your class does need to respond to the `UIWebView` delegate methods, just implement them and the `SKWebView` instance will forward those messages to its `stageDelegate`.
 
 ## Example
 
