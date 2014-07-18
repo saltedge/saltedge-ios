@@ -24,7 +24,6 @@ static NSString* const SBLoginDataKey       = @"data";
 
 /**
  The state delegate of the login that is currently processed. This object will be notified about events such as the state of the login (fetching, success, error) and about any errors that will occur in the processing.
-
  @warning must not be nil in order to receive Salt Edge Connect callbacks.
  @see SBWebViewDelegate
  */
