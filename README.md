@@ -8,6 +8,8 @@ A small UIWebView replacement for using [Salt Edge Connect](https://docs.saltedg
 * Implement the `SBWebViewDelegate` methods in delegates' class
 * Load the connect page in the web view
 
+NOTE: Do not use the `delegate` property on `SKWebView`, since an `SKWebView` acts like a proxy object. If your class does need to respond to the `UIWebView` delegate methods, just implement them and the `SKWebView` instance will forward them to its `stageDelegate`.
+
 ## Example
 
 TBD.
