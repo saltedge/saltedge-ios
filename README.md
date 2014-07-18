@@ -82,7 +82,7 @@ Load the Salt Edge Connect URL into the web view and you're good to go:
 
 ## Documentation
 
-Documentation is available for the `SKWebView` components. Use quick documentation (Alt+Click) to get a quick look at the documentation for a method or a property.
+Documentation is available for the `SKWebView` components. Use quick documentation (Alt+Click) to get a quick glance at the documentation for a method or a property.
 
 ## References
 
