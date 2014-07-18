@@ -2,6 +2,10 @@
 
 A small `UIWebView` replacement for using [Salt Edge Connect](https://docs.saltedge.com/guides/connect/) within your iOS app.
 
+## Requirements
+
+iOS 6, ARC.
+
 ## Installation
 ### CocoaPods
 
