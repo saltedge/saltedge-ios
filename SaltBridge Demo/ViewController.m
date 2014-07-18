@@ -31,6 +31,9 @@ static CGFloat const kTextFieldHeight         = 30.0f;
 
 @implementation ViewController
 
+#pragma mark - Private API
+#pragma mark - View Controller's lifecycle
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -39,10 +42,7 @@ static CGFloat const kTextFieldHeight         = 30.0f;
     [self validateAppCredentials];
 }
 
-#pragma mark - Private API
 #pragma mark - Setup methods
-
-// Methods to setup the views/controls
 
 - (void)setupEmailTextField
 {
@@ -88,11 +88,11 @@ static CGFloat const kTextFieldHeight         = 30.0f;
 
 #pragma mark - Utility methods
 
-// In order to use Salt Edge Connect, a token is needed - so we request it here
-// See for more information: https://docs.saltedge.com/guides/tokens/
-
 - (void)requestToken
 {
+    // In order to use Salt Edge Connect, a token is needed - so we request it here
+    // See for more information: https://docs.saltedge.com/guides/tokens/
+    
     AFHTTPRequestOperationManager* manager = [AFHTTPRequestOperationManager manager];
     AFJSONRequestSerializer* serializer = [AFJSONRequestSerializer serializer];
     [serializer setValue:kAppId forHTTPHeaderField:@"App-id"];
