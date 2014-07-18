@@ -24,7 +24,7 @@ static NSString* const SBCallbackHost   = @"connect";
 @interface NSURL (SBCallbacksAdditions)
 
 /**
- Determines wheter a NSURL object is a Salt Edge Connect callback URL.
+ Determines whether a NSURL object is a Salt Edge Connect callback URL.
  @return YES if the NSURL object has the scheme equal to SBCallbackScheme and the host equal to SBCallbackHost, otherwise returns NO.
  @see SBCallbackScheme, SBCallbackHost
  */

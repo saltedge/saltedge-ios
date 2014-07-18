@@ -54,8 +54,8 @@ Implement the `SBWebViewDelegate` methods in your controller:
 
 - (void)webView:(SBWebView *)webView receivedCallbackWithResponse:(NSDictionary *)response
 {
-    NSNumber* loginID    = response[SBLoginIdKey];
-    NSString* loginState = response[SBLoginStateKey];
+    NSNumber* loginID    = response[SBLoginDataKey][SBLoginIdKey];
+    NSString* loginState = response[SBLoginDataKey][SBLoginStateKey];
     // do something with the data...
 }
 
@@ -79,6 +79,10 @@ Load the Salt Edge Connect URL into the web view and you're good to go:
 ```objc
 [connectWebView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:connectURLString]]];
 ```
+
+## Documentation
+
+Documentation is available for the `SKWebView` components. Use quick documentation (Alt+Click) to get a quick look at the documentation for a method or a property.
 
 ## References
 
