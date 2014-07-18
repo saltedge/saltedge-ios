@@ -26,15 +26,15 @@ NOTE: Do not use the `delegate` property on `SKWebView`, since an `SKWebView` ac
 
 ## Example
 
-Import the class and delegate files into your view controller:
+Import the class and delegate files into your view controller, also let your view controller conform to the `SBWebViewDelegate` protocol.
 
 ```objc
 #import "SBWebView.h"
 #import "SBWebViewDelegate.h"
-```
+// ... snip ...
 
-```objc
 @interface MyViewController() <SKWebViewDelegate>
+// ... snip ...
 ```
 
 Instantiate a `SBWebView` and add it to your controller:
