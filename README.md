@@ -18,7 +18,7 @@ Copy the `SBWebView` folder into your project.
 ## Usage
 
 * Import the class and delegate files into your view controller
-* Add a new `SBWebView` instance to your view controller's view, also set a delegate for the web view
+* Add a new `SBWebView` instance to your view controller's view, also set a `stageDelegate` for the web view
 * Implement the `SBWebViewDelegate` methods in delegates' class
 * Load the connect page in the web view
 
