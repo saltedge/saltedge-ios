@@ -42,6 +42,8 @@ static CGFloat const kTextFieldHeight         = 30.0f;
 #pragma mark - Private API
 #pragma mark - Setup methods
 
+// Methods to setup the views/controls
+
 - (void)setupEmailTextField
 {
     self.emailTextField = [[UITextField alloc] initWithFrame:CGRectMake(kControlsPositionOffset, 3 * kControlsPositionOffset, self.view.frame.size.width - 2 * kControlsPositionOffset, kTextFieldHeight)];
@@ -73,12 +75,7 @@ static CGFloat const kTextFieldHeight         = 30.0f;
     [self.view addSubview:self.connectWebView];
 }
 
-#pragma mark - Utility methods
-
-- (void)dismissKeyboard
-{
-    [self.emailTextField resignFirstResponder];
-}
+#pragma mark - Button actions
 
 - (void)connectPressed
 {
@@ -88,6 +85,11 @@ static CGFloat const kTextFieldHeight         = 30.0f;
     [self showActivityIndicator];
     [self requestToken];
 }
+
+#pragma mark - Utility methods
+
+// In order to use Salt Edge Connect, a token is needed - so we request it here
+// See for more information: https://docs.saltedge.com/guides/tokens/
 
 - (void)requestToken
 {
@@ -115,6 +117,13 @@ static CGFloat const kTextFieldHeight         = 30.0f;
     }];
 }
 
+- (void)validateAppCredentials
+{
+    if (!kAppId || !kAppSecret) {
+        [NSException raise:@"NoCredentials" format:@"*** Please provide your App Id and App Secret in order to use SaltBridge"];
+    }
+}
+
 - (void)loadConnectPageWithURLString:(NSString*)connectURLString
 {
     [self.emailTextField removeFromSuperview];
@@ -126,6 +135,8 @@ static CGFloat const kTextFieldHeight         = 30.0f;
 
     [self.connectWebView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:connectURLString]]];
 }
+
+#pragma mark - UI methods
 
 - (void)showAlertWithTitle:(NSString*)title message:(NSString*)message
 {
@@ -148,11 +159,9 @@ static CGFloat const kTextFieldHeight         = 30.0f;
     self.activityIndicator = nil;
 }
 
-- (void)validateAppCredentials
+- (void)dismissKeyboard
 {
-    if (!kAppId || !kAppSecret) {
-        [NSException raise:@"NoCredentials" format:@"*** Please provide your App Id and App Secret in order to use SaltBridge"];
-    }
+    [self.emailTextField resignFirstResponder];
 }
 
 #pragma mark - UITextField Delegate
@@ -186,6 +195,8 @@ static CGFloat const kTextFieldHeight         = 30.0f;
 {
     [self showAlertWithTitle:@"Error" message:[NSString stringWithFormat:@"Error code %d: %@", error.code, error.localizedDescription]];
 }
+
+#pragma mark - UIWebView Delegate
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView
 {
