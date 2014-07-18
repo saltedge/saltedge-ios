@@ -48,9 +48,9 @@ static NSURL* homeURL, *emptyCallbackURL;
 - (void)testSb_callbackParameters
 {
     NSError* error = nil;
-    NSURL* successCallbackURL = [[NSURL alloc] initWithScheme:SBCallbackScheme host:SBCallbackHost path:@"/{\"login_id\":22, \"state\":\"success\"}"];
+    NSURL* successCallbackURL = [[NSURL alloc] initWithScheme:SBCallbackScheme host:SBCallbackHost path:@"/{\"data\":{\"login_id\":22, \"state\":\"success\"}}"];
     NSURL* badCallbackURL = [[NSURL alloc] initWithScheme:SBCallbackScheme host:SBCallbackHost path:@"/Not a valid JSON string"];
-    NSDictionary* expectedCallbackParameters = @{ @"login_id": @22, @"state" : @"success" };
+    NSDictionary* expectedCallbackParameters = @{ @"data" : @{ @"login_id": @22, @"state" : @"success" } };
     BOOL successCallbacksEqual = [[successCallbackURL sb_callbackParametersWithError:&error] isEqualToDictionary:expectedCallbackParameters];
 
     // Succcess callback URL

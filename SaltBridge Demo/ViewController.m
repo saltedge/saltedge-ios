@@ -73,6 +73,7 @@ static CGFloat const kTextFieldHeight         = 30.0f;
 {
     self.connectWebView = [[SBWebView alloc] initWithFrame:self.view.frame stateDelegate:self];
     [self.view addSubview:self.connectWebView];
+    [self.view bringSubviewToFront:self.activityIndicator];
 }
 
 #pragma mark - Button actions
@@ -81,7 +82,6 @@ static CGFloat const kTextFieldHeight         = 30.0f;
 {
     if (self.emailTextField.text.length == 0) { return ; }
     if (self.emailTextField.isFirstResponder) { [self dismissKeyboard]; }
-    [self setupConnectWebView];
     [self showActivityIndicator];
     [self requestToken];
 }
@@ -92,7 +92,7 @@ static CGFloat const kTextFieldHeight         = 30.0f;
 {
     // In order to use Salt Edge Connect, a token is needed - so we request it here
     // See for more information: https://docs.saltedge.com/guides/tokens/
-    
+
     AFHTTPRequestOperationManager* manager = [AFHTTPRequestOperationManager manager];
     AFJSONRequestSerializer* serializer = [AFJSONRequestSerializer serializer];
     [serializer setValue:kAppId forHTTPHeaderField:@"App-id"];
@@ -108,12 +108,15 @@ static CGFloat const kTextFieldHeight         = 30.0f;
     [manager POST:[kRootURL stringByAppendingPathComponent:kTokensPath] parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSString* connectURL = responseObject[@"data"][@"connect_url"];
         if (connectURL) {
+            [self setupConnectWebView];
             [self loadConnectPageWithURLString:connectURL];
         } else {
             [self showAlertWithTitle:@"Error" message:@"Could not receive the connect URL."];
+            [self hideActivityIndicator];
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        [self showAlertWithTitle:@"Error" message:[NSString stringWithFormat:@"Error code %d: %@", error.code, error.localizedDescription]];
+        [self showAlertWithTitle:@"Error" message:[NSString stringWithFormat:@"Error code %d: %@ (%@)", error.code, error.localizedDescription, operation.responseObject]];
+        [self hideActivityIndicator];
     }];
 }
 
@@ -145,6 +148,8 @@ static CGFloat const kTextFieldHeight         = 30.0f;
 
 - (void)showActivityIndicator
 {
+    self.emailTextField.userInteractionEnabled = NO;
+    self.connectButton.userInteractionEnabled = NO;
     self.activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
     [self.activityIndicator setColor:[UIColor grayColor]];
     self.activityIndicator.center = self.view.center;
@@ -154,6 +159,8 @@ static CGFloat const kTextFieldHeight         = 30.0f;
 
 - (void)hideActivityIndicator
 {
+    self.emailTextField.userInteractionEnabled = YES;
+    self.connectButton.userInteractionEnabled = YES;
     [self.activityIndicator stopAnimating];
     [self.activityIndicator removeFromSuperview];
     self.activityIndicator = nil;
@@ -176,8 +183,8 @@ static CGFloat const kTextFieldHeight         = 30.0f;
 
 - (void)webView:(SBWebView *)webView receivedCallbackWithResponse:(NSDictionary *)response
 {
-    NSNumber* loginID    = response[SBLoginIdKey];
-    NSString* loginState = response[SBLoginStateKey];
+    NSNumber* loginID    = response[SBLoginDataKey][SBLoginIdKey];
+    NSString* loginState = response[SBLoginDataKey][SBLoginStateKey];
     NSString* message    = [NSString stringWithFormat:@"Login with id %@ ", loginID.description];
 
     if ([loginState isEqualToString:SBLoginStateSuccess]) {

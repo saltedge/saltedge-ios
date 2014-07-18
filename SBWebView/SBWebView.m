@@ -1,9 +1,7 @@
 //
 //  SBWebView.m
-//  SaltBridge Demo
 //
-//  Created by nemesis on 7/17/14.
-//  Copyright (c) 2014 Salt Edge. All rights reserved.
+//  Copyright (c) 2014 Salt Edge. https://saltedge.com
 //
 
 #import "SBWebView.h"
@@ -16,6 +14,7 @@
 @implementation SBWebView
 
 #pragma mark - Public API
+#pragma mark - Designated Initializer
 
 - (instancetype)initWithFrame:(CGRect)frame stateDelegate:(id<SBWebViewDelegate>)stateDelegate
 {
@@ -36,7 +35,7 @@
         NSError* error = nil;
         NSDictionary* callbackParameters = [url sb_callbackParametersWithError:&error];
         if (!error) {
-            if (callbackParameters[SBLoginIdKey] && callbackParameters[SBLoginStateKey]) {
+            if (callbackParameters[SBLoginDataKey][SBLoginIdKey] && callbackParameters[SBLoginDataKey][SBLoginStateKey]) {
                 if ([self.stateDelegate respondsToSelector:@selector(webView:receivedCallbackWithResponse:)]) {
                     [self.stateDelegate webView:self receivedCallbackWithResponse:callbackParameters];
                 }
