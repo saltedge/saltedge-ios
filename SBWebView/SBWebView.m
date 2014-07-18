@@ -7,7 +7,7 @@
 //
 
 #import "SBWebView.h"
-#import "NSURL+SBCallbackAdditions/NSURL+SBCallbacksAdditions.h"
+#import "NSURL+SBCallbacksAdditions/NSURL+SBCallbacksAdditions.h"
 #import "SBWebViewDelegate.h"
 
 @interface SBWebView(/* Private */) <UIWebViewDelegate>
