@@ -1,4 +1,4 @@
-platform :ios, '6.0'
-inhibit_all_warnings!
+platform :ios, '7.0'
 
 pod 'AFNetworking'
+pod 'SVProgressHUD'
