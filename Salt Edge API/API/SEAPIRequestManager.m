@@ -28,22 +28,28 @@
 #import "SEAccount.h"
 #import "SETransaction.h"
 #import "SELoginCreationDelegate.h"
+#import "DateUtils.h"
 
-static NSString* const kAppIdHeaderKey      = @"App-id";
-static NSString* const kAppSecretHeaderKey  = @"App-secret";
+/* Headers */
+static NSString* const kAppIdHeaderKey           = @"App-id";
+static NSString* const kAppSecretHeaderKey       = @"App-secret";
 
-static NSString* const kFromIdKey        = @"from_id";
-static NSString* const kDataKey          = @"data";
-static NSString* const kMetaKey          = @"meta";
-static NSString* const kNextIdKey        = @"next_id";
-static NSString* const kNextPageKey      = @"next_page";
-static NSString* const kIdKey            = @"id";
-static NSString* const kLoginIdKey       = @"login_id";
-static NSString* const kCustomerEmailKey = @"customer_email";
-static NSString* const kAccountIdKey     = @"account_id";
-static NSString* const kMobileKey        = @"mobile";
-
-static NSString* const kLoginStatusActive = @"active";
+/* Keys of responses and post bodies */
+static NSString* const kFromIdKey                = @"from_id";
+static NSString* const kDataKey                  = @"data";
+static NSString* const kMetaKey                  = @"meta";
+static NSString* const kCredentialsKey           = @"credentials";
+static NSString* const kNextIdKey                = @"next_id";
+static NSString* const kNextPageKey              = @"next_page";
+static NSString* const kIdKey                    = @"id";
+static NSString* const kLoginIdKey               = @"login_id";
+static NSString* const kCustomerEmailKey         = @"customer_email";
+static NSString* const kAccountIdKey             = @"account_id";
+static NSString* const kMobileKey                = @"mobile";
+static NSString* const kRefreshedKey             = @"refreshed";
+static NSString* const kLastRefreshAtKey         = @"last_refresh_at";
+static NSString* const kNextRefreshPossibleAtKey = @"next_refresh_possible_at";
+static NSString* const kLoginStatusActive        = @"active";
 
 static CGFloat const kLoginPollDelayTime = 5.0f;
 
@@ -172,6 +178,52 @@ static NSURLSessionConfiguration* sessionConfig;
                 [self pollLoginWithId:loginId delegate:delegate];
             }
             success(task, login);
+        }
+    } failure:^(NSURLSessionDataTask* task, NSError* error) {
+        if (failure) { failure(task, error); }
+    }];
+}
+
+- (void)reconnectLoginWithLoginId:(NSNumber *)loginId credentials:(NSDictionary *)credentials success:(void (^)(NSURLSessionDataTask *, SELogin *))success failure:(SEAPIRequestFailureBlock)failure delegate:(id<SELoginCreationDelegate>)delegate
+{
+    NSAssert(loginId != nil, @"loginId cannot be nil.");
+    NSAssert(credentials != nil, @"credentials cannot be nil.");
+
+    NSString* url = [[kLoginsPath stringByAppendingPathComponent:loginId.description] stringByAppendingPathComponent:kLoginsReconnect];
+
+    SEAPIRequestManager* manager = [[self class] manager];
+
+    [manager POST:url parameters:@{ kDataKey : @{ kCredentialsKey : credentials } } success:^(NSURLSessionDataTask* task, id responseObject) {
+        if (success) {
+            NSNumber* loginId = responseObject[kDataKey][kIdKey];
+            SELogin* login = [SELogin objectFromDictionary:responseObject[kDataKey]];
+            if (loginId) {
+                [self pollLoginWithId:loginId delegate:delegate];
+            }
+            success(task, login);
+        }
+    } failure:^(NSURLSessionDataTask* task, NSError* error) {
+        if (failure) { failure(task, error); }
+    }];
+}
+
+- (void)refreshLoginWithId:(NSNumber *)loginId success:(void (^)(NSURLSessionDataTask *, NSDictionary *))success failure:(SEAPIRequestFailureBlock)failure
+{
+    NSAssert(loginId != nil, @"loginId cannot be nil.");
+
+    NSString* url = [[kLoginsPath stringByAppendingPathComponent:loginId.description] stringByAppendingPathComponent:kLoginsRefresh];
+
+    SEAPIRequestManager* manager = [[self class] manager];
+
+    [manager POST:url parameters:nil success:^(NSURLSessionDataTask* task, id responseObject) {
+        if (!success) { return; }
+        NSDictionary* responseDataDictionary = responseObject[kDataKey];
+        if (responseDataDictionary && [responseDataDictionary[kRefreshedKey] boolValue]) {
+            NSMutableDictionary* resultingDictionary = responseDataDictionary.mutableCopy;
+
+            resultingDictionary[kLastRefreshAtKey] = [DateUtils dateFromISO8601String:responseDataDictionary[kLastRefreshAtKey]];
+            resultingDictionary[kNextRefreshPossibleAtKey] = [DateUtils dateFromISO8601String:responseDataDictionary[kNextRefreshPossibleAtKey]];
+            success(task, resultingDictionary);
         }
     } failure:^(NSURLSessionDataTask* task, NSError* error) {
         if (failure) { failure(task, error); }

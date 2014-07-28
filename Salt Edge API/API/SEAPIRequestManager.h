@@ -134,6 +134,46 @@ typedef void (^SEAPIRequestFailureBlock)(NSURLSessionDataTask* task, NSError* er
                          delegate:(id<SELoginCreationDelegate>)delegate;
 
 /**
+ Reconnects a login with given login id and credentials.
+ 
+ @param loginId The id of the login to reconnect.
+ @param credentials The credentials object that will be used to reconnect the login. See an example above.
+ @param success The callback block if the request succeeds.
+ @param failure The callback block if the request fails.
+ @param delegate The delegate of the login reconnect process that will respond to events.
+ @warning loginId and credentials cannot be nil.
+ @code
+ // credentials example
+ {
+    "login": "username",
+    "password": "secret"
+ }
+ @endcode
+ 
+ @see https://docs.saltedge.com/reference/#logins-reconnect
+ */
+- (void)reconnectLoginWithLoginId:(NSNumber*)loginId
+                      credentials:(NSDictionary*)credentials
+                          success:(void (^)(NSURLSessionDataTask*, SELogin*))success
+                          failure:(SEAPIRequestFailureBlock)failure
+                         delegate:(id<SELoginCreationDelegate>)delegate;
+
+/**
+ Refreshes a login with given login id. If the request succeeds, the dictionary in the success callback will contain information about the login - it's id, it's refresh status, the date of the last refresh, and the date of the refresh when it's available. All of the objects listed above will be represented in Foundation classes.
+ 
+ @param loginId The id of the login to refresh.
+ @param success The callback block if the request succeeds.
+ @param failure The callback block if the request fails.
+ 
+ @warning loginId cannot be nil.
+ 
+ @see https://docs.saltedge.com/reference/#logins-refresh
+ */
+- (void)refreshLoginWithId:(NSNumber*)loginId
+                   success:(void (^)(NSURLSessionDataTask*, NSDictionary*))success
+                   failure:(SEAPIRequestFailureBlock)failure;
+
+/**
  Provides the login with the interactive credentials that are currently required.
  
  @param credentials The interactive credentials that are to be supplied. See an example above.

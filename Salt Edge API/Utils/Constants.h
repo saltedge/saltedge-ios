@@ -25,13 +25,15 @@
 #define _SaltEdge_API_Demo_Constants_h
 
 // Routes
-static NSString* const kRootURL = @"http://localhost:5000";
-static NSString* const kTokensPath = @"api/v1/tokens";
-static NSString* const kLoginsPath = @"api/v1/logins";
-static NSString* const kAccountsPath = @"api/v1/accounts";
-static NSString* const kTransactionsPath = @"api/v1/transactions";
-static NSString* const kProvidersPath = @"api/v1/providers";
+static NSString* const kRootURL           = @"http://saltedge.com";
+static NSString* const kTokensPath        = @"api/v1/tokens";
+static NSString* const kLoginsPath        = @"api/v1/logins";
+static NSString* const kAccountsPath      = @"api/v1/accounts";
+static NSString* const kTransactionsPath  = @"api/v1/transactions";
+static NSString* const kProvidersPath     = @"api/v1/providers";
 static NSString* const kLoginsInteractive = @"interactive";
+static NSString* const kLoginsReconnect   = @"reconnect";
+static NSString* const kLoginsRefresh     = @"refresh";
 
 // Provider input fields types
 static NSString* const SEProviderFieldTypeText     = @"text";

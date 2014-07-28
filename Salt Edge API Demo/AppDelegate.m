@@ -13,9 +13,8 @@
 
 #pragma GCC diagnostic ignored "-Wundeclared-selector"
 
-// Credentials
-static NSString* const kAppId = @"121898072-testCLIENT";
-static NSString* const kAppSecret = @"app_secret_999";
+static NSString* const kAppId = nil;
+static NSString* const kAppSecret = nil;
 
 @implementation AppDelegate
 
