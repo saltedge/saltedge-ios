@@ -86,7 +86,7 @@ Load the Salt Edge Connect URL into the web view and you're good to go:
 
 ## SEAPIRequestManager
 
-An `AFHTTPSessionManager` subclass, designed with convenience methods for interacting with and querying the Salt Edge API. Contains methods for fetching entities (logins, transactions, et al.), also for creating a login via the REST API. In addition, if you're using the `SBWebView` to create or reconnect logins, this class provides a method for requesting a Connect token as well.
+An `AFHTTPSessionManager` subclass, designed with convenience methods for interacting with and querying the Salt Edge API. Contains methods for fetching entities (logins, transactions, et al.), also for creating logins via the REST API. In addition, if you're using the `SBWebView` to create or reconnect logins, this class provides a method for requesting a Connect token as well.
 
 ### Usage
 
