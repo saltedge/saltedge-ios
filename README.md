@@ -116,7 +116,7 @@ Use the manager to interact with the provided API:
         NSString* connectURL = tokenDictionary[kConnectURLKey];
         // load the connect URL into the SBWebView...
     } failure:^(NSURLSessionDataTask* task, NSError* error) {
-        // something's not right..
+        // handle the error...
     }];
 }
 ```
