@@ -134,7 +134,7 @@ Models contained within the components:
 * `SEProviderFieldOption`
 * `SETransaction`
 
-For a supplementary description of the models listed above that is not included in the sources' docs, feel free to visit the [API reference](https://docs.saltedge.com/reference/).
+For a supplementary description of the models listed above that is not included in the sources' docs, feel free to visit the [API Reference](https://docs.saltedge.com/reference/).
 
 ## Utilities and categories
 
@@ -151,3 +151,4 @@ See the LICENSE file.
 ## References
 
 1. [Salt Edge Connect Guide](https://docs.saltedge.com/guides/connect/)
+2. [Salt Edge API Reference](https://docs.saltedge.com/reference/)
