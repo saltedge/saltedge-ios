@@ -24,7 +24,7 @@
 #ifndef _SaltEdge_API_Demo_Constants_h
 #define _SaltEdge_API_Demo_Constants_h
 
-// Routes
+/* Routes */
 static NSString* const kRootURL           = @"https://saltedge.com";
 static NSString* const kTokensPath        = @"api/v1/tokens";
 static NSString* const kLoginsPath        = @"api/v1/logins";
@@ -36,7 +36,7 @@ static NSString* const kLoginsInteractive = @"interactive";
 static NSString* const kLoginsReconnect   = @"reconnect";
 static NSString* const kLoginsRefresh     = @"refresh";
 
-// Provider input fields types
+/* Provider input fields types */
 static NSString* const SEProviderFieldTypeText     = @"text";
 static NSString* const SEProviderFieldTypePassword = @"password";
 static NSString* const SEProviderFieldTypeSelect   = @"select";

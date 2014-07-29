@@ -30,7 +30,7 @@
 #import "SELoginCreationDelegate.h"
 #import "DateUtils.h"
 
-/* Headers */
+/* HTTP Headers */
 static NSString* const kAppIdHeaderKey           = @"App-id";
 static NSString* const kAppSecretHeaderKey       = @"App-secret";
 static NSString* const kCustomerSecretHeaderKey  = @"Customer-secret";
@@ -52,8 +52,10 @@ static NSString* const kLastRefreshAtKey         = @"last_refresh_at";
 static NSString* const kNextRefreshPossibleAtKey = @"next_refresh_possible_at";
 static NSString* const kLoginStatusActive        = @"active";
 
+/* Login polling */
 static CGFloat const kLoginPollDelayTime = 5.0f;
 
+/* HTTP Session config */
 static NSURLSessionConfiguration* sessionConfiguration;
 
 @implementation SEAPIRequestManager
@@ -374,8 +376,7 @@ static NSURLSessionConfiguration* sessionConfiguration;
             });
         }
     } failure:^(NSURLSessionDataTask* task, NSError* error) {
-#warning rethink this
-        // ?
+        // TODO: Handle this failure with a plan B
     }];
 }
 
