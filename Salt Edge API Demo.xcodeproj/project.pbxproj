@@ -21,7 +21,7 @@
 		0AAB6D4F19827ACD009DCDD5 /* UIView+Framing.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AAB6D1D19827ACD009DCDD5 /* UIView+Framing.m */; };
 		0AAB6D5019827ACD009DCDD5 /* AccountsTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AAB6D2019827ACD009DCDD5 /* AccountsTVC.m */; };
 		0AAB6D5119827ACD009DCDD5 /* CreateLoginVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AAB6D2219827ACD009DCDD5 /* CreateLoginVC.m */; };
-		0AAB6D5219827ACD009DCDD5 /* InteractiveCredentialsVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AAB6D2419827ACD009DCDD5 /* InteractiveCredentialsVC.m */; };
+		0AAB6D5219827ACD009DCDD5 /* CredentialsVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AAB6D2419827ACD009DCDD5 /* CredentialsVC.m */; };
 		0AAB6D5319827ACD009DCDD5 /* LoginsTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AAB6D2619827ACD009DCDD5 /* LoginsTVC.m */; };
 		0AAB6D5419827ACD009DCDD5 /* PickerTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AAB6D2819827ACD009DCDD5 /* PickerTVC.m */; };
 		0AAB6D5519827ACD009DCDD5 /* TransactionsTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AAB6D2A19827ACD009DCDD5 /* TransactionsTVC.m */; };
@@ -87,8 +87,8 @@
 		0AAB6D2019827ACD009DCDD5 /* AccountsTVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AccountsTVC.m; sourceTree = "<group>"; };
 		0AAB6D2119827ACD009DCDD5 /* CreateLoginVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CreateLoginVC.h; sourceTree = "<group>"; };
 		0AAB6D2219827ACD009DCDD5 /* CreateLoginVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CreateLoginVC.m; sourceTree = "<group>"; };
-		0AAB6D2319827ACD009DCDD5 /* InteractiveCredentialsVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InteractiveCredentialsVC.h; sourceTree = "<group>"; };
-		0AAB6D2419827ACD009DCDD5 /* InteractiveCredentialsVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InteractiveCredentialsVC.m; sourceTree = "<group>"; };
+		0AAB6D2319827ACD009DCDD5 /* CredentialsVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CredentialsVC.h; sourceTree = "<group>"; };
+		0AAB6D2419827ACD009DCDD5 /* CredentialsVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CredentialsVC.m; sourceTree = "<group>"; };
 		0AAB6D2519827ACD009DCDD5 /* LoginsTVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginsTVC.h; sourceTree = "<group>"; };
 		0AAB6D2619827ACD009DCDD5 /* LoginsTVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginsTVC.m; sourceTree = "<group>"; };
 		0AAB6D2719827ACD009DCDD5 /* PickerTVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PickerTVC.h; sourceTree = "<group>"; };
@@ -279,8 +279,8 @@
 				0AAB6D2219827ACD009DCDD5 /* CreateLoginVC.m */,
 				0AF898821986633E00F1A270 /* ConnectWebViewVC.h */,
 				0AF898831986633E00F1A270 /* ConnectWebViewVC.m */,
-				0AAB6D2319827ACD009DCDD5 /* InteractiveCredentialsVC.h */,
-				0AAB6D2419827ACD009DCDD5 /* InteractiveCredentialsVC.m */,
+				0AAB6D2319827ACD009DCDD5 /* CredentialsVC.h */,
+				0AAB6D2419827ACD009DCDD5 /* CredentialsVC.m */,
 				0AAB6D2519827ACD009DCDD5 /* LoginsTVC.h */,
 				0AAB6D2619827ACD009DCDD5 /* LoginsTVC.m */,
 				0AAB6D2719827ACD009DCDD5 /* PickerTVC.h */,
@@ -546,7 +546,7 @@
 				0AAB6D6619827AFB009DCDD5 /* AppDelegate.m in Sources */,
 				0AF898B71986905100F1A270 /* NSString+SEModelsSerializingAdditions.m in Sources */,
 				0AF898BB1986905100F1A270 /* SEProvider.m in Sources */,
-				0AAB6D5219827ACD009DCDD5 /* InteractiveCredentialsVC.m in Sources */,
+				0AAB6D5219827ACD009DCDD5 /* CredentialsVC.m in Sources */,
 				0AAB6D4F19827ACD009DCDD5 /* UIView+Framing.m in Sources */,
 				0AAB6D5519827ACD009DCDD5 /* TransactionsTVC.m in Sources */,
 				0AAB6CF119827AAA009DCDD5 /* main.m in Sources */,

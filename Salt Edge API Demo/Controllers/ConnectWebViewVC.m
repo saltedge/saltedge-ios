@@ -31,8 +31,9 @@ static NSString* const kConnectURLKey    = @"connect_url";
 
 @implementation ConnectWebViewVC
 
+#pragma mark -
 #pragma mark - Private API
-#pragma mark - View Controller's lifecycle
+#pragma mark - View Controllers lifecycle
 
 - (void)viewDidLoad
 {
@@ -84,7 +85,7 @@ static NSString* const kConnectURLKey    = @"connect_url";
     [self.view bringSubviewToFront:self.activityIndicator];
 }
 
-#pragma mark - Button actions
+#pragma mark - Actions
 
 - (void)connectPressed
 {

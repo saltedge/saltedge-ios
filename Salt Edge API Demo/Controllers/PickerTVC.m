@@ -8,6 +8,8 @@
 
 #import "PickerTVC.h"
 
+static NSString* const kPickerCellReuseIdentifier = @"PickerTableViewCell";
+
 @interface PickerTVC ()
 
 @property (nonatomic, strong) NSArray* items;
@@ -15,15 +17,10 @@
 
 @end
 
-static NSString* const kPickerCellReuseIdentifier = @"PickerTableViewCell";
-
 @implementation PickerTVC
 
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelPressed)];
-}
+#pragma mark -
+#pragma mark - Public API
 
 + (UINavigationController*)pickerWithItems:(NSArray *)items completionBlock:(PickerCompletionBlock)completion
 {
@@ -35,10 +32,24 @@ static NSString* const kPickerCellReuseIdentifier = @"PickerTableViewCell";
     return pickerNavController;
 }
 
+#pragma mark -
+#pragma mark - Private API
+#pragma mark - View Controllers lifecycle
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelPressed)];
+}
+
+#pragma mark - Actions
+
 - (void)cancelPressed
 {
     [self dismissViewControllerAnimated:YES completion:nil];
 }
+
+#pragma mark - UITableView Delegate / Data Source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {

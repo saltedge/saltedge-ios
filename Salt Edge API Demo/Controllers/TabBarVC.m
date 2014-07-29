@@ -17,6 +17,7 @@
 
 #pragma mark -
 #pragma mark - Private API
+#pragma mark - Initialization
 
 - (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {

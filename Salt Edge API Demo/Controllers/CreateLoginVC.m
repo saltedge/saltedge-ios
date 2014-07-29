@@ -17,7 +17,7 @@
 #import "LoginsTVC.h"
 #import "OptionSelectButton.h"
 #import "PickerDelegate.h"
-#import "InteractiveCredentialsVC.h"
+#import "CredentialsVC.h"
 #import "SEAPIRequestManager.h"
 #import "SEProvider.h"
 #import "SEProviderField.h"
@@ -26,7 +26,9 @@
 
 #pragma GCC diagnostic ignored "-Wundeclared-selector"
 
-#define POLL_INTERVAL_TIMEOUT   5.0f
+static CGFloat keyboardOffset = 0.0;
+static CGFloat keyboardHeight = 152.0; // bad
+static CGFloat viewYOrigin    = 0.0;
 
 typedef void (^CompletionBlock)(void);
 
@@ -46,13 +48,9 @@ typedef void (^CompletionBlock)(void);
 
 @implementation CreateLoginVC
 
-static CGFloat keyboardOffset = 0.0;
-static CGFloat keyboardHeight = 152.0; // bad
-static CGFloat viewYOrigin    = 0.0;
-
 #pragma mark -
 #pragma mark - Private API
-#pragma mark - View Controller's lifecycle
+#pragma mark - View Controllers lifecycle
 
 - (void)viewDidLoad
 {
@@ -75,6 +73,8 @@ static CGFloat viewYOrigin    = 0.0;
     viewYOrigin = self.view.yOrigin;
 }
 
+#pragma mark - Setup
+
 - (void)setup
 {
     self.title = @"Create";
@@ -93,48 +93,6 @@ static CGFloat viewYOrigin    = 0.0;
     self.customerEmailTextField.autocorrectionType = UITextAutocorrectionTypeNo;
     self.customerEmailTextField.keyboardType = UIKeyboardTypeEmailAddress;
     [self.view addSubview:self.customerEmailTextField];
-}
-
-#pragma mark - API Calls
-
-- (void)requestProvidersListWithCompletionBlock:(CompletionBlock)completionBlock
-{
-    SEAPIRequestManager* manager = [SEAPIRequestManager manager];
-    [manager fetchFullProvidersListWithSuccess:^(NSURLSessionDataTask* task, NSSet* providersList) {
-        self.providers = providersList;
-        completionBlock();
-    } failure:^(NSURLSessionDataTask* task, NSError* error) {
-        [SVProgressHUD showErrorWithStatus:error.localizedDescription];
-    }];
-}
-
-- (void)userSelectedProvider:(NSString*)selectedProviderName
-{
-    [SVProgressHUD showWithStatus:@"Loading..."];
-    [self.view.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
-    self.inputControlsOrder = @[].mutableCopy;
-    self.instructionsLabel = nil;
-    self.inputControlsMappings = @{}.mutableCopy;
-    for (UIGestureRecognizer* recognizer in self.view.gestureRecognizers) {
-        [self.view removeGestureRecognizer:recognizer];
-    }
-
-    [self setupCustomerEmailTextField];
-    [self setupChooseAnotherProviderButton];
-    [self.view addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(endEditing)]];
-
-    NSPredicate* providerPredicate = [NSPredicate predicateWithFormat:@"name == %@", selectedProviderName];
-    SEProvider* selectedProvider = [[self.providers filteredSetUsingPredicate:providerPredicate] allObjects][0];
-
-    SEAPIRequestManager* manager = [SEAPIRequestManager manager];
-    [manager fetchProviderWithCode:selectedProvider.code success:^(NSURLSessionDataTask* task, SEProvider* fetchedProvider) {
-        self.selectedProvider = fetchedProvider;
-        [self setupInputViews];
-        [SVProgressHUD dismiss];
-    } failure:^(NSURLSessionDataTask* task, NSError* error) {
-        NSLog(@"Error: %@", error);
-        [SVProgressHUD showErrorWithStatus:error.localizedDescription];
-    }];
 }
 
 - (void)setupInputViews
@@ -263,6 +221,47 @@ static CGFloat viewYOrigin    = 0.0;
 
 #pragma mark - Utility methods
 
+- (void)requestProvidersListWithCompletionBlock:(CompletionBlock)completionBlock
+{
+    SEAPIRequestManager* manager = [SEAPIRequestManager manager];
+    [manager fetchFullProvidersListWithSuccess:^(NSURLSessionDataTask* task, NSSet* providersList) {
+        self.providers = providersList;
+        completionBlock();
+    } failure:^(NSURLSessionDataTask* task, NSError* error) {
+        [SVProgressHUD showErrorWithStatus:error.localizedDescription];
+    }];
+}
+
+- (void)userSelectedProvider:(NSString*)selectedProviderName
+{
+    [SVProgressHUD showWithStatus:@"Loading..."];
+    [self.view.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
+    self.inputControlsOrder = @[].mutableCopy;
+    self.instructionsLabel = nil;
+    self.inputControlsMappings = @{}.mutableCopy;
+    for (UIGestureRecognizer* recognizer in self.view.gestureRecognizers) {
+        [self.view removeGestureRecognizer:recognizer];
+    }
+
+    [self setupCustomerEmailTextField];
+    [self setupChooseAnotherProviderButton];
+    [self.view addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(endEditing)]];
+
+    NSPredicate* providerPredicate = [NSPredicate predicateWithFormat:@"name == %@", selectedProviderName];
+    SEProvider* selectedProvider = [[self.providers filteredSetUsingPredicate:providerPredicate] allObjects][0];
+
+    SEAPIRequestManager* manager = [SEAPIRequestManager manager];
+    [manager fetchProviderWithCode:selectedProvider.code success:^(NSURLSessionDataTask* task, SEProvider* fetchedProvider) {
+        self.selectedProvider = fetchedProvider;
+        [self setupInputViews];
+        [SVProgressHUD dismiss];
+    } failure:^(NSURLSessionDataTask* task, NSError* error) {
+        NSLog(@"Error: %@", error);
+        [SVProgressHUD showErrorWithStatus:error.localizedDescription];
+    }];
+}
+
+
 - (void)createLogin
 {
     [SVProgressHUD showWithStatus:@"Loading..." maskType:SVProgressHUDMaskTypeGradient];
@@ -284,9 +283,9 @@ static CGFloat viewYOrigin    = 0.0;
 
     SEAPIRequestManager* manager = [SEAPIRequestManager manager];
     [manager createLoginWithParameters:parameters success:^(NSURLSessionDataTask* task, SELogin* createdLogin) {
-        NSLog(@"Created!");
+        [SVProgressHUD dismiss];
+        [SVProgressHUD showWithStatus:@"Fetching..."];
     } failure:^(NSURLSessionDataTask* task, NSError* error) {
-        NSLog(@"Failed!");
         [SVProgressHUD showErrorWithStatus:error.localizedDescription];
     } delegate:self];
 }
@@ -304,8 +303,8 @@ static CGFloat viewYOrigin    = 0.0;
 
         NSAssert(requestedInteractiveFields != nil, @"Login is interactive but has no interactive fields?");
         
-        InteractiveCredentialsVC* interactive = [self.storyboard instantiateViewControllerWithIdentifier:@"InteractiveCredentialsVC"];
-        interactive.interactiveFields = requestedInteractiveFields;
+        CredentialsVC* interactive = [self.storyboard instantiateViewControllerWithIdentifier:@"CredentialsVC"];
+        interactive.credentialFields = requestedInteractiveFields;
         interactive.completionBlock = ^(NSDictionary* interactiveCredentials) {
             [self dismissViewControllerAnimated:YES completion:nil];
             [SVProgressHUD showWithStatus:@"Loading..." maskType:SVProgressHUDMaskTypeGradient];

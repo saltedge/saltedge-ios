@@ -1,5 +1,5 @@
 //
-//  InteractiveCredentialsVC.h
+//  CredentialsVC.h
 //  SaltEdge API Demo
 //
 //  Created by nemesis on 7/23/14.
@@ -8,11 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
-typedef void (^InteractiveCompletionBlock)(NSDictionary*);
+typedef void (^CredentialsCompletionBlock)(NSDictionary*);
 
-@interface InteractiveCredentialsVC : UIViewController
+@interface CredentialsVC : UIViewController
 
-@property (nonatomic, strong) NSArray* interactiveFields;
-@property (nonatomic, strong) InteractiveCompletionBlock completionBlock;
+@property (nonatomic, strong) NSArray* credentialFields;
+@property (nonatomic, strong) CredentialsCompletionBlock completionBlock;
 
 @end

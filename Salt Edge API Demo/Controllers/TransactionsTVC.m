@@ -14,21 +14,27 @@
 #import "SETransaction.h"
 #import "SEAPIRequestManager.h"
 
+static NSString* const kTransactionCellReuseIdentifier = @"TransactionTableViewCell";
+
 @interface TransactionsTVC ()
 
 @property (nonatomic, strong) NSArray* transactions;
 
 @end
 
-static NSString* const kTransactionCellReuseIdentifier = @"TransactionTableViewCell";
-
 @implementation TransactionsTVC
+
+#pragma mark -
+#pragma mark - Private API
+#pragma mark - View Controllers lifecycle
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     [self reloadTransactionsTableView];
 }
+
+#pragma mark - Helper methods
 
 - (void)reloadTransactionsTableView
 {

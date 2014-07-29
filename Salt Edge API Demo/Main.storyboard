@@ -147,10 +147,10 @@
             </objects>
             <point key="canvasLocation" x="3311" y="-67"/>
         </scene>
-        <!--Interactive CredentialsVC-->
+        <!--CredentialsVC-->
         <scene sceneID="4Aa-LJ-5Nn">
             <objects>
-                <viewController storyboardIdentifier="InteractiveCredentialsVC" useStoryboardIdentifierAsRestorationIdentifier="YES" id="V19-w1-FUx" customClass="InteractiveCredentialsVC" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="CredentialsVC" useStoryboardIdentifierAsRestorationIdentifier="YES" id="V19-w1-FUx" customClass="CredentialsVC" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="pU7-oN-qUE">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask"/>

@@ -1,12 +1,12 @@
 //
-//  InteractiveCredentialsVC.m 
+//  CredentialsVC.m 
 //  SaltEdge API Demo
 //
 //  Created by nemesis on 7/23/14.
 //  Copyright (c) 2014 Salt Edge. All rights reserved.
 //
 
-#import "InteractiveCredentialsVC.h"
+#import "CredentialsVC.h"
 #import "PickerDelegate.h"
 #import "PickerTVC.h"
 #import "Constants.h"
@@ -16,19 +16,23 @@
 #import "UIControl+SELoginInputFieldsAdditions.h"
 #import "SEProviderField.h"
 
-@interface InteractiveCredentialsVC () <PickerDelegate>
+@interface CredentialsVC () <PickerDelegate>
 
 @property (nonatomic, strong) NSMutableDictionary* inputControlsMappings;
 @property (nonatomic, strong) NSMutableArray* inputControlsOrder;
 
 @end
 
-@implementation InteractiveCredentialsVC
+@implementation CredentialsVC
+
+#pragma mark -
+#pragma mark - Private API
+#pragma mark - View Controllers lifecycle
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.title = @"Interactive";
+    self.title = @"Credentials";
     [self setupInputControls];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(donePressed)];
 }
@@ -39,16 +43,20 @@
     self.navigationController.navigationBar.translucent = NO;
 }
 
+#pragma mark - Setup
+
 - (void)setupInputControls
 {
-    for (SEProviderField* interactiveField in self.interactiveFields) {
-        UIControl* control = [self createInputControlFromObject:interactiveField];
-        control.origin = CGPointMake(10.0, 10 + 60 * ([interactiveField.position integerValue] - 1));
+    for (SEProviderField* field in self.credentialFields) {
+        UIControl* control = [self createInputControlFromObject:field];
+        control.origin = CGPointMake(10.0, 10 + 45 * ([field.position integerValue] - 1));
         [self.view addSubview:control];
-        self.inputControlsMappings[interactiveField] = control;
+        self.inputControlsMappings[field] = control;
         [self.inputControlsOrder addObject:control];
     }
 }
+
+#pragma mark - Helper methods
 
 - (UIControl*)createInputControlFromObject:(SEProviderField*)field
 {

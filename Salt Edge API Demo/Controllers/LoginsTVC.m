@@ -15,6 +15,8 @@
 #import "SEAPIRequestManager.h"
 #import "SELogin.h"
 
+static NSString* const kLoginTableViewCellReuseIdentifier = @"LoginTableViewCell";
+
 @interface LoginsTVC ()
 
 @property (nonatomic, strong) NSArray* logins;
@@ -24,15 +26,14 @@
 
 @implementation LoginsTVC
 
-static NSString* const kLoginTableViewCellReuseIdentifier = @"LoginTableViewCell";
+#pragma mark -
+#pragma mark - Private API
+#pragma mark - View Controllers lifecycle
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.title = @"Logins";
-    self.navigationController.navigationBarHidden = NO;
-    [self reloadLoginsTableViewController];
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(reload)];
+    [self setup];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -43,6 +44,18 @@ static NSString* const kLoginTableViewCellReuseIdentifier = @"LoginTableViewCell
         [SVProgressHUD showWithStatus:@"Loading..." maskType:SVProgressHUDMaskTypeGradient];
     }
 }
+
+#pragma mark - Setup
+
+- (void)setup
+{
+    self.title = @"Logins";
+    self.navigationController.navigationBarHidden = NO;
+    [self reloadLoginsTableViewController];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(reload)];
+}
+
+#pragma mark - Helper methods
 
 - (void)reloadLoginsTableViewController
 {
@@ -64,18 +77,14 @@ static NSString* const kLoginTableViewCellReuseIdentifier = @"LoginTableViewCell
     }
 }
 
-- (void)loginFailedFetch:(NSNotification*)aNotification
-{
-    self.waitingForLoginToFetch = NO;
-    self.isLoadingLogins = NO;
-}
+#pragma mark - Actions
 
 - (void)reload
 {
     [self reloadLoginsTableViewController];
 }
 
-#pragma mark - Table view data source
+#pragma mark - UITableView Delegate / Data Source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
@@ -99,19 +108,13 @@ static NSString* const kLoginTableViewCellReuseIdentifier = @"LoginTableViewCell
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    SELogin* theLogin = self.logins[indexPath.row];
-    if (!self.waitingForLoginToFetch && ![theLogin.status isEqualToString:@"inactive"]) {
+    if (!self.waitingForLoginToFetch) {
         SELogin* selectedLogin = self.logins[indexPath.row];
         AccountsTVC* accounts = [self.storyboard instantiateViewControllerWithIdentifier:@"AccountsTVC"];
-        [accounts setLoginId:selectedLogin.id];
+        [accounts setLogin:selectedLogin];
         accounts.title = selectedLogin.providerName;
         [self.navigationController pushViewController:accounts animated:YES];
     }
-}
-
-- (void)setWaitingForLoginToFetch:(BOOL)waitingForLoginToFetch
-{
-    _waitingForLoginToFetch = waitingForLoginToFetch;
 }
 
 @end

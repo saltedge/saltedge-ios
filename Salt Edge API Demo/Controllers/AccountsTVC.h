@@ -8,8 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
+@class SELogin;
+
 @interface AccountsTVC : UITableViewController
 
-@property (nonatomic, strong) NSNumber* loginId;
+@property (nonatomic, strong) SELogin* login;
 
 @end
