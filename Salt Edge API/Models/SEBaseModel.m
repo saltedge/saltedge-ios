@@ -48,7 +48,10 @@ static NSArray* datesPropertiesNames;
             if ([datesPropertiesNames containsObject:propertyName] && ![valueToSet isEqual:[NSNull null]]) {
                 valueToSet = [DateUtils dateFromISO8601String:value];
             }
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
             [object performSelector:selector withObject:valueToSet];
+#pragma clang diagnostic pop
         }
     }];
     return object;
