@@ -130,6 +130,7 @@ typedef void (^SEAPIRequestFailureBlock)(NSURLSessionDataTask* task, NSError* er
  @param delegate The delegate of the login creation that will respond to certain events.
 
  @see SELoginCreationDelegate
+ @see https://docs.saltedge.com/reference/#logins-create
 
  @warning parameters cannot be nil.
 
@@ -145,8 +146,6 @@ typedef void (^SEAPIRequestFailureBlock)(NSURLSessionDataTask* task, NSError* er
     }
  }
  @endcode
-
- @see https://docs.saltedge.com/reference/#logins-create
  */
 - (void)createLoginWithParameters:(NSDictionary*)parameters
                           success:(void (^)(NSURLSessionDataTask*, SELogin*))success
