@@ -35,6 +35,11 @@ typedef void (^SEAPIRequestFailureBlock)(NSURLSessionDataTask* task, NSError* er
 @interface SEAPIRequestManager : AFHTTPSessionManager
 
 /**
+ Creates and returns an SEAPIRequestManager instance.
+ */
++ (instancetype)manager;
+
+/**
  Links your App ID and App Secret to the request manager. All outgoing requests will have the proper app-related HTTP headers set by default.
  
  @param appId The App ID of the app
@@ -70,6 +75,7 @@ typedef void (^SEAPIRequestFailureBlock)(NSURLSessionDataTask* task, NSError* er
  @param code The code of the provider that will be fetched.
  @param success The callback block if the request succeeds.
  @param failure The callback block if the request fails.
+
  @warning code cannot be nil.
  
  @see https://docs.saltedge.com/reference/#providers-show
@@ -84,6 +90,7 @@ typedef void (^SEAPIRequestFailureBlock)(NSURLSessionDataTask* task, NSError* er
  @param loginId The id of the login whose accounts are going to be fetched.
  @param success The callback block if the request succeeds.
  @param failure The callback block if the request fails.
+
  @warning loginId cannot be nil.
  
  @see https://docs.saltedge.com/reference/#accounts-list
@@ -91,12 +98,14 @@ typedef void (^SEAPIRequestFailureBlock)(NSURLSessionDataTask* task, NSError* er
 - (void)fetchFullAccountsListForLoginId:(NSNumber*)loginId
                             success:(void(^)(NSURLSessionDataTask*, NSSet*))success
                             failure:(SEAPIRequestFailureBlock)failure;
+
 /**
  Fetches all transactions tied to an account.
  
  @param accountId The id of the account whose transactions are going to be fetched.
  @param success The callback block if the request succeeds.
  @param failure The callback block if the request fails.
+
  @warning accountId cannot not be nil.
  
  @see https://docs.saltedge.com/reference/#transactions-list
@@ -111,8 +120,11 @@ typedef void (^SEAPIRequestFailureBlock)(NSURLSessionDataTask* task, NSError* er
  @param success The callback block if the request succeeds.
  @param failure The callback block if the request fails.
  @param delegate The delegate of the login creation that will respond to certain events.
+
  @see SELoginCreationDelegate
+
  @warning parameters cannot be nil.
+
  @code
  // parameters example
  {
@@ -140,8 +152,10 @@ typedef void (^SEAPIRequestFailureBlock)(NSURLSessionDataTask* task, NSError* er
  @param credentials The credentials object that will be used to reconnect the login. See an example above.
  @param success The callback block if the request succeeds.
  @param failure The callback block if the request fails.
- @param delegate The delegate of the login reconnect process that will respond to events.
+ @param delegate The delegate of the login reconnect process.
+
  @warning loginId and credentials cannot be nil.
+
  @code
  // credentials example
  {
@@ -164,14 +178,16 @@ typedef void (^SEAPIRequestFailureBlock)(NSURLSessionDataTask* task, NSError* er
  @param loginId The id of the login to refresh.
  @param success The callback block if the request succeeds.
  @param failure The callback block if the request fails.
- 
+ @param delegate The delegate of the login refresh process.
+
  @warning loginId cannot be nil.
  
  @see https://docs.saltedge.com/reference/#logins-refresh
  */
 - (void)refreshLoginWithId:(NSNumber*)loginId
                    success:(void (^)(NSURLSessionDataTask*, NSDictionary*))success
-                   failure:(SEAPIRequestFailureBlock)failure;
+                   failure:(SEAPIRequestFailureBlock)failure
+                  delegate:(id<SELoginCreationDelegate>)delegate;
 
 /**
  Provides the login with the interactive credentials that are currently required.
@@ -180,7 +196,9 @@ typedef void (^SEAPIRequestFailureBlock)(NSURLSessionDataTask* task, NSError* er
  @param loginId The id of the login which has requested interactive input.
  @param success The callback block if the request succeeds.
  @param failure The callback block if the request fails.
+
  @warning credentials, loginId cannot be nil.
+
  @code
  // credentials example
  {
@@ -203,6 +221,7 @@ typedef void (^SEAPIRequestFailureBlock)(NSURLSessionDataTask* task, NSError* er
  @param failure The callback block if the request fails.
  
  @warning The parameters should at least contain a key "customer_email" with the corresponding customer email.
+ 
  @code 
  // parameters example
  {

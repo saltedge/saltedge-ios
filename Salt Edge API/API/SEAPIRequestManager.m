@@ -207,7 +207,7 @@ static NSURLSessionConfiguration* sessionConfig;
     }];
 }
 
-- (void)refreshLoginWithId:(NSNumber *)loginId success:(void (^)(NSURLSessionDataTask *, NSDictionary *))success failure:(SEAPIRequestFailureBlock)failure
+- (void)refreshLoginWithId:(NSNumber *)loginId success:(void (^)(NSURLSessionDataTask *, NSDictionary *))success failure:(SEAPIRequestFailureBlock)failure delegate:(id<SELoginCreationDelegate>)delegate
 {
     NSAssert(loginId != nil, @"loginId cannot be nil.");
 
@@ -218,7 +218,11 @@ static NSURLSessionConfiguration* sessionConfig;
     [manager POST:url parameters:nil success:^(NSURLSessionDataTask* task, id responseObject) {
         if (!success) { return; }
         NSDictionary* responseDataDictionary = responseObject[kDataKey];
-        if (responseDataDictionary && [responseDataDictionary[kRefreshedKey] boolValue]) {
+        if (responseDataDictionary) {
+            if ([responseDataDictionary[kRefreshedKey] boolValue]) {
+                [self pollLoginWithId:loginId delegate:delegate];
+            }
+
             NSMutableDictionary* resultingDictionary = responseDataDictionary.mutableCopy;
 
             resultingDictionary[kLastRefreshAtKey] = [DateUtils dateFromISO8601String:responseDataDictionary[kLastRefreshAtKey]];
