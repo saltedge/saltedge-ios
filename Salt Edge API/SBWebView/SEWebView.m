@@ -1,5 +1,5 @@
 //
-//  SBWebView.m
+//  SEWebView.m
 //
 //  Copyright (c) 2014 Salt Edge. https://saltedge.com
 //
@@ -21,19 +21,19 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 
-#import "SBWebView.h"
+#import "SEWebView.h"
 #import "NSURL+SBCallbacksAdditions/NSURL+SBCallbacksAdditions.h"
-#import "SBWebViewDelegate.h"
+#import "SEWebViewDelegate.h"
 
-@interface SBWebView(/* Private */) <UIWebViewDelegate>
+@interface SEWebView(/* Private */) <UIWebViewDelegate>
 @end
 
-@implementation SBWebView
+@implementation SEWebView
 
 #pragma mark - Public API
 #pragma mark - Designated Initializer
 
-- (instancetype)initWithFrame:(CGRect)frame stateDelegate:(id<SBWebViewDelegate>)stateDelegate
+- (instancetype)initWithFrame:(CGRect)frame stateDelegate:(id<SEWebViewDelegate>)stateDelegate
 {
     if (self = [super initWithFrame:frame]) {
         self.delegate = self;

@@ -7,8 +7,8 @@
 //
 
 #import "ConnectWebViewVC.h"
-#import "SBWebView.h"
-#import "SBWebViewDelegate.h"
+#import "SEWebView.h"
+#import "SEWebViewDelegate.h"
 #import "SEAPIRequestManager.h"
 #import "UIView+Framing.h"
 #import <SVProgressHUD.h>
@@ -19,12 +19,12 @@ static NSString* const kCustomerEmailKey = @"customer_email";
 static NSString* const kDataKey          = @"data";
 static NSString* const kConnectURLKey    = @"connect_url";
 
-@interface ConnectWebViewVC () <SBWebViewDelegate, UITextFieldDelegate>
+@interface ConnectWebViewVC () <SEWebViewDelegate, UITextFieldDelegate>
 
 @property (nonatomic, strong) UITextField* customerEmailTextField;
 @property (nonatomic, strong) UIButton* connectButton;
 @property (nonatomic, strong) UITapGestureRecognizer* tapRecognizer;
-@property (nonatomic, strong) SBWebView* connectWebView;
+@property (nonatomic, strong) SEWebView* connectWebView;
 @property (nonatomic, strong) UIActivityIndicatorView* activityIndicator;
 
 @end
@@ -80,7 +80,7 @@ static NSString* const kConnectURLKey    = @"connect_url";
 - (void)setupConnectWebView
 {
     CGFloat tabBarHeight = self.tabBarController.tabBar.height;
-    self.connectWebView = [[SBWebView alloc] initWithFrame:CGRectMake(0.0, self.view.yOrigin - tabBarHeight - 15.0, self.view.width, self.view.height - tabBarHeight) stateDelegate:self];
+    self.connectWebView = [[SEWebView alloc] initWithFrame:CGRectMake(0.0, self.view.yOrigin - tabBarHeight - 15.0, self.view.width, self.view.height - tabBarHeight) stateDelegate:self];
     [self.view addSubview:self.connectWebView];
     [self.view bringSubviewToFront:self.activityIndicator];
 }
@@ -173,9 +173,9 @@ static NSString* const kConnectURLKey    = @"connect_url";
     return YES;
 }
 
-#pragma mark - SBWebView Delegate
+#pragma mark - SEWebView Delegate
 
-- (void)webView:(SBWebView *)webView receivedCallbackWithResponse:(NSDictionary *)response
+- (void)webView:(SEWebView *)webView receivedCallbackWithResponse:(NSDictionary *)response
 {
     NSString* loginState = response[SBLoginDataKey][SBLoginStateKey];
 
@@ -189,7 +189,7 @@ static NSString* const kConnectURLKey    = @"connect_url";
     }
 }
 
-- (void)webView:(SBWebView *)webView receivedCallbackWithError:(NSError *)error
+- (void)webView:(SEWebView *)webView receivedCallbackWithError:(NSError *)error
 {
     [self showAlertWithTitle:@"Error" message:[NSString stringWithFormat:@"Error code %d: %@", error.code, error.localizedDescription]];
 }

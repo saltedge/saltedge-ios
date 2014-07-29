@@ -34,7 +34,7 @@ static NSString* const SBCallbackScheme = @"saltbridge";
 static NSString* const SBCallbackHost   = @"connect";
 
 /**
- This category provides a few utility methods in order to aid SBWebView deal with callbacks from the Salt Edge Connect page.
+ This category provides a few utility methods in order to aid SEWebView deal with callbacks from the Salt Edge Connect page.
  */
 
 @interface NSURL (SBCallbacksAdditions)
