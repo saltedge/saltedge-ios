@@ -33,6 +33,7 @@
 /* Headers */
 static NSString* const kAppIdHeaderKey           = @"App-id";
 static NSString* const kAppSecretHeaderKey       = @"App-secret";
+static NSString* const kCustomerSecretHeaderKey  = @"Customer-secret";
 
 /* Keys of responses and post bodies */
 static NSString* const kFromIdKey                = @"from_id";
@@ -53,32 +54,50 @@ static NSString* const kLoginStatusActive        = @"active";
 
 static CGFloat const kLoginPollDelayTime = 5.0f;
 
-static NSURLSessionConfiguration* sessionConfig;
+static NSURLSessionConfiguration* sessionConfiguration;
 
 @implementation SEAPIRequestManager
 
-+ (void)linkAppId:(NSString *)appId appSecret:(NSString *)appSecret
-{
-    NSAssert(appSecret != nil, @"App secret can't be nil");
-    NSAssert(appId != nil, @"App id can't be nil");
-
-    sessionConfig = [NSURLSessionConfiguration defaultSessionConfiguration];
-    [sessionConfig setHTTPAdditionalHeaders:@{ kAppIdHeaderKey : appId, kAppSecretHeaderKey : appSecret }];
-}
+#pragma mark -
+#pragma mark - Public API
+#pragma mark - Class Methods
 
 + (instancetype)manager
 {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        NSAssert(sessionConfig != nil, @"Session configuration not set. Did you forget to link your app id and app secret?");
+        NSAssert(sessionConfiguration != nil, @"Session configuration not set. Did you forget to link your app id and app/customer secret?");
     });
 
-    SEAPIRequestManager* manager = [[[self class] alloc] initWithBaseURL:[NSURL URLWithString:kRootURL] sessionConfiguration:sessionConfig];
+    SEAPIRequestManager* manager = [[[self class] alloc] initWithBaseURL:[NSURL URLWithString:kRootURL] sessionConfiguration:sessionConfiguration];
     manager.securityPolicy.allowInvalidCertificates = YES;
     return manager;
 }
 
-- (void)fetchFullProvidersListWithSuccess:(void (^)(NSURLSessionDataTask*, NSSet *))success failure:(SEAPIRequestFailureBlock)failure
++ (void)linkAppId:(NSString *)appId appSecret:(NSString *)appSecret
+{
+    NSAssert(sessionConfiguration == nil, @"Session configuration is already set up.");
+    NSAssert(appId != nil, @"App id can't be nil");
+    NSAssert(appSecret != nil, @"App secret can't be nil");
+
+    sessionConfiguration = [NSURLSessionConfiguration defaultSessionConfiguration];
+    [sessionConfiguration setHTTPAdditionalHeaders:@{ kAppIdHeaderKey : appId, kAppSecretHeaderKey : appSecret }];
+}
+
++ (void)linkAppId:(NSString *)appId customerSecret:(NSString *)customerSecret
+{
+    NSAssert(sessionConfiguration == nil, @"Session configuration is already set up.");
+    NSAssert(appId != nil, @"App id can't be nil");
+    NSAssert(customerSecret != nil, @"Customer secret can't be nil");
+
+    sessionConfiguration = [NSURLSessionConfiguration defaultSessionConfiguration];
+    [sessionConfiguration setHTTPAdditionalHeaders:@{ kAppIdHeaderKey : appId, kCustomerSecretHeaderKey : customerSecret }];
+}
+
+#pragma mark - Instance Methods
+
+- (void)fetchFullProvidersListWithSuccess:(void (^)(NSURLSessionDataTask*, NSSet *))success
+                                  failure:(SEAPIRequestFailureBlock)failure
 {
     [self requestPaginatedResourceWithPath:kProvidersPath container:@[].mutableCopy success:^(NSURLSessionDataTask* task, NSArray* providersDictionaries) {
         if (success) {
@@ -93,7 +112,8 @@ static NSURLSessionConfiguration* sessionConfig;
     } full:YES];
 }
 
-- (void)fetchFullLoginsListWithSuccess:(void (^)(NSURLSessionDataTask *, NSSet *))success failure:(SEAPIRequestFailureBlock)failure
+- (void)fetchFullLoginsListWithSuccess:(void (^)(NSURLSessionDataTask *, NSSet *))success
+                               failure:(SEAPIRequestFailureBlock)failure
 {
     [self requestPaginatedResourceWithPath:kLoginsPath container:@[].mutableCopy success:^(NSURLSessionDataTask* task, NSArray* loginsDictionaries) {
         if (success) {
@@ -108,7 +128,9 @@ static NSURLSessionConfiguration* sessionConfig;
     } full:YES];
 }
 
-- (void)fetchFullAccountsListForLoginId:(NSNumber *)loginId success:(void (^)(NSURLSessionDataTask *, NSSet *))success failure:(SEAPIRequestFailureBlock)failure
+- (void)fetchFullAccountsListForLoginId:(NSNumber *)loginId
+                                success:(void (^)(NSURLSessionDataTask *, NSSet *))success
+                                failure:(SEAPIRequestFailureBlock)failure
 {
     NSAssert(loginId != nil, @"loginId cannot be nil.");
 
@@ -128,7 +150,9 @@ static NSURLSessionConfiguration* sessionConfig;
     }];
 }
 
-- (void)fetchFullTransactionsListForAccountId:(NSNumber *)accountId success:(void (^)(NSURLSessionDataTask *, NSSet *))success failure:(SEAPIRequestFailureBlock)failure
+- (void)fetchFullTransactionsListForAccountId:(NSNumber *)accountId
+                                      success:(void (^)(NSURLSessionDataTask *, NSSet *))success
+                                      failure:(SEAPIRequestFailureBlock)failure
 {
     NSAssert(accountId != nil, @"accountId cannot be nil.");
 
@@ -146,7 +170,9 @@ static NSURLSessionConfiguration* sessionConfig;
     } full:YES];
 }
 
-- (void)fetchProviderWithCode:(NSString *)code success:(void (^)(NSURLSessionDataTask *, SEProvider *))success failure:(SEAPIRequestFailureBlock)failure
+- (void)fetchProviderWithCode:(NSString *)code
+                      success:(void (^)(NSURLSessionDataTask *, SEProvider *))success
+                      failure:(SEAPIRequestFailureBlock)failure
 {
     NSAssert(code != nil, @"code cannot be nil.");
 
@@ -166,7 +192,10 @@ static NSURLSessionConfiguration* sessionConfig;
     }];
 }
 
-- (void)createLoginWithParameters:(NSDictionary *)parameters success:(void (^)(NSURLSessionDataTask *, SELogin *))success failure:(SEAPIRequestFailureBlock)failure delegate:(id<SELoginCreationDelegate>)delegate
+- (void)createLoginWithParameters:(NSDictionary *)parameters
+                          success:(void (^)(NSURLSessionDataTask *, SELogin *))success
+                          failure:(SEAPIRequestFailureBlock)failure
+                         delegate:(id<SELoginCreationDelegate>)delegate
 {
     SEAPIRequestManager* manager = [[self class] manager];
 
@@ -184,7 +213,11 @@ static NSURLSessionConfiguration* sessionConfig;
     }];
 }
 
-- (void)reconnectLoginWithLoginId:(NSNumber *)loginId credentials:(NSDictionary *)credentials success:(void (^)(NSURLSessionDataTask *, SELogin *))success failure:(SEAPIRequestFailureBlock)failure delegate:(id<SELoginCreationDelegate>)delegate
+- (void)reconnectLoginWithLoginId:(NSNumber *)loginId
+                      credentials:(NSDictionary *)credentials
+                          success:(void (^)(NSURLSessionDataTask *, SELogin *))success
+                          failure:(SEAPIRequestFailureBlock)failure
+                         delegate:(id<SELoginCreationDelegate>)delegate
 {
     NSAssert(loginId != nil, @"loginId cannot be nil.");
     NSAssert(credentials != nil, @"credentials cannot be nil.");
@@ -207,7 +240,10 @@ static NSURLSessionConfiguration* sessionConfig;
     }];
 }
 
-- (void)refreshLoginWithId:(NSNumber *)loginId success:(void (^)(NSURLSessionDataTask *, NSDictionary *))success failure:(SEAPIRequestFailureBlock)failure delegate:(id<SELoginCreationDelegate>)delegate
+- (void)refreshLoginWithId:(NSNumber *)loginId
+                   success:(void (^)(NSURLSessionDataTask *, NSDictionary *))success
+                   failure:(SEAPIRequestFailureBlock)failure
+                  delegate:(id<SELoginCreationDelegate>)delegate
 {
     NSAssert(loginId != nil, @"loginId cannot be nil.");
 
@@ -234,7 +270,10 @@ static NSURLSessionConfiguration* sessionConfig;
     }];
 }
 
-- (void)postInteractiveCredentials:(NSDictionary *)credentials forLoginId:(NSNumber *)loginId success:(void (^)(NSURLSessionDataTask *, SELogin *))success failure:(SEAPIRequestFailureBlock)failure
+- (void)postInteractiveCredentials:(NSDictionary *)credentials
+                        forLoginId:(NSNumber *)loginId
+                           success:(void (^)(NSURLSessionDataTask *, SELogin *))success
+                           failure:(SEAPIRequestFailureBlock)failure
 {
     NSAssert(loginId != nil, @"loginId cannot be nil.");
     
@@ -255,7 +294,9 @@ static NSURLSessionConfiguration* sessionConfig;
     }];
 }
 
-- (void)requestConnectTokenWithParameters:(NSDictionary *)parameters success:(void (^)(NSURLSessionDataTask *, NSDictionary *))success failure:(SEAPIRequestFailureBlock)failure
+- (void)requestConnectTokenWithParameters:(NSDictionary *)parameters
+                                  success:(void (^)(NSURLSessionDataTask *, NSDictionary *))success
+                                  failure:(SEAPIRequestFailureBlock)failure
 {
     NSAssert(parameters[kCustomerEmailKey] != nil, @"Customer email cannot be nil");
 
@@ -274,7 +315,10 @@ static NSURLSessionConfiguration* sessionConfig;
 #pragma mark -
 #pragma mark - Private API
 
-- (void)requestPaginatedResourceWithPath:(NSString*)path container:(NSMutableArray*)container success:(void (^)(NSURLSessionDataTask* task, NSArray*))success failure:(SEAPIRequestFailureBlock)failure full:(BOOL)full
+- (void)requestPaginatedResourceWithPath:(NSString*)path
+                               container:(NSMutableArray*)container
+                                 success:(void (^)(NSURLSessionDataTask* task, NSArray*))success
+                                 failure:(SEAPIRequestFailureBlock)failure full:(BOOL)full
 {
     SEAPIRequestManager* manager = [[self class] manager];
 

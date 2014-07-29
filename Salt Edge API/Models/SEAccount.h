@@ -41,7 +41,7 @@
 
 /**
  Tests whether the caller and the parameter are equal.
- 
+
  @return YES if the accounts' ids are equal, NO otherwise.
  */
 - (BOOL)isEqualToAccount:(SEAccount*)account;

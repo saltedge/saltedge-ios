@@ -40,7 +40,7 @@
 
 /**
  This message is sent to the delegate when the login failed to fetch for some reason.
- 
+
  @param login The login which failed to fetch.
  @param message The reason why the login failed to fetch.
  */
@@ -48,7 +48,7 @@
 
 /**
  This message is sent to the delegate when the login successfully finishes fetching.
- 
+
  @param login The login which was successfully connected and finished fetching.
  */
 - (void)loginSuccessfullyFinishedFetching:(SELogin*)login;

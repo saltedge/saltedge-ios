@@ -26,6 +26,8 @@
 
 /**
  SEProviderField option represents an option for the "select" input field type.
+ 
+ @see https://docs.saltedge.com/reference/#providers-fields-options
  */
 @interface SEProviderFieldOption : SEBaseModel
 

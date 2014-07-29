@@ -26,7 +26,7 @@
 
 /**
  SEProvider represents a provider whithin the Salt Edge system.
- 
+
  @see https://docs.saltedge.com/guides/providers/
  */
 @interface SEProvider : SEBaseModel
@@ -49,7 +49,7 @@
 
 /**
  Tests whether the caller and the parameter are equal.
- 
+
  @return YES if the providers' codes are equal, otherwise NO.
  */
 - (BOOL)isEqualToProvider:(SEProvider*)provider;

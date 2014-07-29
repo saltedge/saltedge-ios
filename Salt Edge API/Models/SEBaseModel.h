@@ -30,7 +30,9 @@
 
 /**
  Creates an object from the given dictionary representation. This method is used within the SEAPIRequestManager for serializing JSON objects into objects that inherit from the base model - SELogin, SEProvider, SEAccount, et al.
+
  @param dictionary The dictionary containing the object representation.
+
  @warning dictionary cannot be nil.
  */
 + (instancetype)objectFromDictionary:(NSDictionary*)dictionary;

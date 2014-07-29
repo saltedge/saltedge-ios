@@ -25,7 +25,7 @@
 
 /**
  SETransaction represents a transaction within the Salt Edge system.
- 
+
  @see https://docs.saltedge.com/guides/transactions/
  */
 @interface SETransaction : SEBaseModel
@@ -44,7 +44,7 @@
 
 /**
  Tests whether the caller and the argument are equal.
- 
+
  @return YES if the transactions' ids are equal, otherwise NO.
  */
 - (BOOL)isEqualToTransaction:(SETransaction*)transaction;

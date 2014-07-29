@@ -25,7 +25,7 @@
 
 /**
  SELogin represents a login within the Salt Edge system.
- 
+
  @see https://docs.saltedge.com/guides/logins/
  */
 @interface SELogin : SEBaseModel

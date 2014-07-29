@@ -10,21 +10,26 @@
 #import "SEAPIRequestManager.h"
 #import "TabBarVC.h"
 #import <SVProgressHUD.h>
+#import <AFHTTPRequestOperationManager.h>
 
 #pragma GCC diagnostic ignored "-Wundeclared-selector"
 
 static NSString* const kAppId = nil;
-static NSString* const kAppSecret = nil;
 
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    [SEAPIRequestManager linkAppId:kAppId appSecret:kAppSecret];
-
     SVProgressHUD* hud = [SVProgressHUD performSelector:@selector(sharedView)];
     [hud setHudBackgroundColor:[UIColor blackColor]];
     [hud setHudForegroundColor:[UIColor whiteColor]];
+
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    [manager POST:@"http://your-server.com/customers" parameters:@{ @"email": @"customers.email@example.com" } success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        [SEAPIRequestManager linkAppId:kAppId customerSecret:responseObject[@"data"][@"secret"]];
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        [SVProgressHUD showErrorWithStatus:error.localizedDescription];
+    }];
 
     self.window.rootViewController = [[TabBarVC alloc] init];
     [self.window makeKeyAndVisible];

@@ -31,8 +31,10 @@
 
 /**
  Invoked when a callback is triggered from the Salt Edge Connect page.
+
  @param webView The web view which displays the Salt Edge Connect page from which the callback is triggered.
  @param response The payload within the callback. It contains two keys: "login_id" and "state". See an example response above.
+
  @code
  {
     "data": {
@@ -45,6 +47,7 @@
 - (void)webView:(SBWebView*)webView receivedCallbackWithResponse:(NSDictionary*)response;
 /**
  Invoked when a error occurs within the callback from the Salt Edge Connect page.
+
  @param webView The web view which displays the Salt Edge Connect page from which the callback is triggered.
  @param error The error that has occured.
  */

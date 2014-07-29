@@ -31,6 +31,7 @@ static NSString* const kLoginsPath        = @"api/v1/logins";
 static NSString* const kAccountsPath      = @"api/v1/accounts";
 static NSString* const kTransactionsPath  = @"api/v1/transactions";
 static NSString* const kProvidersPath     = @"api/v1/providers";
+static NSString* const kCustomersPath     = @"customers";
 static NSString* const kLoginsInteractive = @"interactive";
 static NSString* const kLoginsReconnect   = @"reconnect";
 static NSString* const kLoginsRefresh     = @"refresh";
