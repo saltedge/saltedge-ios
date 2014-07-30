@@ -19,51 +19,51 @@ Clone this repository
 
 Copy the `Salt Edge API` folder into your project.
 
-## SBWebView
+## SEWebView
 
 A small `UIWebView` replacement for using [Salt Edge Connect](https://docs.saltedge.com/guides/connect/) within your iOS app.
 
 ### Usage
 
 * Import the class and delegate files into your view controller
-* Add a `SBWebView` instance to your view controllers' view, also set a `stageDelegate` for the web view
-* Implement the `SBWebViewDelegate` methods in delegates' class
+* Add a `SEWebView` instance to your view controllers' view, also set a `stageDelegate` for the web view
+* Implement the `SEWebViewDelegate` methods in delegates' class
 * Load the connect page in the web view
 
-**NOTE:** Do not use the `delegate` property on `SKWebView`, since an `SKWebView` acts like a proxy object. If your class does need to respond to the `UIWebView` delegate methods, just implement them and the `SKWebView` instance will forward those messages to its `stageDelegate`.
+**NOTE:** Do not use the `delegate` property on `SEWebView`, since an `SEWebView` acts like a proxy object. If your class does need to respond to the `UIWebView` delegate methods, just implement them and the `SEWebView` instance will forward those messages to its `stageDelegate`.
 
 ### Example
 
-Import the class and delegate files into your view controller, also let your view controller conform to the `SBWebViewDelegate` protocol.
+Import the class and delegate files into your view controller, also let your view controller conform to the `SEWebViewDelegate` protocol.
 
 ```objc
-#import "SBWebView.h"
-#import "SBWebViewDelegate.h"
+#import "SEWebView.h"
+#import "SEWebViewDelegate.h"
 // ... snip ...
 
-@interface MyViewController() <SKWebViewDelegate>
+@interface MyViewController() <SEWebViewDelegate>
 // ... snip ...
 ```
 
-Instantiate a `SBWebView` and add it to your controller:
+Instantiate a `SEWebView` and add it to your controller:
 
 ```objc
-SKWebView* connectWebView = [[SBWebView alloc] initWithFrame:self.view.frame stateDelegate:self];
+SEWebView* connectWebView = [[SEWebView alloc] initWithFrame:self.view.frame stateDelegate:self];
 ```
 
-Implement the `SBWebViewDelegate` methods in your controller:
+Implement the `SEWebViewDelegate` methods in your controller:
 
 ```objc
 // ... snip ...
 
-- (void)webView:(SBWebView *)webView receivedCallbackWithResponse:(NSDictionary *)response
+- (void)webView:(SEWebView *)webView receivedCallbackWithResponse:(NSDictionary *)response
 {
-    NSNumber* loginID    = response[SBLoginDataKey][SBLoginIdKey];
-    NSString* loginState = response[SBLoginDataKey][SBLoginStateKey];
+    NSNumber* loginID    = response[SELoginDataKey][SELoginIdKey];
+    NSString* loginState = response[SELoginDataKey][SELoginStateKey];
     // do something with the data...
 }
 
-- (void)webView:(SBWebView *)webView receivedCallbackWithError:(NSError *)error
+- (void)webView:(SEWebView *)webView receivedCallbackWithError:(NSError *)error
 {
   // handle the error...
 }
@@ -74,7 +74,7 @@ Keep in mind that you can also implement the `UIWebView` delegate methods:
 ```objc
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
 {
-  // the method will be called after SKWebView has finished processing it
+  // the method will be called after SEWebView has finished processing it
 }
 ```
 
@@ -86,7 +86,7 @@ Load the Salt Edge Connect URL into the web view and you're good to go:
 
 ## SEAPIRequestManager
 
-An `AFHTTPSessionManager` subclass, designed with convenience methods for interacting with and querying the Salt Edge API. Contains methods for fetching entities (logins, transactions, et al.), also for creating logins via the REST API. In addition, if you're using the `SBWebView` to create or reconnect logins, this class provides a method for requesting a Connect token as well.
+An `AFHTTPSessionManager` subclass, designed with convenience methods for interacting with and querying the Salt Edge API. Contains methods for fetching entities (logins, transactions, et al.), also for creating logins via the REST API. In addition, if you're using the `SEWebView` to create or reconnect logins, this class provides a method for requesting a Connect token as well.
 
 ### Usage
 
@@ -114,7 +114,7 @@ Use the manager to interact with the provided API:
 
     [manager requestConnectTokenWithParameters:@{ @"customer_email" : @"user@example.com" } success:^(NSURLSessionDataTask* task, NSDictionary* tokenDictionary) {
         NSString* connectURL = tokenDictionary[kConnectURLKey];
-        // load the connect URL into the SBWebView...
+        // load the connect URL into the SEWebView...
     } failure:^(NSURLSessionDataTask* task, NSError* error) {
         // handle the error...
     }];

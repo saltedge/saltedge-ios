@@ -52,7 +52,7 @@
         NSError* error = nil;
         NSDictionary* callbackParameters = [url sb_callbackParametersWithError:&error];
         if (!error) {
-            if (callbackParameters[SBLoginDataKey][SBLoginIdKey] && callbackParameters[SBLoginDataKey][SBLoginStateKey]) {
+            if (callbackParameters[SELoginDataKey][SELoginIdKey] && callbackParameters[SELoginDataKey][SELoginStateKey]) {
                 if ([self.stateDelegate respondsToSelector:@selector(webView:receivedCallbackWithResponse:)]) {
                     [self.stateDelegate webView:self receivedCallbackWithResponse:callbackParameters];
                 }

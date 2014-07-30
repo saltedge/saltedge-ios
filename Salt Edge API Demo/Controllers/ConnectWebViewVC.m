@@ -177,21 +177,21 @@ static NSString* const kConnectURLKey    = @"connect_url";
 
 - (void)webView:(SEWebView *)webView receivedCallbackWithResponse:(NSDictionary *)response
 {
-    NSString* loginState = response[SBLoginDataKey][SBLoginStateKey];
+    NSString* loginState = response[SELoginDataKey][SELoginStateKey];
 
-    if ([loginState isEqualToString:SBLoginStateSuccess]) {
+    if ([loginState isEqualToString:SELoginStateSuccess]) {
         [self switchToLoginsViewController];
         [SVProgressHUD dismiss];
-    } else if ([loginState isEqualToString:SBLoginStateFetching]) {
+    } else if ([loginState isEqualToString:SELoginStateFetching]) {
         [SVProgressHUD showWithStatus:@"Loading..." maskType:SVProgressHUDMaskTypeGradient];
-    } else if ([loginState isEqualToString:SBLoginStateError]) {
+    } else if ([loginState isEqualToString:SELoginStateError]) {
         [SVProgressHUD showErrorWithStatus:@"Error"];
     }
 }
 
 - (void)webView:(SEWebView *)webView receivedCallbackWithError:(NSError *)error
 {
-    [self showAlertWithTitle:@"Error" message:[NSString stringWithFormat:@"Error code %d: %@", error.code, error.localizedDescription]];
+    [self showAlertWithTitle:@"Error" message:[NSString stringWithFormat:@"Error code %ld: %@", (long)error.code, error.localizedDescription]];
 }
 
 #pragma mark - UIWebView Delegate

@@ -23,13 +23,13 @@
 
 #import <UIKit/UIKit.h>
 
-static NSString* const SBLoginStateError    = @"error";
-static NSString* const SBLoginStateFetching = @"fetching";
-static NSString* const SBLoginStateSuccess  = @"success";
+static NSString* const SELoginStateError    = @"error";
+static NSString* const SELoginStateFetching = @"fetching";
+static NSString* const SELoginStateSuccess  = @"success";
 
-static NSString* const SBLoginStateKey      = @"state";
-static NSString* const SBLoginIdKey         = @"login_id";
-static NSString* const SBLoginDataKey       = @"data";
+static NSString* const SELoginStateKey      = @"state";
+static NSString* const SELoginIdKey         = @"login_id";
+static NSString* const SELoginDataKey       = @"data";
 
 @protocol SEWebViewDelegate;
 

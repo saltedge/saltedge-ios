@@ -102,6 +102,7 @@ static NSString* const kLoginTableViewCellReuseIdentifier = @"LoginTableViewCell
     SELogin* theLogin = self.logins[indexPath.row];
     cell.textLabel.text = theLogin.providerName;
     cell.detailTextLabel.text = theLogin.customerEmail;
+
     return cell;
 }
 
