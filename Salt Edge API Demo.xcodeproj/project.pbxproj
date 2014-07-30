@@ -1,0 +1,790 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		0AAB6CE519827AAA009DCDD5 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AAB6CE419827AAA009DCDD5 /* Foundation.framework */; };
+		0AAB6CE719827AAA009DCDD5 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AAB6CE619827AAA009DCDD5 /* CoreGraphics.framework */; };
+		0AAB6CE919827AAA009DCDD5 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AAB6CE819827AAA009DCDD5 /* UIKit.framework */; };
+		0AAB6CEF19827AAA009DCDD5 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 0AAB6CED19827AAA009DCDD5 /* InfoPlist.strings */; };
+		0AAB6CF119827AAA009DCDD5 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AAB6CF019827AAA009DCDD5 /* main.m */; };
+		0AAB6CFD19827AAA009DCDD5 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0AAB6CFC19827AAA009DCDD5 /* Images.xcassets */; };
+		0AAB6D0419827AAA009DCDD5 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AAB6D0319827AAA009DCDD5 /* XCTest.framework */; };
+		0AAB6D0519827AAA009DCDD5 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AAB6CE419827AAA009DCDD5 /* Foundation.framework */; };
+		0AAB6D0619827AAA009DCDD5 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AAB6CE819827AAA009DCDD5 /* UIKit.framework */; };
+		0AAB6D0E19827AAA009DCDD5 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 0AAB6D0C19827AAA009DCDD5 /* InfoPlist.strings */; };
+		0AAB6D4E19827ACD009DCDD5 /* UIControl+SELoginInputFieldsAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AAB6D1B19827ACD009DCDD5 /* UIControl+SELoginInputFieldsAdditions.m */; };
+		0AAB6D4F19827ACD009DCDD5 /* UIView+Framing.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AAB6D1D19827ACD009DCDD5 /* UIView+Framing.m */; };
+		0AAB6D5019827ACD009DCDD5 /* AccountsTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AAB6D2019827ACD009DCDD5 /* AccountsTVC.m */; };
+		0AAB6D5119827ACD009DCDD5 /* CreateLoginVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AAB6D2219827ACD009DCDD5 /* CreateLoginVC.m */; };
+		0AAB6D5219827ACD009DCDD5 /* CredentialsVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AAB6D2419827ACD009DCDD5 /* CredentialsVC.m */; };
+		0AAB6D5319827ACD009DCDD5 /* LoginsTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AAB6D2619827ACD009DCDD5 /* LoginsTVC.m */; };
+		0AAB6D5419827ACD009DCDD5 /* PickerTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AAB6D2819827ACD009DCDD5 /* PickerTVC.m */; };
+		0AAB6D5519827ACD009DCDD5 /* TransactionsTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AAB6D2A19827ACD009DCDD5 /* TransactionsTVC.m */; };
+		0AAB6D5619827ACD009DCDD5 /* OptionSelectButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AAB6D2D19827ACD009DCDD5 /* OptionSelectButton.m */; };
+		0AAB6D6119827ACD009DCDD5 /* Helpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AAB6D4D19827ACD009DCDD5 /* Helpers.m */; };
+		0AAB6D6319827AEA009DCDD5 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0AAB6D6219827AEA009DCDD5 /* Main.storyboard */; };
+		0AAB6D6619827AFB009DCDD5 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AAB6D6519827AFB009DCDD5 /* AppDelegate.m */; };
+		0AAB6D6B19827B0C009DCDD5 /* DateUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AAB6D6719827B0C009DCDD5 /* DateUtils.m */; };
+		0AAB6D6C19827B0C009DCDD5 /* NSString+SEModelsSerializingAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AAB6D6819827B0C009DCDD5 /* NSString+SEModelsSerializingAdditions.m */; };
+		0AAB6D6D19827B0C009DCDD5 /* SEBaseModelTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AAB6D6919827B0C009DCDD5 /* SEBaseModelTests.m */; };
+		0AAB6D6E19827B0C009DCDD5 /* SEProviderTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AAB6D6A19827B0C009DCDD5 /* SEProviderTests.m */; };
+		0AAB6D7019827D9B009DCDD5 /* SELoginTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AAB6D6F19827D9B009DCDD5 /* SELoginTests.m */; };
+		0AAB6D7219827E45009DCDD5 /* SEAccountTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AAB6D7119827E45009DCDD5 /* SEAccountTests.m */; };
+		0AAB6D7419827ECE009DCDD5 /* SETransactionTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AAB6D7319827ECE009DCDD5 /* SETransactionTests.m */; };
+		0AF898811986632F00F1A270 /* NSURL+SBCallbacksAdditionsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AF898801986632F00F1A270 /* NSURL+SBCallbacksAdditionsTests.m */; };
+		0AF898841986633E00F1A270 /* ConnectWebViewVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AF898831986633E00F1A270 /* ConnectWebViewVC.m */; };
+		0AF898901986740200F1A270 /* TabBarVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AF8988F1986740200F1A270 /* TabBarVC.m */; };
+		0AF898931986748C00F1A270 /* circle@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0AF898921986748C00F1A270 /* circle@2x.png */; };
+		0AF898B61986905100F1A270 /* SEAPIRequestManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AF898971986905100F1A270 /* SEAPIRequestManager.m */; };
+		0AF898B71986905100F1A270 /* NSString+SEModelsSerializingAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AF8989B1986905100F1A270 /* NSString+SEModelsSerializingAdditions.m */; };
+		0AF898B81986905100F1A270 /* SEAccount.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AF8989E1986905100F1A270 /* SEAccount.m */; };
+		0AF898B91986905100F1A270 /* SEBaseModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AF898A01986905100F1A270 /* SEBaseModel.m */; };
+		0AF898BA1986905100F1A270 /* SELogin.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AF898A21986905100F1A270 /* SELogin.m */; };
+		0AF898BB1986905100F1A270 /* SEProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AF898A41986905100F1A270 /* SEProvider.m */; };
+		0AF898BC1986905100F1A270 /* SEProviderField.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AF898A61986905100F1A270 /* SEProviderField.m */; };
+		0AF898BD1986905100F1A270 /* SEProviderFieldOption.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AF898A81986905100F1A270 /* SEProviderFieldOption.m */; };
+		0AF898BE1986905100F1A270 /* SETransaction.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AF898AA1986905100F1A270 /* SETransaction.m */; };
+		0AF898BF1986905100F1A270 /* NSURL+SBCallbacksAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AF898AE1986905100F1A270 /* NSURL+SBCallbacksAdditions.m */; };
+		0AF898C01986905100F1A270 /* SEWebView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AF898B01986905100F1A270 /* SEWebView.m */; };
+		0AF898C11986905100F1A270 /* DateUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AF898B51986905100F1A270 /* DateUtils.m */; };
+		B275BB778B184F04BB4FB069 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FA121862E2A4454C95F78533 /* libPods.a */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		0AAB6D0719827AAA009DCDD5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0AAB6CD919827AAA009DCDD5 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 0AAB6CE019827AAA009DCDD5;
+			remoteInfo = "Salt Edge API Demo";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		0AAB6CE119827AAA009DCDD5 /* Salt Edge API Demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Salt Edge API Demo.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		0AAB6CE419827AAA009DCDD5 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		0AAB6CE619827AAA009DCDD5 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		0AAB6CE819827AAA009DCDD5 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		0AAB6CEC19827AAA009DCDD5 /* Salt Edge API Demo-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Salt Edge API Demo-Info.plist"; sourceTree = "<group>"; };
+		0AAB6CEE19827AAA009DCDD5 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		0AAB6CF019827AAA009DCDD5 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		0AAB6CF219827AAA009DCDD5 /* Salt Edge API Demo-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Salt Edge API Demo-Prefix.pch"; sourceTree = "<group>"; };
+		0AAB6CFC19827AAA009DCDD5 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		0AAB6D0219827AAA009DCDD5 /* Salt Edge API DemoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Salt Edge API DemoTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		0AAB6D0319827AAA009DCDD5 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
+		0AAB6D0B19827AAA009DCDD5 /* Salt Edge API DemoTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Salt Edge API DemoTests-Info.plist"; sourceTree = "<group>"; };
+		0AAB6D0D19827AAA009DCDD5 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		0AAB6D1A19827ACD009DCDD5 /* UIControl+SELoginInputFieldsAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIControl+SELoginInputFieldsAdditions.h"; sourceTree = "<group>"; };
+		0AAB6D1B19827ACD009DCDD5 /* UIControl+SELoginInputFieldsAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIControl+SELoginInputFieldsAdditions.m"; sourceTree = "<group>"; };
+		0AAB6D1C19827ACD009DCDD5 /* UIView+Framing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Framing.h"; sourceTree = "<group>"; };
+		0AAB6D1D19827ACD009DCDD5 /* UIView+Framing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Framing.m"; sourceTree = "<group>"; };
+		0AAB6D1F19827ACD009DCDD5 /* AccountsTVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AccountsTVC.h; sourceTree = "<group>"; };
+		0AAB6D2019827ACD009DCDD5 /* AccountsTVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AccountsTVC.m; sourceTree = "<group>"; };
+		0AAB6D2119827ACD009DCDD5 /* CreateLoginVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CreateLoginVC.h; sourceTree = "<group>"; };
+		0AAB6D2219827ACD009DCDD5 /* CreateLoginVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CreateLoginVC.m; sourceTree = "<group>"; };
+		0AAB6D2319827ACD009DCDD5 /* CredentialsVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CredentialsVC.h; sourceTree = "<group>"; };
+		0AAB6D2419827ACD009DCDD5 /* CredentialsVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CredentialsVC.m; sourceTree = "<group>"; };
+		0AAB6D2519827ACD009DCDD5 /* LoginsTVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginsTVC.h; sourceTree = "<group>"; };
+		0AAB6D2619827ACD009DCDD5 /* LoginsTVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginsTVC.m; sourceTree = "<group>"; };
+		0AAB6D2719827ACD009DCDD5 /* PickerTVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PickerTVC.h; sourceTree = "<group>"; };
+		0AAB6D2819827ACD009DCDD5 /* PickerTVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PickerTVC.m; sourceTree = "<group>"; };
+		0AAB6D2919827ACD009DCDD5 /* TransactionsTVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransactionsTVC.h; sourceTree = "<group>"; };
+		0AAB6D2A19827ACD009DCDD5 /* TransactionsTVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransactionsTVC.m; sourceTree = "<group>"; };
+		0AAB6D2C19827ACD009DCDD5 /* OptionSelectButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OptionSelectButton.h; sourceTree = "<group>"; };
+		0AAB6D2D19827ACD009DCDD5 /* OptionSelectButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OptionSelectButton.m; sourceTree = "<group>"; };
+		0AAB6D2F19827ACD009DCDD5 /* PickerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PickerDelegate.h; sourceTree = "<group>"; };
+		0AAB6D4C19827ACD009DCDD5 /* Helpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Helpers.h; sourceTree = "<group>"; };
+		0AAB6D4D19827ACD009DCDD5 /* Helpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Helpers.m; sourceTree = "<group>"; };
+		0AAB6D6219827AEA009DCDD5 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
+		0AAB6D6419827AFB009DCDD5 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		0AAB6D6519827AFB009DCDD5 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		0AAB6D6719827B0C009DCDD5 /* DateUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DateUtils.m; sourceTree = "<group>"; };
+		0AAB6D6819827B0C009DCDD5 /* NSString+SEModelsSerializingAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+SEModelsSerializingAdditions.m"; sourceTree = "<group>"; };
+		0AAB6D6919827B0C009DCDD5 /* SEBaseModelTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SEBaseModelTests.m; sourceTree = "<group>"; };
+		0AAB6D6A19827B0C009DCDD5 /* SEProviderTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SEProviderTests.m; sourceTree = "<group>"; };
+		0AAB6D6F19827D9B009DCDD5 /* SELoginTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SELoginTests.m; sourceTree = "<group>"; };
+		0AAB6D7119827E45009DCDD5 /* SEAccountTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SEAccountTests.m; sourceTree = "<group>"; };
+		0AAB6D7319827ECE009DCDD5 /* SETransactionTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SETransactionTests.m; sourceTree = "<group>"; };
+		0AF898801986632F00F1A270 /* NSURL+SBCallbacksAdditionsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSURL+SBCallbacksAdditionsTests.m"; sourceTree = "<group>"; };
+		0AF898821986633E00F1A270 /* ConnectWebViewVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConnectWebViewVC.h; sourceTree = "<group>"; };
+		0AF898831986633E00F1A270 /* ConnectWebViewVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConnectWebViewVC.m; sourceTree = "<group>"; };
+		0AF8988E1986740200F1A270 /* TabBarVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TabBarVC.h; sourceTree = "<group>"; };
+		0AF8988F1986740200F1A270 /* TabBarVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TabBarVC.m; sourceTree = "<group>"; };
+		0AF898921986748C00F1A270 /* circle@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "circle@2x.png"; sourceTree = "<group>"; };
+		0AF898961986905100F1A270 /* SEAPIRequestManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SEAPIRequestManager.h; sourceTree = "<group>"; };
+		0AF898971986905100F1A270 /* SEAPIRequestManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SEAPIRequestManager.m; sourceTree = "<group>"; };
+		0AF898981986905100F1A270 /* SELoginCreationDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SELoginCreationDelegate.h; sourceTree = "<group>"; };
+		0AF8989A1986905100F1A270 /* NSString+SEModelsSerializingAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+SEModelsSerializingAdditions.h"; sourceTree = "<group>"; };
+		0AF8989B1986905100F1A270 /* NSString+SEModelsSerializingAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+SEModelsSerializingAdditions.m"; sourceTree = "<group>"; };
+		0AF8989D1986905100F1A270 /* SEAccount.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SEAccount.h; sourceTree = "<group>"; };
+		0AF8989E1986905100F1A270 /* SEAccount.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SEAccount.m; sourceTree = "<group>"; };
+		0AF8989F1986905100F1A270 /* SEBaseModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SEBaseModel.h; sourceTree = "<group>"; };
+		0AF898A01986905100F1A270 /* SEBaseModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SEBaseModel.m; sourceTree = "<group>"; };
+		0AF898A11986905100F1A270 /* SELogin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SELogin.h; sourceTree = "<group>"; };
+		0AF898A21986905100F1A270 /* SELogin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SELogin.m; sourceTree = "<group>"; };
+		0AF898A31986905100F1A270 /* SEProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SEProvider.h; sourceTree = "<group>"; };
+		0AF898A41986905100F1A270 /* SEProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SEProvider.m; sourceTree = "<group>"; };
+		0AF898A51986905100F1A270 /* SEProviderField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SEProviderField.h; sourceTree = "<group>"; };
+		0AF898A61986905100F1A270 /* SEProviderField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SEProviderField.m; sourceTree = "<group>"; };
+		0AF898A71986905100F1A270 /* SEProviderFieldOption.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SEProviderFieldOption.h; sourceTree = "<group>"; };
+		0AF898A81986905100F1A270 /* SEProviderFieldOption.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SEProviderFieldOption.m; sourceTree = "<group>"; };
+		0AF898A91986905100F1A270 /* SETransaction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SETransaction.h; sourceTree = "<group>"; };
+		0AF898AA1986905100F1A270 /* SETransaction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SETransaction.m; sourceTree = "<group>"; };
+		0AF898AD1986905100F1A270 /* NSURL+SBCallbacksAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSURL+SBCallbacksAdditions.h"; sourceTree = "<group>"; };
+		0AF898AE1986905100F1A270 /* NSURL+SBCallbacksAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSURL+SBCallbacksAdditions.m"; sourceTree = "<group>"; };
+		0AF898AF1986905100F1A270 /* SEWebView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SEWebView.h; sourceTree = "<group>"; };
+		0AF898B01986905100F1A270 /* SEWebView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SEWebView.m; sourceTree = "<group>"; };
+		0AF898B11986905100F1A270 /* SEWebViewDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SEWebViewDelegate.h; sourceTree = "<group>"; };
+		0AF898B31986905100F1A270 /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
+		0AF898B41986905100F1A270 /* DateUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DateUtils.h; sourceTree = "<group>"; };
+		0AF898B51986905100F1A270 /* DateUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DateUtils.m; sourceTree = "<group>"; };
+		BB33E063D75F472A97ADC1A5 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
+		FA121862E2A4454C95F78533 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		0AAB6CDE19827AAA009DCDD5 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0AAB6CE719827AAA009DCDD5 /* CoreGraphics.framework in Frameworks */,
+				0AAB6CE919827AAA009DCDD5 /* UIKit.framework in Frameworks */,
+				0AAB6CE519827AAA009DCDD5 /* Foundation.framework in Frameworks */,
+				B275BB778B184F04BB4FB069 /* libPods.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		0AAB6CFF19827AAA009DCDD5 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0AAB6D0419827AAA009DCDD5 /* XCTest.framework in Frameworks */,
+				0AAB6D0619827AAA009DCDD5 /* UIKit.framework in Frameworks */,
+				0AAB6D0519827AAA009DCDD5 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		0AAB6CD819827AAA009DCDD5 = {
+			isa = PBXGroup;
+			children = (
+				0AF898941986905100F1A270 /* Salt Edge API */,
+				0AAB6CEA19827AAA009DCDD5 /* Salt Edge API Demo */,
+				0AAB6D0919827AAA009DCDD5 /* Salt Edge API DemoTests */,
+				0AAB6CE319827AAA009DCDD5 /* Frameworks */,
+				0AAB6CE219827AAA009DCDD5 /* Products */,
+				BB33E063D75F472A97ADC1A5 /* Pods.xcconfig */,
+			);
+			sourceTree = "<group>";
+		};
+		0AAB6CE219827AAA009DCDD5 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				0AAB6CE119827AAA009DCDD5 /* Salt Edge API Demo.app */,
+				0AAB6D0219827AAA009DCDD5 /* Salt Edge API DemoTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		0AAB6CE319827AAA009DCDD5 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				0AAB6CE419827AAA009DCDD5 /* Foundation.framework */,
+				0AAB6CE619827AAA009DCDD5 /* CoreGraphics.framework */,
+				0AAB6CE819827AAA009DCDD5 /* UIKit.framework */,
+				0AAB6D0319827AAA009DCDD5 /* XCTest.framework */,
+				FA121862E2A4454C95F78533 /* libPods.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		0AAB6CEA19827AAA009DCDD5 /* Salt Edge API Demo */ = {
+			isa = PBXGroup;
+			children = (
+				0AF898911986748600F1A270 /* Assets */,
+				0AAB6D1919827ACD009DCDD5 /* Categories */,
+				0AAB6D1E19827ACD009DCDD5 /* Controllers */,
+				0AAB6D2B19827ACD009DCDD5 /* Controls */,
+				0AAB6D2E19827ACD009DCDD5 /* Protocols */,
+				0AAB6D4B19827ACD009DCDD5 /* Utils */,
+				0AAB6D6219827AEA009DCDD5 /* Main.storyboard */,
+				0AAB6CFC19827AAA009DCDD5 /* Images.xcassets */,
+				0AAB6CEB19827AAA009DCDD5 /* Supporting Files */,
+			);
+			path = "Salt Edge API Demo";
+			sourceTree = "<group>";
+		};
+		0AAB6CEB19827AAA009DCDD5 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				0AAB6D6419827AFB009DCDD5 /* AppDelegate.h */,
+				0AAB6D6519827AFB009DCDD5 /* AppDelegate.m */,
+				0AAB6CEC19827AAA009DCDD5 /* Salt Edge API Demo-Info.plist */,
+				0AAB6CED19827AAA009DCDD5 /* InfoPlist.strings */,
+				0AAB6CF019827AAA009DCDD5 /* main.m */,
+				0AAB6CF219827AAA009DCDD5 /* Salt Edge API Demo-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		0AAB6D0919827AAA009DCDD5 /* Salt Edge API DemoTests */ = {
+			isa = PBXGroup;
+			children = (
+				0AAB6D6719827B0C009DCDD5 /* DateUtils.m */,
+				0AF898801986632F00F1A270 /* NSURL+SBCallbacksAdditionsTests.m */,
+				0AAB6D6819827B0C009DCDD5 /* NSString+SEModelsSerializingAdditions.m */,
+				0AAB6D6919827B0C009DCDD5 /* SEBaseModelTests.m */,
+				0AAB6D6A19827B0C009DCDD5 /* SEProviderTests.m */,
+				0AAB6D6F19827D9B009DCDD5 /* SELoginTests.m */,
+				0AAB6D7119827E45009DCDD5 /* SEAccountTests.m */,
+				0AAB6D7319827ECE009DCDD5 /* SETransactionTests.m */,
+				0AAB6D0A19827AAA009DCDD5 /* Supporting Files */,
+			);
+			path = "Salt Edge API DemoTests";
+			sourceTree = "<group>";
+		};
+		0AAB6D0A19827AAA009DCDD5 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				0AAB6D0B19827AAA009DCDD5 /* Salt Edge API DemoTests-Info.plist */,
+				0AAB6D0C19827AAA009DCDD5 /* InfoPlist.strings */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		0AAB6D1919827ACD009DCDD5 /* Categories */ = {
+			isa = PBXGroup;
+			children = (
+				0AAB6D1A19827ACD009DCDD5 /* UIControl+SELoginInputFieldsAdditions.h */,
+				0AAB6D1B19827ACD009DCDD5 /* UIControl+SELoginInputFieldsAdditions.m */,
+				0AAB6D1C19827ACD009DCDD5 /* UIView+Framing.h */,
+				0AAB6D1D19827ACD009DCDD5 /* UIView+Framing.m */,
+			);
+			path = Categories;
+			sourceTree = "<group>";
+		};
+		0AAB6D1E19827ACD009DCDD5 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				0AAB6D1F19827ACD009DCDD5 /* AccountsTVC.h */,
+				0AAB6D2019827ACD009DCDD5 /* AccountsTVC.m */,
+				0AAB6D2119827ACD009DCDD5 /* CreateLoginVC.h */,
+				0AAB6D2219827ACD009DCDD5 /* CreateLoginVC.m */,
+				0AF898821986633E00F1A270 /* ConnectWebViewVC.h */,
+				0AF898831986633E00F1A270 /* ConnectWebViewVC.m */,
+				0AAB6D2319827ACD009DCDD5 /* CredentialsVC.h */,
+				0AAB6D2419827ACD009DCDD5 /* CredentialsVC.m */,
+				0AAB6D2519827ACD009DCDD5 /* LoginsTVC.h */,
+				0AAB6D2619827ACD009DCDD5 /* LoginsTVC.m */,
+				0AAB6D2719827ACD009DCDD5 /* PickerTVC.h */,
+				0AAB6D2819827ACD009DCDD5 /* PickerTVC.m */,
+				0AF8988E1986740200F1A270 /* TabBarVC.h */,
+				0AF8988F1986740200F1A270 /* TabBarVC.m */,
+				0AAB6D2919827ACD009DCDD5 /* TransactionsTVC.h */,
+				0AAB6D2A19827ACD009DCDD5 /* TransactionsTVC.m */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		0AAB6D2B19827ACD009DCDD5 /* Controls */ = {
+			isa = PBXGroup;
+			children = (
+				0AAB6D2C19827ACD009DCDD5 /* OptionSelectButton.h */,
+				0AAB6D2D19827ACD009DCDD5 /* OptionSelectButton.m */,
+			);
+			path = Controls;
+			sourceTree = "<group>";
+		};
+		0AAB6D2E19827ACD009DCDD5 /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				0AAB6D2F19827ACD009DCDD5 /* PickerDelegate.h */,
+			);
+			path = Protocols;
+			sourceTree = "<group>";
+		};
+		0AAB6D4B19827ACD009DCDD5 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				0AAB6D4C19827ACD009DCDD5 /* Helpers.h */,
+				0AAB6D4D19827ACD009DCDD5 /* Helpers.m */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
+		0AF898911986748600F1A270 /* Assets */ = {
+			isa = PBXGroup;
+			children = (
+				0AF898921986748C00F1A270 /* circle@2x.png */,
+			);
+			path = Assets;
+			sourceTree = "<group>";
+		};
+		0AF898941986905100F1A270 /* Salt Edge API */ = {
+			isa = PBXGroup;
+			children = (
+				0AF898951986905100F1A270 /* API */,
+				0AF898991986905100F1A270 /* Categories */,
+				0AF8989C1986905100F1A270 /* Models */,
+				0AF898AB1986905100F1A270 /* SBWebView */,
+				0AF898B21986905100F1A270 /* Utils */,
+			);
+			path = "Salt Edge API";
+			sourceTree = "<group>";
+		};
+		0AF898951986905100F1A270 /* API */ = {
+			isa = PBXGroup;
+			children = (
+				0AF898961986905100F1A270 /* SEAPIRequestManager.h */,
+				0AF898971986905100F1A270 /* SEAPIRequestManager.m */,
+				0AF898981986905100F1A270 /* SELoginCreationDelegate.h */,
+			);
+			path = API;
+			sourceTree = "<group>";
+		};
+		0AF898991986905100F1A270 /* Categories */ = {
+			isa = PBXGroup;
+			children = (
+				0AF8989A1986905100F1A270 /* NSString+SEModelsSerializingAdditions.h */,
+				0AF8989B1986905100F1A270 /* NSString+SEModelsSerializingAdditions.m */,
+			);
+			path = Categories;
+			sourceTree = "<group>";
+		};
+		0AF8989C1986905100F1A270 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				0AF8989D1986905100F1A270 /* SEAccount.h */,
+				0AF8989E1986905100F1A270 /* SEAccount.m */,
+				0AF8989F1986905100F1A270 /* SEBaseModel.h */,
+				0AF898A01986905100F1A270 /* SEBaseModel.m */,
+				0AF898A11986905100F1A270 /* SELogin.h */,
+				0AF898A21986905100F1A270 /* SELogin.m */,
+				0AF898A31986905100F1A270 /* SEProvider.h */,
+				0AF898A41986905100F1A270 /* SEProvider.m */,
+				0AF898A51986905100F1A270 /* SEProviderField.h */,
+				0AF898A61986905100F1A270 /* SEProviderField.m */,
+				0AF898A71986905100F1A270 /* SEProviderFieldOption.h */,
+				0AF898A81986905100F1A270 /* SEProviderFieldOption.m */,
+				0AF898A91986905100F1A270 /* SETransaction.h */,
+				0AF898AA1986905100F1A270 /* SETransaction.m */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		0AF898AB1986905100F1A270 /* SBWebView */ = {
+			isa = PBXGroup;
+			children = (
+				0AF898AC1986905100F1A270 /* NSURL+SBCallbacksAdditions */,
+				0AF898AF1986905100F1A270 /* SEWebView.h */,
+				0AF898B01986905100F1A270 /* SEWebView.m */,
+				0AF898B11986905100F1A270 /* SEWebViewDelegate.h */,
+			);
+			path = SBWebView;
+			sourceTree = "<group>";
+		};
+		0AF898AC1986905100F1A270 /* NSURL+SBCallbacksAdditions */ = {
+			isa = PBXGroup;
+			children = (
+				0AF898AD1986905100F1A270 /* NSURL+SBCallbacksAdditions.h */,
+				0AF898AE1986905100F1A270 /* NSURL+SBCallbacksAdditions.m */,
+			);
+			path = "NSURL+SBCallbacksAdditions";
+			sourceTree = "<group>";
+		};
+		0AF898B21986905100F1A270 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				0AF898B31986905100F1A270 /* Constants.h */,
+				0AF898B41986905100F1A270 /* DateUtils.h */,
+				0AF898B51986905100F1A270 /* DateUtils.m */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		0AAB6CE019827AAA009DCDD5 /* Salt Edge API Demo */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 0AAB6D1319827AAB009DCDD5 /* Build configuration list for PBXNativeTarget "Salt Edge API Demo" */;
+			buildPhases = (
+				4A0A744088A14DD0B0105B17 /* Check Pods Manifest.lock */,
+				0AAB6CDD19827AAA009DCDD5 /* Sources */,
+				0AAB6CDE19827AAA009DCDD5 /* Frameworks */,
+				0AAB6CDF19827AAA009DCDD5 /* Resources */,
+				B8C0E2A55FBA411BBC9D1257 /* Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Salt Edge API Demo";
+			productName = "Salt Edge API Demo";
+			productReference = 0AAB6CE119827AAA009DCDD5 /* Salt Edge API Demo.app */;
+			productType = "com.apple.product-type.application";
+		};
+		0AAB6D0119827AAA009DCDD5 /* Salt Edge API DemoTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 0AAB6D1619827AAB009DCDD5 /* Build configuration list for PBXNativeTarget "Salt Edge API DemoTests" */;
+			buildPhases = (
+				0AAB6CFE19827AAA009DCDD5 /* Sources */,
+				0AAB6CFF19827AAA009DCDD5 /* Frameworks */,
+				0AAB6D0019827AAA009DCDD5 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				0AAB6D0819827AAA009DCDD5 /* PBXTargetDependency */,
+			);
+			name = "Salt Edge API DemoTests";
+			productName = "Salt Edge API DemoTests";
+			productReference = 0AAB6D0219827AAA009DCDD5 /* Salt Edge API DemoTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		0AAB6CD919827AAA009DCDD5 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0510;
+				ORGANIZATIONNAME = "Salt Edge";
+				TargetAttributes = {
+					0AAB6D0119827AAA009DCDD5 = {
+						TestTargetID = 0AAB6CE019827AAA009DCDD5;
+					};
+				};
+			};
+			buildConfigurationList = 0AAB6CDC19827AAA009DCDD5 /* Build configuration list for PBXProject "Salt Edge API Demo" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 0AAB6CD819827AAA009DCDD5;
+			productRefGroup = 0AAB6CE219827AAA009DCDD5 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				0AAB6CE019827AAA009DCDD5 /* Salt Edge API Demo */,
+				0AAB6D0119827AAA009DCDD5 /* Salt Edge API DemoTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		0AAB6CDF19827AAA009DCDD5 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0AF898931986748C00F1A270 /* circle@2x.png in Resources */,
+				0AAB6D6319827AEA009DCDD5 /* Main.storyboard in Resources */,
+				0AAB6CFD19827AAA009DCDD5 /* Images.xcassets in Resources */,
+				0AAB6CEF19827AAA009DCDD5 /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		0AAB6D0019827AAA009DCDD5 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0AAB6D0E19827AAA009DCDD5 /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		4A0A744088A14DD0B0105B17 /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		B8C0E2A55FBA411BBC9D1257 /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Pods-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		0AAB6CDD19827AAA009DCDD5 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0AF898BE1986905100F1A270 /* SETransaction.m in Sources */,
+				0AAB6D6619827AFB009DCDD5 /* AppDelegate.m in Sources */,
+				0AF898B71986905100F1A270 /* NSString+SEModelsSerializingAdditions.m in Sources */,
+				0AF898BB1986905100F1A270 /* SEProvider.m in Sources */,
+				0AAB6D5219827ACD009DCDD5 /* CredentialsVC.m in Sources */,
+				0AAB6D4F19827ACD009DCDD5 /* UIView+Framing.m in Sources */,
+				0AAB6D5519827ACD009DCDD5 /* TransactionsTVC.m in Sources */,
+				0AAB6CF119827AAA009DCDD5 /* main.m in Sources */,
+				0AAB6D5619827ACD009DCDD5 /* OptionSelectButton.m in Sources */,
+				0AAB6D5419827ACD009DCDD5 /* PickerTVC.m in Sources */,
+				0AF898901986740200F1A270 /* TabBarVC.m in Sources */,
+				0AF898BC1986905100F1A270 /* SEProviderField.m in Sources */,
+				0AF898C01986905100F1A270 /* SEWebView.m in Sources */,
+				0AAB6D4E19827ACD009DCDD5 /* UIControl+SELoginInputFieldsAdditions.m in Sources */,
+				0AAB6D5019827ACD009DCDD5 /* AccountsTVC.m in Sources */,
+				0AF898B61986905100F1A270 /* SEAPIRequestManager.m in Sources */,
+				0AF898BD1986905100F1A270 /* SEProviderFieldOption.m in Sources */,
+				0AF898BA1986905100F1A270 /* SELogin.m in Sources */,
+				0AF898B91986905100F1A270 /* SEBaseModel.m in Sources */,
+				0AF898C11986905100F1A270 /* DateUtils.m in Sources */,
+				0AF898BF1986905100F1A270 /* NSURL+SBCallbacksAdditions.m in Sources */,
+				0AAB6D5319827ACD009DCDD5 /* LoginsTVC.m in Sources */,
+				0AAB6D5119827ACD009DCDD5 /* CreateLoginVC.m in Sources */,
+				0AAB6D6119827ACD009DCDD5 /* Helpers.m in Sources */,
+				0AF898B81986905100F1A270 /* SEAccount.m in Sources */,
+				0AF898841986633E00F1A270 /* ConnectWebViewVC.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		0AAB6CFE19827AAA009DCDD5 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0AAB6D7419827ECE009DCDD5 /* SETransactionTests.m in Sources */,
+				0AAB6D7019827D9B009DCDD5 /* SELoginTests.m in Sources */,
+				0AAB6D6D19827B0C009DCDD5 /* SEBaseModelTests.m in Sources */,
+				0AAB6D6E19827B0C009DCDD5 /* SEProviderTests.m in Sources */,
+				0AAB6D7219827E45009DCDD5 /* SEAccountTests.m in Sources */,
+				0AAB6D6B19827B0C009DCDD5 /* DateUtils.m in Sources */,
+				0AF898811986632F00F1A270 /* NSURL+SBCallbacksAdditionsTests.m in Sources */,
+				0AAB6D6C19827B0C009DCDD5 /* NSString+SEModelsSerializingAdditions.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		0AAB6D0819827AAA009DCDD5 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 0AAB6CE019827AAA009DCDD5 /* Salt Edge API Demo */;
+			targetProxy = 0AAB6D0719827AAA009DCDD5 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		0AAB6CED19827AAA009DCDD5 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				0AAB6CEE19827AAA009DCDD5 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		0AAB6D0C19827AAA009DCDD5 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				0AAB6D0D19827AAA009DCDD5 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		0AAB6D1119827AAB009DCDD5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		0AAB6D1219827AAB009DCDD5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		0AAB6D1419827AAB009DCDD5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = BB33E063D75F472A97ADC1A5 /* Pods.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Salt Edge API Demo/Salt Edge API Demo-Prefix.pch";
+				INFOPLIST_FILE = "Salt Edge API Demo/Salt Edge API Demo-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		0AAB6D1519827AAB009DCDD5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = BB33E063D75F472A97ADC1A5 /* Pods.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Salt Edge API Demo/Salt Edge API Demo-Prefix.pch";
+				INFOPLIST_FILE = "Salt Edge API Demo/Salt Edge API Demo-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+		0AAB6D1719827AAB009DCDD5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Salt Edge API Demo.app/Salt Edge API Demo";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Salt Edge API Demo/Salt Edge API Demo-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = "Salt Edge API DemoTests/Salt Edge API DemoTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Debug;
+		};
+		0AAB6D1819827AAB009DCDD5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Salt Edge API Demo.app/Salt Edge API Demo";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Salt Edge API Demo/Salt Edge API Demo-Prefix.pch";
+				INFOPLIST_FILE = "Salt Edge API DemoTests/Salt Edge API DemoTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		0AAB6CDC19827AAA009DCDD5 /* Build configuration list for PBXProject "Salt Edge API Demo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0AAB6D1119827AAB009DCDD5 /* Debug */,
+				0AAB6D1219827AAB009DCDD5 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		0AAB6D1319827AAB009DCDD5 /* Build configuration list for PBXNativeTarget "Salt Edge API Demo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0AAB6D1419827AAB009DCDD5 /* Debug */,
+				0AAB6D1519827AAB009DCDD5 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		0AAB6D1619827AAB009DCDD5 /* Build configuration list for PBXNativeTarget "Salt Edge API DemoTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0AAB6D1719827AAB009DCDD5 /* Debug */,
+				0AAB6D1819827AAB009DCDD5 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 0AAB6CD919827AAA009DCDD5 /* Project object */;
+}
