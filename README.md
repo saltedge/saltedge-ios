@@ -11,8 +11,8 @@ iOS 7+, ARC.
 
 Add the pod to your `Podfile`
 
-```
-// ... snip ...
+```ruby
+# ... snip ...
 
 pod 'SaltEdge-iOS'
 ```
@@ -107,11 +107,11 @@ Import the manager class and link your app id and app secret in the first place 
 ```objc
 #import "SEAPIRequestManager.h"
 
-// snip...
+// ... snip ...
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     [SEAPIRequestManager linkAppId:kAppId appSecret:kAppSecret];
-    // snip...
+    // ... snip ...
 }
 ```
 
