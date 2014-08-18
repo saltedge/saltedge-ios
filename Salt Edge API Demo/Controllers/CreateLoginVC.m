@@ -23,6 +23,7 @@
 #import "SEProviderField.h"
 #import "SELogin.h"
 #import "SELoginCreationDelegate.h"
+#import "AppDelegate.h"
 
 #pragma GCC diagnostic ignored "-Wundeclared-selector"
 
@@ -32,10 +33,9 @@ static CGFloat viewYOrigin    = 0.0;
 
 typedef void (^CompletionBlock)(void);
 
-@interface CreateLoginVC () <UITextFieldDelegate, PickerDelegate, SELoginCreationDelegate>
+@interface CreateLoginVC () <PickerDelegate, SELoginCreationDelegate>
 
 @property (nonatomic, strong) NSSet* providers;
-@property (nonatomic, strong) UITextField* customerEmailTextField;
 @property (nonatomic, strong) UILabel* instructionsLabel;
 @property (nonatomic, strong) NSMutableDictionary* inputControlsMappings;
 @property (nonatomic, strong) NSMutableArray* inputControlsOrder;
@@ -56,7 +56,6 @@ typedef void (^CompletionBlock)(void);
 {
     [super viewDidLoad];
     [self setup];
-    [self setupCustomerEmailTextField];
     [SVProgressHUD showWithStatus:@"Loading..."];
     [self requestProvidersListWithCompletionBlock:^{
         [SVProgressHUD dismiss];
@@ -77,22 +76,8 @@ typedef void (^CompletionBlock)(void);
 
 - (void)setup
 {
-    self.title = @"Create";
+    self.title = @"API Create";
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
-}
-
-- (void)setupCustomerEmailTextField
-{
-    self.customerEmailTextField = [[UITextField alloc] initWithFrame:CGRectMake(10, 10, 300, 35)];
-    self.customerEmailTextField.borderStyle = UITextBorderStyleRoundedRect;
-    self.customerEmailTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
-    self.customerEmailTextField.returnKeyType = UIReturnKeyNext;
-    self.customerEmailTextField.placeholder = @"Customer E-mail";
-    self.customerEmailTextField.delegate = self;
-    [self.inputControlsOrder addObject:self.customerEmailTextField];
-    self.customerEmailTextField.autocorrectionType = UITextAutocorrectionTypeNo;
-    self.customerEmailTextField.keyboardType = UIKeyboardTypeEmailAddress;
-    [self.view addSubview:self.customerEmailTextField];
 }
 
 - (void)setupInputViews
@@ -107,7 +92,7 @@ typedef void (^CompletionBlock)(void);
 
 - (void)setupProviderInstructionWithText:(NSString*)instruction
 {
-    self.instructionsLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0, self.customerEmailTextField.bottomEdge + 10.0f, 0.0, 0.0)];
+    self.instructionsLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0, 10.0f, 0.0, 0.0)];
     self.instructionsLabel.textAlignment = NSTextAlignmentCenter;
     self.instructionsLabel.numberOfLines = 0;
     self.instructionsLabel.lineBreakMode = NSLineBreakByWordWrapping;
@@ -243,7 +228,6 @@ typedef void (^CompletionBlock)(void);
         [self.view removeGestureRecognizer:recognizer];
     }
 
-    [self setupCustomerEmailTextField];
     [self setupChooseAnotherProviderButton];
     [self.view addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(endEditing)]];
 
@@ -275,7 +259,7 @@ typedef void (^CompletionBlock)(void);
         }
     }];
 
-    NSDictionary *parameters = @{ @"customer_email" : self.customerEmailTextField.text,
+    NSDictionary *parameters = @{ @"customer_email" : CUSTOMER_EMAIL,
                                   @"country_code" : self.selectedProvider.countryCode,
                                   @"provider_code" : self.selectedProvider.code,
                                   @"credentials" : credentialsDictionary
