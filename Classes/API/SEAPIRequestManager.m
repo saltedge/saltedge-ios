@@ -66,10 +66,7 @@ static NSURLSessionConfiguration* sessionConfiguration;
 
 + (instancetype)manager
 {
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        NSAssert(sessionConfiguration != nil, @"Session configuration not set. Did you forget to link your app id and app/customer secret?");
-    });
+    NSAssert(sessionConfiguration != nil, @"Session configuration not set. Did you forget to link your app id and app/customer secret?");
 
     SEAPIRequestManager* manager = [[[self class] alloc] initWithBaseURL:[NSURL URLWithString:kRootURL] sessionConfiguration:sessionConfiguration];
     manager.securityPolicy.allowInvalidCertificates = YES;

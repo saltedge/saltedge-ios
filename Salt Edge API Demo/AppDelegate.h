@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+#define CUSTOMER_EMAIL @"customers.email@example.com"
+
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;

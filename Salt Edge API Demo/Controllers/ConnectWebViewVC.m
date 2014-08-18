@@ -7,6 +7,7 @@
 //
 
 #import "ConnectWebViewVC.h"
+#import "AppDelegate.h"
 #import "SEWebView.h"
 #import "SEWebViewDelegate.h"
 #import "SEAPIRequestManager.h"
@@ -21,7 +22,6 @@ static NSString* const kConnectURLKey    = @"connect_url";
 
 @interface ConnectWebViewVC () <SEWebViewDelegate, UITextFieldDelegate>
 
-@property (nonatomic, strong) UITextField* customerEmailTextField;
 @property (nonatomic, strong) UIButton* connectButton;
 @property (nonatomic, strong) UITapGestureRecognizer* tapRecognizer;
 @property (nonatomic, strong) SEWebView* connectWebView;
@@ -39,7 +39,6 @@ static NSString* const kConnectURLKey    = @"connect_url";
 {
     [super viewDidLoad];
     self.title = @"Connect";
-    [self setupEmailTextField];
     [self setupConnectButton];
 }
 
@@ -51,28 +50,12 @@ static NSString* const kConnectURLKey    = @"connect_url";
 
 #pragma mark - Setup methods
 
-- (void)setupEmailTextField
-{
-    self.customerEmailTextField = [[UITextField alloc] initWithFrame:CGRectMake(kControlsPositionOffset, kControlsPositionOffset, self.view.width - 2 * kControlsPositionOffset, 35.0)];
-    self.customerEmailTextField.borderStyle = UITextBorderStyleRoundedRect;
-    self.customerEmailTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
-    self.customerEmailTextField.returnKeyType = UIReturnKeyNext;
-    self.customerEmailTextField.placeholder = @"Customer E-mail";
-    self.customerEmailTextField.delegate = self;
-    self.customerEmailTextField.autocorrectionType = UITextAutocorrectionTypeNo;
-    self.customerEmailTextField.keyboardType = UIKeyboardTypeEmailAddress;
-    [self.view addSubview:self.customerEmailTextField];
-
-    self.tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissKeyboard)];
-    [self.view addGestureRecognizer:self.tapRecognizer];
-}
-
 - (void)setupConnectButton
 {
     self.connectButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [self.connectButton setTitle:@"Connect" forState:UIControlStateNormal];
     [self.connectButton sizeToFit];
-    self.connectButton.center = CGPointMake(self.view.frame.size.width / 2, self.customerEmailTextField.center.y + 5 * kControlsPositionOffset);
+    self.connectButton.center = CGPointMake(self.view.frame.size.width / 2, 5 * kControlsPositionOffset);
     [self.connectButton addTarget:self action:@selector(connectPressed) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:self.connectButton];
 }
@@ -89,8 +72,6 @@ static NSString* const kConnectURLKey    = @"connect_url";
 
 - (void)connectPressed
 {
-    if (self.customerEmailTextField.text.length == 0) { return ; }
-    if (self.customerEmailTextField.isFirstResponder) { [self dismissKeyboard]; }
     [self showActivityIndicator];
     [self requestToken];
 }
@@ -101,7 +82,7 @@ static NSString* const kConnectURLKey    = @"connect_url";
 {
     SEAPIRequestManager* manager = [SEAPIRequestManager manager];
 
-    [manager requestConnectTokenWithParameters:@{ kCustomerEmailKey : self.customerEmailTextField.text } success:^(NSURLSessionDataTask* task, NSDictionary* tokenDictionary) {
+    [manager requestConnectTokenWithParameters:@{ kCustomerEmailKey : CUSTOMER_EMAIL } success:^(NSURLSessionDataTask* task, NSDictionary* tokenDictionary) {
         NSString* connectURL = tokenDictionary[kConnectURLKey];
         if (connectURL) {
             [self setupConnectWebView];
@@ -118,8 +99,6 @@ static NSString* const kConnectURLKey    = @"connect_url";
 
 - (void)loadConnectPageWithURLString:(NSString*)connectURLString
 {
-    [self.customerEmailTextField removeFromSuperview];
-    self.customerEmailTextField = nil;
     [self.connectButton removeFromSuperview];
     self.connectButton = nil;
     [self.view removeGestureRecognizer:self.tapRecognizer];
@@ -137,7 +116,6 @@ static NSString* const kConnectURLKey    = @"connect_url";
 
 - (void)showActivityIndicator
 {
-    self.customerEmailTextField.userInteractionEnabled = NO;
     self.connectButton.userInteractionEnabled = NO;
     self.activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
     [self.activityIndicator setColor:[UIColor grayColor]];
@@ -148,29 +126,15 @@ static NSString* const kConnectURLKey    = @"connect_url";
 
 - (void)hideActivityIndicator
 {
-    self.customerEmailTextField.userInteractionEnabled = YES;
     self.connectButton.userInteractionEnabled = YES;
     [self.activityIndicator stopAnimating];
     [self.activityIndicator removeFromSuperview];
     self.activityIndicator = nil;
 }
 
-- (void)dismissKeyboard
-{
-    [self.customerEmailTextField resignFirstResponder];
-}
-
 - (void)switchToLoginsViewController
 {
     [self.tabBarController setSelectedIndex:2];
-}
-
-#pragma mark - UITextField Delegate
-
-- (BOOL)textFieldShouldReturn:(UITextField *)textField
-{
-    [self dismissKeyboard];
-    return YES;
 }
 
 #pragma mark - SEWebView Delegate
