@@ -160,7 +160,7 @@ First, make sure that the command `$ gem install sinatra rest-client` succeeds. 
 
 To run the demo app contained in here, you have to provide the demo with your app's ID and secret.
 First, set up the `kAppId` constant to your app ID in [AppDelegate.m:17](https://github.com/saltedge/saltedge-ios/blob/master/Salt%20Edge%20API%20Demo/AppDelegate.m#L17).
-Afterwards, you will have to provide the app credentials in the server file that will be requesting [customer secret tokens](https://docs.saltedge.com/guides/authentication/#app_id_and_customer_secret). The server file (`token_server.rb`) is contained in the `Salt Edge API Demo` folder, and is under `Salt Edge API Demo`'s `Supporting Files` folder when navigating the file hierarchy in Xcode.
+Afterwards, you will have to provide the app credentials [in the server file](https://github.com/saltedge/saltedge-ios/blob/master/Salt%20Edge%20API%20Demo/token_server.rb#L5-L6) that will be requesting [customer secret tokens](https://docs.saltedge.com/guides/authentication/#app_id_and_customer_secret). The server file (`token_server.rb`) is contained in the `Salt Edge API Demo` folder, and is under `Salt Edge API Demo`'s `Supporting Files` folder when navigating the file hierarchy in Xcode.
 
 ## License
 
