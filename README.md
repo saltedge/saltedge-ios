@@ -9,7 +9,15 @@ iOS 7+, ARC.
 ## Installation
 ### CocoaPods
 
-TBD.
+Add the pod to your `Podfile`:
+
+```
+// ... snip ...
+
+pod 'SaltEdge-iOS'
+```
+
+Run `pod install`.
 
 ### Source
 
