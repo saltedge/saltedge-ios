@@ -25,7 +25,7 @@
 #define _SaltEdge_API_Demo_Constants_h
 
 /* Routes */
-static NSString* const kRootURL           = @"https://saltedge.com";
+static NSString* const kRootURL           = @"https://www.saltedge.com";
 static NSString* const kTokensPath        = @"api/v1/tokens";
 static NSString* const kLoginsPath        = @"api/v1/logins";
 static NSString* const kAccountsPath      = @"api/v1/accounts";

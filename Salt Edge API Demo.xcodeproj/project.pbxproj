@@ -19,6 +19,7 @@
 		0A3F870819A1F05E00B7E5E2 /* NSURL+SBCallbacksAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A3F86F719A1F05E00B7E5E2 /* NSURL+SBCallbacksAdditions.m */; };
 		0A3F870919A1F05E00B7E5E2 /* SEWebView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A3F86F919A1F05E00B7E5E2 /* SEWebView.m */; };
 		0A3F870A19A1F05E00B7E5E2 /* DateUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A3F86FE19A1F05E00B7E5E2 /* DateUtils.m */; };
+		0A3F874D19A224A800B7E5E2 /* token_server.rb in Resources */ = {isa = PBXBuildFile; fileRef = 0A3F874C19A224A800B7E5E2 /* token_server.rb */; };
 		0AAB6CE519827AAA009DCDD5 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AAB6CE419827AAA009DCDD5 /* Foundation.framework */; };
 		0AAB6CE719827AAA009DCDD5 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AAB6CE619827AAA009DCDD5 /* CoreGraphics.framework */; };
 		0AAB6CE919827AAA009DCDD5 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AAB6CE819827AAA009DCDD5 /* UIKit.framework */; };
@@ -93,6 +94,7 @@
 		0A3F86FC19A1F05E00B7E5E2 /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
 		0A3F86FD19A1F05E00B7E5E2 /* DateUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DateUtils.h; sourceTree = "<group>"; };
 		0A3F86FE19A1F05E00B7E5E2 /* DateUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DateUtils.m; sourceTree = "<group>"; };
+		0A3F874C19A224A800B7E5E2 /* token_server.rb */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.ruby; path = token_server.rb; sourceTree = "<group>"; };
 		0AAB6CE119827AAA009DCDD5 /* Salt Edge API Demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Salt Edge API Demo.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0AAB6CE419827AAA009DCDD5 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		0AAB6CE619827AAA009DCDD5 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -306,6 +308,7 @@
 		0AAB6CEB19827AAA009DCDD5 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				0A3F874C19A224A800B7E5E2 /* token_server.rb */,
 				0AAB6D6419827AFB009DCDD5 /* AppDelegate.h */,
 				0AAB6D6519827AFB009DCDD5 /* AppDelegate.m */,
 				0AAB6CEC19827AAA009DCDD5 /* Salt Edge API Demo-Info.plist */,
@@ -487,6 +490,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0A3F874D19A224A800B7E5E2 /* token_server.rb in Resources */,
 				0AF898931986748C00F1A270 /* circle@2x.png in Resources */,
 				0AAB6D6319827AEA009DCDD5 /* Main.storyboard in Resources */,
 				0AAB6CFD19827AAA009DCDD5 /* Images.xcassets in Resources */,

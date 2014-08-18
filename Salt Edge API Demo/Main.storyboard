@@ -147,6 +147,21 @@
             </objects>
             <point key="canvasLocation" x="3311" y="-67"/>
         </scene>
+        <!--View Controller-->
+        <scene sceneID="v3r-H6-CLw">
+            <objects>
+                <viewController storyboardIdentifier="EmptyVC" useStoryboardIdentifierAsRestorationIdentifier="YES" id="2Gh-h5-RUD" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="dfO-Ea-KFo">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="2zG-eN-BPj" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2905" y="-709"/>
+        </scene>
         <!--CredentialsVC-->
         <scene sceneID="4Aa-LJ-5Nn">
             <objects>

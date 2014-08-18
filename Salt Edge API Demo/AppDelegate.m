@@ -14,7 +14,7 @@
 
 #pragma GCC diagnostic ignored "-Wundeclared-selector"
 
-static NSString* const kAppId = nil;
+static NSString* const kAppId = @"example-app-id";
 
 @implementation AppDelegate
 
@@ -25,14 +25,17 @@ static NSString* const kAppId = nil;
     [hud setHudForegroundColor:[UIColor whiteColor]];
 
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-    [manager POST:@"http://your-server.com/customers" parameters:@{ @"email": @"customers.email@example.com" } success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [manager POST:@"http://localhost:4567/customers" parameters:@{ @"email": CUSTOMER_EMAIL } success:^(AFHTTPRequestOperation *operation, id responseObject) {
         [SEAPIRequestManager linkAppId:kAppId customerSecret:responseObject[@"data"][@"secret"]];
+        self.window.rootViewController = [[TabBarVC alloc] init];
+        [self.window makeKeyAndVisible];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        [SVProgressHUD showErrorWithStatus:error.localizedDescription];
+        [SVProgressHUD showErrorWithStatus:[NSString stringWithFormat:@"%@\n Make sure you've set your app ID and app secret in the server script and launched it.", error.localizedDescription]];
     }];
 
-    self.window.rootViewController = [[TabBarVC alloc] init];
+    self.window.rootViewController = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"EmptyVC"];
     [self.window makeKeyAndVisible];
+
     return YES;
 }
 							
