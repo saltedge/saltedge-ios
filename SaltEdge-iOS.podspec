@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = "SaltEdge-iOS"
-  s.version      = "1.0.0"
+  s.version      = "1.0.1"
   s.summary      = "A handful of classes to help you interact with the Salt Edge API from your iOS app."
 
   s.description  = <<-DESC
@@ -10,7 +10,7 @@ Pod::Spec.new do |s|
 
   s.homepage     = "https://github.com/saltedge/saltedge-ios"
   s.license      = { :type => "MIT", :file => "LICENSE" }
-  s.source       = { :git => "https://github.com/saltedge/saltedge-ios.git", :tag => "v1.0.0" }
+  s.source       = { :git => "https://github.com/saltedge/saltedge-ios.git", :tag => "v1.0.1" }
   s.source_files = 'Classes/**/**.{h,m}'
   s.requires_arc = true
   s.author       = "SaltEdge"

@@ -20,7 +20,7 @@ static NSString* const kCustomerEmailKey = @"customer_email";
 static NSString* const kDataKey          = @"data";
 static NSString* const kConnectURLKey    = @"connect_url";
 
-@interface ConnectWebViewVC () <SEWebViewDelegate, UITextFieldDelegate>
+@interface ConnectWebViewVC () <SEWebViewDelegate>
 
 @property (nonatomic, strong) UIButton* connectButton;
 @property (nonatomic, strong) UITapGestureRecognizer* tapRecognizer;
@@ -53,7 +53,7 @@ static NSString* const kConnectURLKey    = @"connect_url";
 - (void)setupConnectButton
 {
     self.connectButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [self.connectButton setTitle:@"Connect" forState:UIControlStateNormal];
+    [self.connectButton setTitle:@"Connect through web interface" forState:UIControlStateNormal];
     [self.connectButton sizeToFit];
     self.connectButton.center = CGPointMake(self.view.frame.size.width / 2, 5 * kControlsPositionOffset);
     [self.connectButton addTarget:self action:@selector(connectPressed) forControlEvents:UIControlEventTouchUpInside];
