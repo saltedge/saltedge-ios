@@ -35,6 +35,7 @@ static NSString* const kCustomersPath     = @"customers";
 static NSString* const kLoginsInteractive = @"interactive";
 static NSString* const kLoginsReconnect   = @"reconnect";
 static NSString* const kLoginsRefresh     = @"refresh";
+static NSString* const kLoginsRemove      = @"remove";
 
 /* Provider input fields types */
 static NSString* const SEProviderFieldTypeText     = @"text";

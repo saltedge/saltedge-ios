@@ -19,9 +19,11 @@
 #import "SEProviderField.h"
 #import "SEProvider.h"
 #import "CredentialsVC.h"
+#import "LoginsTVCDelegate.h"
 
 static NSString* const kLoginRefreshAction   = @"Refresh";
 static NSString* const kLoginReconnectAction = @"Reconnect";
+static NSString* const kLoginRemoveAction    = @"Remove";
 
 @interface AccountsTVC () <UIActionSheetDelegate, SELoginCreationDelegate>
 
@@ -58,7 +60,7 @@ static NSString* const kAccountCellReuseIdentifier = @"AccountTableViewCell";
 
 - (void)actionsPressed
 {
-    UIActionSheet* actionSheet = [[UIActionSheet alloc] initWithTitle:@"Login actions" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:kLoginRefreshAction, kLoginReconnectAction, nil];
+    UIActionSheet* actionSheet = [[UIActionSheet alloc] initWithTitle:@"Login actions" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:kLoginRemoveAction otherButtonTitles:kLoginRefreshAction, kLoginReconnectAction, nil];
     [actionSheet showInView:self.view];
 }
 
@@ -124,6 +126,25 @@ static NSString* const kAccountCellReuseIdentifier = @"AccountTableViewCell";
         } failure:^(NSURLSessionDataTask* task, NSError* error) {
             [SVProgressHUD showErrorWithStatus:error.localizedDescription];
         } delegate:self];
+    }];
+}
+
+- (void)removeLogin
+{
+    SEAPIRequestManager* manager = [SEAPIRequestManager manager];
+
+    [manager removeLoginWithId:self.login.id success:^(NSURLSessionDataTask* task, id responseObject) {
+        if ([responseObject[@"data"][@"removed"] boolValue]) {
+            [SVProgressHUD showSuccessWithStatus:@"Removed"];
+            if ([self.delegate respondsToSelector:@selector(removedLogin:)]) {
+                [self.delegate removedLogin:self.login];
+            }
+            [self.navigationController popViewControllerAnimated:YES];
+        } else {
+            [SVProgressHUD showErrorWithStatus:@"Couldn't remove login"];
+        }
+    } failure:^(NSURLSessionDataTask* task, NSError* error) {
+        [SVProgressHUD showErrorWithStatus:error.localizedDescription];
     }];
 }
 
@@ -193,6 +214,8 @@ static NSString* const kAccountCellReuseIdentifier = @"AccountTableViewCell";
         [self refreshLogin];
     } else if ([buttonTitle isEqualToString:kLoginReconnectAction]) {
         [self reconnectLogin];
+    } else if ([buttonTitle isEqualToString:kLoginRemoveAction]) {
+        [self removeLogin];
     }
 }
 

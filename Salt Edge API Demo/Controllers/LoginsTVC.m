@@ -7,6 +7,7 @@
 //
 
 #import "LoginsTVC.h"
+#import "LoginsTVCDelegate.h"
 #import <AFHTTPRequestOperationManager.h>
 #import "Helpers.h"
 #import "AccountsTVC.h"
@@ -112,9 +113,22 @@ static NSString* const kLoginTableViewCellReuseIdentifier = @"LoginTableViewCell
     if (!self.waitingForLoginToFetch) {
         SELogin* selectedLogin = self.logins[indexPath.row];
         AccountsTVC* accounts = [self.storyboard instantiateViewControllerWithIdentifier:@"AccountsTVC"];
+        accounts.delegate = self;
         [accounts setLogin:selectedLogin];
         accounts.title = selectedLogin.providerName;
         [self.navigationController pushViewController:accounts animated:YES];
+    }
+}
+
+#pragma mark - LoginsTVC Delegate
+
+- (void)removedLogin:(SELogin *)login
+{
+    if ([self.logins containsObject:login]) {
+        NSMutableArray* mutableLoginsCopy = self.logins.mutableCopy;
+        [mutableLoginsCopy removeObject:login];
+        self.logins = [NSArray arrayWithArray:mutableLoginsCopy];
+        [self.tableView reloadData];
     }
 }
 

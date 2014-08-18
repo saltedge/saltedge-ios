@@ -197,6 +197,21 @@ typedef void (^SEAPIRequestFailureBlock)(NSURLSessionDataTask* task, NSError* er
                   delegate:(id<SELoginCreationDelegate>)delegate;
 
 /**
+ Removes the login with given login id from the system, also removing all associated accounts and transactions.
+
+ @param loginId The id of the login to remove.
+ @param success The callback block if the request succeeds.
+ @param failure The callback block if the request fails.
+
+ @warning loginId cannot be nil.
+
+ @see https://docs.saltedge.com/reference/#logins-remove
+ */
+- (void)removeLoginWithId:(NSNumber*)loginId
+                  success:(void (^)(NSURLSessionDataTask*, NSDictionary*))success
+                  failure:(SEAPIRequestFailureBlock)failure;
+
+/**
  Provides the login with the interactive credentials that are currently required.
 
  @param credentials The interactive credentials that are to be supplied. See an example above.
@@ -215,6 +230,7 @@ typedef void (^SEAPIRequestFailureBlock)(NSURLSessionDataTask* task, NSError* er
 
  @see https://docs.saltedge.com/reference/#logins-interactive
  */
+
 - (void)postInteractiveCredentials:(NSDictionary*)credentials
                            forLoginId:(NSNumber*)loginId
                            success:(void (^)(NSURLSessionDataTask*, SELogin*))success

@@ -268,7 +268,7 @@ typedef void (^CompletionBlock)(void);
     SEAPIRequestManager* manager = [SEAPIRequestManager manager];
     [manager createLoginWithParameters:parameters success:^(NSURLSessionDataTask* task, SELogin* createdLogin) {
         [SVProgressHUD dismiss];
-        [SVProgressHUD showWithStatus:@"Fetching..."];
+        [SVProgressHUD showWithStatus:@"Fetching..." maskType:SVProgressHUDMaskTypeGradient];
     } failure:^(NSURLSessionDataTask* task, NSError* error) {
         [SVProgressHUD showErrorWithStatus:error.localizedDescription];
     } delegate:self];

@@ -9,9 +9,11 @@
 #import <UIKit/UIKit.h>
 
 @class SELogin;
+@protocol LoginsTVCDelegate;
 
 @interface AccountsTVC : UITableViewController
 
 @property (nonatomic, strong) SELogin* login;
+@property (nonatomic, weak)   id<LoginsTVCDelegate> delegate;
 
 @end
