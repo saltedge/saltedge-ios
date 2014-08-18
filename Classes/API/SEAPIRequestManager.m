@@ -272,6 +272,21 @@ static NSURLSessionConfiguration* sessionConfiguration;
     }];
 }
 
+- (void)removeLoginWithId:(NSNumber *)loginId success:(void (^)(NSURLSessionDataTask *, NSDictionary *))success failure:(SEAPIRequestFailureBlock)failure
+{
+    NSAssert(loginId != nil, @"loginId cannot be nil.");
+
+    NSString* url = [[kLoginsPath stringByAppendingPathComponent:loginId.description] stringByAppendingPathComponent:kLoginsRemove];
+
+    SEAPIRequestManager* manager = [[self class] manager];
+
+    [manager POST:url parameters:nil success:^(NSURLSessionDataTask* task, id responseObject) {
+        if (success) { success(task, responseObject); }
+    } failure:^(NSURLSessionDataTask* task, NSError* error) {
+        if (failure) { failure(task, error); }
+    }];
+}
+
 - (void)postInteractiveCredentials:(NSDictionary *)credentials
                         forLoginId:(NSNumber *)loginId
                            success:(void (^)(NSURLSessionDataTask *, SELogin *))success

@@ -95,6 +95,7 @@
 		0A3F86FD19A1F05E00B7E5E2 /* DateUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DateUtils.h; sourceTree = "<group>"; };
 		0A3F86FE19A1F05E00B7E5E2 /* DateUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DateUtils.m; sourceTree = "<group>"; };
 		0A3F874C19A224A800B7E5E2 /* token_server.rb */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.ruby; path = token_server.rb; sourceTree = "<group>"; };
+		0A3F875019A249C300B7E5E2 /* LoginsTVCDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LoginsTVCDelegate.h; sourceTree = "<group>"; };
 		0AAB6CE119827AAA009DCDD5 /* Salt Edge API Demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Salt Edge API Demo.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0AAB6CE419827AAA009DCDD5 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		0AAB6CE619827AAA009DCDD5 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -391,6 +392,7 @@
 			isa = PBXGroup;
 			children = (
 				0AAB6D2F19827ACD009DCDD5 /* PickerDelegate.h */,
+				0A3F875019A249C300B7E5E2 /* LoginsTVCDelegate.h */,
 			);
 			path = Protocols;
 			sourceTree = "<group>";

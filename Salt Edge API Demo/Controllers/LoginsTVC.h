@@ -8,7 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
-@interface LoginsTVC : UITableViewController
+@protocol LoginsTVCDelegate;
+
+@interface LoginsTVC : UITableViewController <LoginsTVCDelegate>
 
 @property (nonatomic) BOOL waitingForLoginToFetch;
 
