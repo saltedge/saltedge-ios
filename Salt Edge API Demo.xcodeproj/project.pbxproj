@@ -7,6 +7,18 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0A3F86FF19A1F05E00B7E5E2 /* SEAPIRequestManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A3F86E019A1F05E00B7E5E2 /* SEAPIRequestManager.m */; };
+		0A3F870019A1F05E00B7E5E2 /* NSString+SEModelsSerializingAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A3F86E419A1F05E00B7E5E2 /* NSString+SEModelsSerializingAdditions.m */; };
+		0A3F870119A1F05E00B7E5E2 /* SEAccount.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A3F86E719A1F05E00B7E5E2 /* SEAccount.m */; };
+		0A3F870219A1F05E00B7E5E2 /* SEBaseModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A3F86E919A1F05E00B7E5E2 /* SEBaseModel.m */; };
+		0A3F870319A1F05E00B7E5E2 /* SELogin.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A3F86EB19A1F05E00B7E5E2 /* SELogin.m */; };
+		0A3F870419A1F05E00B7E5E2 /* SEProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A3F86ED19A1F05E00B7E5E2 /* SEProvider.m */; };
+		0A3F870519A1F05E00B7E5E2 /* SEProviderField.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A3F86EF19A1F05E00B7E5E2 /* SEProviderField.m */; };
+		0A3F870619A1F05E00B7E5E2 /* SEProviderFieldOption.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A3F86F119A1F05E00B7E5E2 /* SEProviderFieldOption.m */; };
+		0A3F870719A1F05E00B7E5E2 /* SETransaction.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A3F86F319A1F05E00B7E5E2 /* SETransaction.m */; };
+		0A3F870819A1F05E00B7E5E2 /* NSURL+SBCallbacksAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A3F86F719A1F05E00B7E5E2 /* NSURL+SBCallbacksAdditions.m */; };
+		0A3F870919A1F05E00B7E5E2 /* SEWebView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A3F86F919A1F05E00B7E5E2 /* SEWebView.m */; };
+		0A3F870A19A1F05E00B7E5E2 /* DateUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A3F86FE19A1F05E00B7E5E2 /* DateUtils.m */; };
 		0AAB6CE519827AAA009DCDD5 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AAB6CE419827AAA009DCDD5 /* Foundation.framework */; };
 		0AAB6CE719827AAA009DCDD5 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AAB6CE619827AAA009DCDD5 /* CoreGraphics.framework */; };
 		0AAB6CE919827AAA009DCDD5 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AAB6CE819827AAA009DCDD5 /* UIKit.framework */; };
@@ -40,18 +52,6 @@
 		0AF898841986633E00F1A270 /* ConnectWebViewVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AF898831986633E00F1A270 /* ConnectWebViewVC.m */; };
 		0AF898901986740200F1A270 /* TabBarVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AF8988F1986740200F1A270 /* TabBarVC.m */; };
 		0AF898931986748C00F1A270 /* circle@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0AF898921986748C00F1A270 /* circle@2x.png */; };
-		0AF898B61986905100F1A270 /* SEAPIRequestManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AF898971986905100F1A270 /* SEAPIRequestManager.m */; };
-		0AF898B71986905100F1A270 /* NSString+SEModelsSerializingAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AF8989B1986905100F1A270 /* NSString+SEModelsSerializingAdditions.m */; };
-		0AF898B81986905100F1A270 /* SEAccount.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AF8989E1986905100F1A270 /* SEAccount.m */; };
-		0AF898B91986905100F1A270 /* SEBaseModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AF898A01986905100F1A270 /* SEBaseModel.m */; };
-		0AF898BA1986905100F1A270 /* SELogin.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AF898A21986905100F1A270 /* SELogin.m */; };
-		0AF898BB1986905100F1A270 /* SEProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AF898A41986905100F1A270 /* SEProvider.m */; };
-		0AF898BC1986905100F1A270 /* SEProviderField.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AF898A61986905100F1A270 /* SEProviderField.m */; };
-		0AF898BD1986905100F1A270 /* SEProviderFieldOption.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AF898A81986905100F1A270 /* SEProviderFieldOption.m */; };
-		0AF898BE1986905100F1A270 /* SETransaction.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AF898AA1986905100F1A270 /* SETransaction.m */; };
-		0AF898BF1986905100F1A270 /* NSURL+SBCallbacksAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AF898AE1986905100F1A270 /* NSURL+SBCallbacksAdditions.m */; };
-		0AF898C01986905100F1A270 /* SEWebView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AF898B01986905100F1A270 /* SEWebView.m */; };
-		0AF898C11986905100F1A270 /* DateUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AF898B51986905100F1A270 /* DateUtils.m */; };
 		B275BB778B184F04BB4FB069 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FA121862E2A4454C95F78533 /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -66,6 +66,33 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0A3F86DF19A1F05E00B7E5E2 /* SEAPIRequestManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SEAPIRequestManager.h; sourceTree = "<group>"; };
+		0A3F86E019A1F05E00B7E5E2 /* SEAPIRequestManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SEAPIRequestManager.m; sourceTree = "<group>"; };
+		0A3F86E119A1F05E00B7E5E2 /* SELoginCreationDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SELoginCreationDelegate.h; sourceTree = "<group>"; };
+		0A3F86E319A1F05E00B7E5E2 /* NSString+SEModelsSerializingAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+SEModelsSerializingAdditions.h"; sourceTree = "<group>"; };
+		0A3F86E419A1F05E00B7E5E2 /* NSString+SEModelsSerializingAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+SEModelsSerializingAdditions.m"; sourceTree = "<group>"; };
+		0A3F86E619A1F05E00B7E5E2 /* SEAccount.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SEAccount.h; sourceTree = "<group>"; };
+		0A3F86E719A1F05E00B7E5E2 /* SEAccount.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SEAccount.m; sourceTree = "<group>"; };
+		0A3F86E819A1F05E00B7E5E2 /* SEBaseModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SEBaseModel.h; sourceTree = "<group>"; };
+		0A3F86E919A1F05E00B7E5E2 /* SEBaseModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SEBaseModel.m; sourceTree = "<group>"; };
+		0A3F86EA19A1F05E00B7E5E2 /* SELogin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SELogin.h; sourceTree = "<group>"; };
+		0A3F86EB19A1F05E00B7E5E2 /* SELogin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SELogin.m; sourceTree = "<group>"; };
+		0A3F86EC19A1F05E00B7E5E2 /* SEProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SEProvider.h; sourceTree = "<group>"; };
+		0A3F86ED19A1F05E00B7E5E2 /* SEProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SEProvider.m; sourceTree = "<group>"; };
+		0A3F86EE19A1F05E00B7E5E2 /* SEProviderField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SEProviderField.h; sourceTree = "<group>"; };
+		0A3F86EF19A1F05E00B7E5E2 /* SEProviderField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SEProviderField.m; sourceTree = "<group>"; };
+		0A3F86F019A1F05E00B7E5E2 /* SEProviderFieldOption.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SEProviderFieldOption.h; sourceTree = "<group>"; };
+		0A3F86F119A1F05E00B7E5E2 /* SEProviderFieldOption.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SEProviderFieldOption.m; sourceTree = "<group>"; };
+		0A3F86F219A1F05E00B7E5E2 /* SETransaction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SETransaction.h; sourceTree = "<group>"; };
+		0A3F86F319A1F05E00B7E5E2 /* SETransaction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SETransaction.m; sourceTree = "<group>"; };
+		0A3F86F619A1F05E00B7E5E2 /* NSURL+SBCallbacksAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSURL+SBCallbacksAdditions.h"; sourceTree = "<group>"; };
+		0A3F86F719A1F05E00B7E5E2 /* NSURL+SBCallbacksAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSURL+SBCallbacksAdditions.m"; sourceTree = "<group>"; };
+		0A3F86F819A1F05E00B7E5E2 /* SEWebView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SEWebView.h; sourceTree = "<group>"; };
+		0A3F86F919A1F05E00B7E5E2 /* SEWebView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SEWebView.m; sourceTree = "<group>"; };
+		0A3F86FA19A1F05E00B7E5E2 /* SEWebViewDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SEWebViewDelegate.h; sourceTree = "<group>"; };
+		0A3F86FC19A1F05E00B7E5E2 /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
+		0A3F86FD19A1F05E00B7E5E2 /* DateUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DateUtils.h; sourceTree = "<group>"; };
+		0A3F86FE19A1F05E00B7E5E2 /* DateUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DateUtils.m; sourceTree = "<group>"; };
 		0AAB6CE119827AAA009DCDD5 /* Salt Edge API Demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Salt Edge API Demo.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0AAB6CE419827AAA009DCDD5 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		0AAB6CE619827AAA009DCDD5 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -116,33 +143,6 @@
 		0AF8988E1986740200F1A270 /* TabBarVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TabBarVC.h; sourceTree = "<group>"; };
 		0AF8988F1986740200F1A270 /* TabBarVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TabBarVC.m; sourceTree = "<group>"; };
 		0AF898921986748C00F1A270 /* circle@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "circle@2x.png"; sourceTree = "<group>"; };
-		0AF898961986905100F1A270 /* SEAPIRequestManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SEAPIRequestManager.h; sourceTree = "<group>"; };
-		0AF898971986905100F1A270 /* SEAPIRequestManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SEAPIRequestManager.m; sourceTree = "<group>"; };
-		0AF898981986905100F1A270 /* SELoginCreationDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SELoginCreationDelegate.h; sourceTree = "<group>"; };
-		0AF8989A1986905100F1A270 /* NSString+SEModelsSerializingAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+SEModelsSerializingAdditions.h"; sourceTree = "<group>"; };
-		0AF8989B1986905100F1A270 /* NSString+SEModelsSerializingAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+SEModelsSerializingAdditions.m"; sourceTree = "<group>"; };
-		0AF8989D1986905100F1A270 /* SEAccount.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SEAccount.h; sourceTree = "<group>"; };
-		0AF8989E1986905100F1A270 /* SEAccount.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SEAccount.m; sourceTree = "<group>"; };
-		0AF8989F1986905100F1A270 /* SEBaseModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SEBaseModel.h; sourceTree = "<group>"; };
-		0AF898A01986905100F1A270 /* SEBaseModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SEBaseModel.m; sourceTree = "<group>"; };
-		0AF898A11986905100F1A270 /* SELogin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SELogin.h; sourceTree = "<group>"; };
-		0AF898A21986905100F1A270 /* SELogin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SELogin.m; sourceTree = "<group>"; };
-		0AF898A31986905100F1A270 /* SEProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SEProvider.h; sourceTree = "<group>"; };
-		0AF898A41986905100F1A270 /* SEProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SEProvider.m; sourceTree = "<group>"; };
-		0AF898A51986905100F1A270 /* SEProviderField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SEProviderField.h; sourceTree = "<group>"; };
-		0AF898A61986905100F1A270 /* SEProviderField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SEProviderField.m; sourceTree = "<group>"; };
-		0AF898A71986905100F1A270 /* SEProviderFieldOption.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SEProviderFieldOption.h; sourceTree = "<group>"; };
-		0AF898A81986905100F1A270 /* SEProviderFieldOption.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SEProviderFieldOption.m; sourceTree = "<group>"; };
-		0AF898A91986905100F1A270 /* SETransaction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SETransaction.h; sourceTree = "<group>"; };
-		0AF898AA1986905100F1A270 /* SETransaction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SETransaction.m; sourceTree = "<group>"; };
-		0AF898AD1986905100F1A270 /* NSURL+SBCallbacksAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSURL+SBCallbacksAdditions.h"; sourceTree = "<group>"; };
-		0AF898AE1986905100F1A270 /* NSURL+SBCallbacksAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSURL+SBCallbacksAdditions.m"; sourceTree = "<group>"; };
-		0AF898AF1986905100F1A270 /* SEWebView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SEWebView.h; sourceTree = "<group>"; };
-		0AF898B01986905100F1A270 /* SEWebView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SEWebView.m; sourceTree = "<group>"; };
-		0AF898B11986905100F1A270 /* SEWebViewDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SEWebViewDelegate.h; sourceTree = "<group>"; };
-		0AF898B31986905100F1A270 /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
-		0AF898B41986905100F1A270 /* DateUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DateUtils.h; sourceTree = "<group>"; };
-		0AF898B51986905100F1A270 /* DateUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DateUtils.m; sourceTree = "<group>"; };
 		BB33E063D75F472A97ADC1A5 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 		FA121862E2A4454C95F78533 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -172,10 +172,92 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0A3F86DD19A1F05E00B7E5E2 /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				0A3F86DE19A1F05E00B7E5E2 /* API */,
+				0A3F86E219A1F05E00B7E5E2 /* Categories */,
+				0A3F86E519A1F05E00B7E5E2 /* Models */,
+				0A3F86F419A1F05E00B7E5E2 /* SBWebView */,
+				0A3F86FB19A1F05E00B7E5E2 /* Utils */,
+			);
+			path = Classes;
+			sourceTree = "<group>";
+		};
+		0A3F86DE19A1F05E00B7E5E2 /* API */ = {
+			isa = PBXGroup;
+			children = (
+				0A3F86DF19A1F05E00B7E5E2 /* SEAPIRequestManager.h */,
+				0A3F86E019A1F05E00B7E5E2 /* SEAPIRequestManager.m */,
+				0A3F86E119A1F05E00B7E5E2 /* SELoginCreationDelegate.h */,
+			);
+			path = API;
+			sourceTree = "<group>";
+		};
+		0A3F86E219A1F05E00B7E5E2 /* Categories */ = {
+			isa = PBXGroup;
+			children = (
+				0A3F86E319A1F05E00B7E5E2 /* NSString+SEModelsSerializingAdditions.h */,
+				0A3F86E419A1F05E00B7E5E2 /* NSString+SEModelsSerializingAdditions.m */,
+			);
+			path = Categories;
+			sourceTree = "<group>";
+		};
+		0A3F86E519A1F05E00B7E5E2 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				0A3F86E619A1F05E00B7E5E2 /* SEAccount.h */,
+				0A3F86E719A1F05E00B7E5E2 /* SEAccount.m */,
+				0A3F86E819A1F05E00B7E5E2 /* SEBaseModel.h */,
+				0A3F86E919A1F05E00B7E5E2 /* SEBaseModel.m */,
+				0A3F86EA19A1F05E00B7E5E2 /* SELogin.h */,
+				0A3F86EB19A1F05E00B7E5E2 /* SELogin.m */,
+				0A3F86EC19A1F05E00B7E5E2 /* SEProvider.h */,
+				0A3F86ED19A1F05E00B7E5E2 /* SEProvider.m */,
+				0A3F86EE19A1F05E00B7E5E2 /* SEProviderField.h */,
+				0A3F86EF19A1F05E00B7E5E2 /* SEProviderField.m */,
+				0A3F86F019A1F05E00B7E5E2 /* SEProviderFieldOption.h */,
+				0A3F86F119A1F05E00B7E5E2 /* SEProviderFieldOption.m */,
+				0A3F86F219A1F05E00B7E5E2 /* SETransaction.h */,
+				0A3F86F319A1F05E00B7E5E2 /* SETransaction.m */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		0A3F86F419A1F05E00B7E5E2 /* SBWebView */ = {
+			isa = PBXGroup;
+			children = (
+				0A3F86F519A1F05E00B7E5E2 /* NSURL+SBCallbacksAdditions */,
+				0A3F86F819A1F05E00B7E5E2 /* SEWebView.h */,
+				0A3F86F919A1F05E00B7E5E2 /* SEWebView.m */,
+				0A3F86FA19A1F05E00B7E5E2 /* SEWebViewDelegate.h */,
+			);
+			path = SBWebView;
+			sourceTree = "<group>";
+		};
+		0A3F86F519A1F05E00B7E5E2 /* NSURL+SBCallbacksAdditions */ = {
+			isa = PBXGroup;
+			children = (
+				0A3F86F619A1F05E00B7E5E2 /* NSURL+SBCallbacksAdditions.h */,
+				0A3F86F719A1F05E00B7E5E2 /* NSURL+SBCallbacksAdditions.m */,
+			);
+			path = "NSURL+SBCallbacksAdditions";
+			sourceTree = "<group>";
+		};
+		0A3F86FB19A1F05E00B7E5E2 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				0A3F86FC19A1F05E00B7E5E2 /* Constants.h */,
+				0A3F86FD19A1F05E00B7E5E2 /* DateUtils.h */,
+				0A3F86FE19A1F05E00B7E5E2 /* DateUtils.m */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
 		0AAB6CD819827AAA009DCDD5 = {
 			isa = PBXGroup;
 			children = (
-				0AF898941986905100F1A270 /* Salt Edge API */,
+				0A3F86DD19A1F05E00B7E5E2 /* Classes */,
 				0AAB6CEA19827AAA009DCDD5 /* Salt Edge API Demo */,
 				0AAB6D0919827AAA009DCDD5 /* Salt Edge API DemoTests */,
 				0AAB6CE319827AAA009DCDD5 /* Frameworks */,
@@ -327,88 +409,6 @@
 			path = Assets;
 			sourceTree = "<group>";
 		};
-		0AF898941986905100F1A270 /* Salt Edge API */ = {
-			isa = PBXGroup;
-			children = (
-				0AF898951986905100F1A270 /* API */,
-				0AF898991986905100F1A270 /* Categories */,
-				0AF8989C1986905100F1A270 /* Models */,
-				0AF898AB1986905100F1A270 /* SBWebView */,
-				0AF898B21986905100F1A270 /* Utils */,
-			);
-			path = "Salt Edge API";
-			sourceTree = "<group>";
-		};
-		0AF898951986905100F1A270 /* API */ = {
-			isa = PBXGroup;
-			children = (
-				0AF898961986905100F1A270 /* SEAPIRequestManager.h */,
-				0AF898971986905100F1A270 /* SEAPIRequestManager.m */,
-				0AF898981986905100F1A270 /* SELoginCreationDelegate.h */,
-			);
-			path = API;
-			sourceTree = "<group>";
-		};
-		0AF898991986905100F1A270 /* Categories */ = {
-			isa = PBXGroup;
-			children = (
-				0AF8989A1986905100F1A270 /* NSString+SEModelsSerializingAdditions.h */,
-				0AF8989B1986905100F1A270 /* NSString+SEModelsSerializingAdditions.m */,
-			);
-			path = Categories;
-			sourceTree = "<group>";
-		};
-		0AF8989C1986905100F1A270 /* Models */ = {
-			isa = PBXGroup;
-			children = (
-				0AF8989D1986905100F1A270 /* SEAccount.h */,
-				0AF8989E1986905100F1A270 /* SEAccount.m */,
-				0AF8989F1986905100F1A270 /* SEBaseModel.h */,
-				0AF898A01986905100F1A270 /* SEBaseModel.m */,
-				0AF898A11986905100F1A270 /* SELogin.h */,
-				0AF898A21986905100F1A270 /* SELogin.m */,
-				0AF898A31986905100F1A270 /* SEProvider.h */,
-				0AF898A41986905100F1A270 /* SEProvider.m */,
-				0AF898A51986905100F1A270 /* SEProviderField.h */,
-				0AF898A61986905100F1A270 /* SEProviderField.m */,
-				0AF898A71986905100F1A270 /* SEProviderFieldOption.h */,
-				0AF898A81986905100F1A270 /* SEProviderFieldOption.m */,
-				0AF898A91986905100F1A270 /* SETransaction.h */,
-				0AF898AA1986905100F1A270 /* SETransaction.m */,
-			);
-			path = Models;
-			sourceTree = "<group>";
-		};
-		0AF898AB1986905100F1A270 /* SBWebView */ = {
-			isa = PBXGroup;
-			children = (
-				0AF898AC1986905100F1A270 /* NSURL+SBCallbacksAdditions */,
-				0AF898AF1986905100F1A270 /* SEWebView.h */,
-				0AF898B01986905100F1A270 /* SEWebView.m */,
-				0AF898B11986905100F1A270 /* SEWebViewDelegate.h */,
-			);
-			path = SBWebView;
-			sourceTree = "<group>";
-		};
-		0AF898AC1986905100F1A270 /* NSURL+SBCallbacksAdditions */ = {
-			isa = PBXGroup;
-			children = (
-				0AF898AD1986905100F1A270 /* NSURL+SBCallbacksAdditions.h */,
-				0AF898AE1986905100F1A270 /* NSURL+SBCallbacksAdditions.m */,
-			);
-			path = "NSURL+SBCallbacksAdditions";
-			sourceTree = "<group>";
-		};
-		0AF898B21986905100F1A270 /* Utils */ = {
-			isa = PBXGroup;
-			children = (
-				0AF898B31986905100F1A270 /* Constants.h */,
-				0AF898B41986905100F1A270 /* DateUtils.h */,
-				0AF898B51986905100F1A270 /* DateUtils.m */,
-			);
-			path = Utils;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -542,10 +542,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0AF898BE1986905100F1A270 /* SETransaction.m in Sources */,
+				0A3F870719A1F05E00B7E5E2 /* SETransaction.m in Sources */,
 				0AAB6D6619827AFB009DCDD5 /* AppDelegate.m in Sources */,
-				0AF898B71986905100F1A270 /* NSString+SEModelsSerializingAdditions.m in Sources */,
-				0AF898BB1986905100F1A270 /* SEProvider.m in Sources */,
+				0A3F870019A1F05E00B7E5E2 /* NSString+SEModelsSerializingAdditions.m in Sources */,
+				0A3F870919A1F05E00B7E5E2 /* SEWebView.m in Sources */,
+				0A3F870419A1F05E00B7E5E2 /* SEProvider.m in Sources */,
 				0AAB6D5219827ACD009DCDD5 /* CredentialsVC.m in Sources */,
 				0AAB6D4F19827ACD009DCDD5 /* UIView+Framing.m in Sources */,
 				0AAB6D5519827ACD009DCDD5 /* TransactionsTVC.m in Sources */,
@@ -553,20 +554,19 @@
 				0AAB6D5619827ACD009DCDD5 /* OptionSelectButton.m in Sources */,
 				0AAB6D5419827ACD009DCDD5 /* PickerTVC.m in Sources */,
 				0AF898901986740200F1A270 /* TabBarVC.m in Sources */,
-				0AF898BC1986905100F1A270 /* SEProviderField.m in Sources */,
-				0AF898C01986905100F1A270 /* SEWebView.m in Sources */,
+				0A3F870519A1F05E00B7E5E2 /* SEProviderField.m in Sources */,
 				0AAB6D4E19827ACD009DCDD5 /* UIControl+SELoginInputFieldsAdditions.m in Sources */,
 				0AAB6D5019827ACD009DCDD5 /* AccountsTVC.m in Sources */,
-				0AF898B61986905100F1A270 /* SEAPIRequestManager.m in Sources */,
-				0AF898BD1986905100F1A270 /* SEProviderFieldOption.m in Sources */,
-				0AF898BA1986905100F1A270 /* SELogin.m in Sources */,
-				0AF898B91986905100F1A270 /* SEBaseModel.m in Sources */,
-				0AF898C11986905100F1A270 /* DateUtils.m in Sources */,
-				0AF898BF1986905100F1A270 /* NSURL+SBCallbacksAdditions.m in Sources */,
+				0A3F86FF19A1F05E00B7E5E2 /* SEAPIRequestManager.m in Sources */,
+				0A3F870619A1F05E00B7E5E2 /* SEProviderFieldOption.m in Sources */,
+				0A3F870319A1F05E00B7E5E2 /* SELogin.m in Sources */,
+				0A3F870219A1F05E00B7E5E2 /* SEBaseModel.m in Sources */,
+				0A3F870A19A1F05E00B7E5E2 /* DateUtils.m in Sources */,
+				0A3F870819A1F05E00B7E5E2 /* NSURL+SBCallbacksAdditions.m in Sources */,
 				0AAB6D5319827ACD009DCDD5 /* LoginsTVC.m in Sources */,
 				0AAB6D5119827ACD009DCDD5 /* CreateLoginVC.m in Sources */,
 				0AAB6D6119827ACD009DCDD5 /* Helpers.m in Sources */,
-				0AF898B81986905100F1A270 /* SEAccount.m in Sources */,
+				0A3F870119A1F05E00B7E5E2 /* SEAccount.m in Sources */,
 				0AF898841986633E00F1A270 /* ConnectWebViewVC.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
