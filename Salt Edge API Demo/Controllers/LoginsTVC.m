@@ -37,15 +37,6 @@ static NSString* const kLoginTableViewCellReuseIdentifier = @"LoginTableViewCell
     [self setup];
 }
 
-- (void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
-    if (self.waitingForLoginToFetch) {
-        [SVProgressHUD dismiss];
-        [SVProgressHUD showWithStatus:@"Loading..." maskType:SVProgressHUDMaskTypeGradient];
-    }
-}
-
 #pragma mark - Setup
 
 - (void)setup
@@ -110,14 +101,12 @@ static NSString* const kLoginTableViewCellReuseIdentifier = @"LoginTableViewCell
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    if (!self.waitingForLoginToFetch) {
-        SELogin* selectedLogin = self.logins[indexPath.row];
-        AccountsTVC* accounts = [self.storyboard instantiateViewControllerWithIdentifier:@"AccountsTVC"];
-        accounts.delegate = self;
-        [accounts setLogin:selectedLogin];
-        accounts.title = selectedLogin.providerName;
-        [self.navigationController pushViewController:accounts animated:YES];
-    }
+    SELogin* selectedLogin = self.logins[indexPath.row];
+    AccountsTVC* accounts = [self.storyboard instantiateViewControllerWithIdentifier:@"AccountsTVC"];
+    accounts.delegate = self;
+    [accounts setLogin:selectedLogin];
+    accounts.title = selectedLogin.providerName;
+    [self.navigationController pushViewController:accounts animated:YES];
 }
 
 #pragma mark - LoginsTVC Delegate

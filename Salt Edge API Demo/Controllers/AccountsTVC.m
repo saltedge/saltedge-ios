@@ -14,18 +14,15 @@
 #import "TransactionsTVC.h"
 #import "SEAPIRequestManager.h"
 #import "SEAccount.h"
-#import "SELoginCreationDelegate.h"
 #import "SELogin.h"
 #import "SEProviderField.h"
 #import "SEProvider.h"
 #import "CredentialsVC.h"
 #import "LoginsTVCDelegate.h"
 
-static NSString* const kLoginRefreshAction   = @"Refresh";
-static NSString* const kLoginReconnectAction = @"Reconnect";
 static NSString* const kLoginRemoveAction    = @"Remove";
 
-@interface AccountsTVC () <UIActionSheetDelegate, SELoginCreationDelegate>
+@interface AccountsTVC () <UIActionSheetDelegate>
 
 @property (nonatomic, strong) NSArray* accounts;
 @property (nonatomic, strong) SEProvider* loginsProvider;
@@ -60,7 +57,7 @@ static NSString* const kAccountCellReuseIdentifier = @"AccountTableViewCell";
 
 - (void)actionsPressed
 {
-    UIActionSheet* actionSheet = [[UIActionSheet alloc] initWithTitle:@"Login actions" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:kLoginRemoveAction otherButtonTitles:kLoginRefreshAction, kLoginReconnectAction, nil];
+    UIActionSheet* actionSheet = [[UIActionSheet alloc] initWithTitle:@"Login actions" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:kLoginRemoveAction otherButtonTitles:nil];
     [actionSheet showInView:self.view];
 }
 
@@ -92,43 +89,6 @@ static NSString* const kAccountCellReuseIdentifier = @"AccountTableViewCell";
     }];
 }
 
-- (void)refreshLogin
-{
-    self.isReconnectingLogin = NO;
-
-    [SVProgressHUD showWithStatus:@"Refreshing..." maskType:SVProgressHUDMaskTypeGradient];
-    SEAPIRequestManager* manager = [SEAPIRequestManager manager];
-
-    [manager refreshLoginWithId:self.login.id success:^(NSURLSessionDataTask* task, NSDictionary* refreshResponse) {
-        if (![refreshResponse[@"refreshed"] boolValue]) {
-            [SVProgressHUD showErrorWithStatus:@"Couldn't refresh login"];
-        }
-    } failure:^(NSURLSessionDataTask* task, NSError* error) {
-        [SVProgressHUD showErrorWithStatus:error.localizedDescription];
-    } delegate:self];
-}
-
-- (void)reconnectLogin
-{
-    self.isReconnectingLogin = YES;
-
-    NSArray* sortedRequiredFields = [self.loginsProvider.requiredFields sortedArrayUsingComparator:^NSComparisonResult (SEProviderField* first, SEProviderField* second) {
-        return [first.position integerValue] > [second.position integerValue];
-    }];
-
-    [self presentCredentialsScreenWithFields:sortedRequiredFields completion:^(NSDictionary* credentials) {
-        [self dismissViewControllerAnimated:YES completion:nil];
-        [SVProgressHUD showWithStatus:@"Reconnecting..." maskType:SVProgressHUDMaskTypeGradient];
-
-        SEAPIRequestManager* manager = [SEAPIRequestManager manager];
-
-        [manager reconnectLoginWithLoginId:self.login.id credentials:credentials success:^(NSURLSessionDataTask* task, SELogin* login) {
-        } failure:^(NSURLSessionDataTask* task, NSError* error) {
-            [SVProgressHUD showErrorWithStatus:error.localizedDescription];
-        } delegate:self];
-    }];
-}
-
 - (void)removeLogin
 {
     SEAPIRequestManager* manager = [SEAPIRequestManager manager];
@@ -146,32 +106,6 @@ static NSString* const kAccountCellReuseIdentifier = @"AccountTableViewCell";
     } failure:^(NSURLSessionDataTask* task, NSError* error) {
         [SVProgressHUD showErrorWithStatus:error.localizedDescription];
     }];
-}
-
-- (void)showInteractiveScreenWithInteractiveFields:(NSArray*)interactiveFields
-{
-    [self presentCredentialsScreenWithFields:interactiveFields completion:^(NSDictionary* interactiveCredentials) {
-        [self dismissViewControllerAnimated:YES completion:nil];
-        [SVProgressHUD showWithStatus:@"Loading..." maskType:SVProgressHUDMaskTypeGradient];
-
-        SEAPIRequestManager* manager = [SEAPIRequestManager manager];
-
-        [manager postInteractiveCredentials:interactiveCredentials forLoginId:self.login.id success:^(NSURLSessionDataTask* task, SELogin* login) {
-            [SVProgressHUD dismiss];
-        } failure:^(NSURLSessionDataTask* task, NSError* error) {
-            [SVProgressHUD showErrorWithStatus:error.localizedDescription];
-        }];
-    }];
-}
-
-- (void)presentCredentialsScreenWithFields:(NSArray*)fields completion:(void (^)(NSDictionary*))completion
-{
-    CredentialsVC* credentials = [self.storyboard instantiateViewControllerWithIdentifier:@"CredentialsVC"];
-    credentials.credentialFields = fields;
-    credentials.completionBlock = completion;
-    UINavigationController* navController = [[UINavigationController alloc] initWithRootViewController:credentials];
-    [SVProgressHUD dismiss];
-    [self presentViewController:navController animated:YES completion:nil];
 }
 
 #pragma mark - UITableView Data Source / Delegate
@@ -210,48 +144,9 @@ static NSString* const kAccountCellReuseIdentifier = @"AccountTableViewCell";
 {
     NSString* buttonTitle = [actionSheet buttonTitleAtIndex:buttonIndex];
 
-    if ([buttonTitle isEqualToString:kLoginRefreshAction]) {
-        [self refreshLogin];
-    } else if ([buttonTitle isEqualToString:kLoginReconnectAction]) {
-        [self reconnectLogin];
-    } else if ([buttonTitle isEqualToString:kLoginRemoveAction]) {
+    if ([buttonTitle isEqualToString:kLoginRemoveAction]) {
         [self removeLogin];
     }
-}
-
-#pragma mark - SELoginCreation Delegate
-
-- (void)login:(SELogin *)login failedToFetchWithMessage:(NSString *)message
-{
-    self.isReconnectingLogin = NO;
-    [SVProgressHUD showErrorWithStatus:message];
-}
-
-- (void)login:(SELogin *)login requestedInteractiveCallbackWithFieldNames:(NSArray *)names
-{
-    if (!self.sentInteractiveCredentials) {
-        self.sentInteractiveCredentials = YES;
-        NSMutableArray* requestedInteractiveFields = @[].mutableCopy;
-        for (SEProviderField* interactiveField in self.loginsProvider.interactiveFields) {
-            if ([names containsObject:interactiveField.name]) {
-                [requestedInteractiveFields addObject:interactiveField];
-            }
-        }
-
-        NSAssert(requestedInteractiveFields != nil, @"Login is interactive but has no interactive fields?");
-
-        [self showInteractiveScreenWithInteractiveFields:requestedInteractiveFields];
-    }
-}
-
-- (void)loginSuccessfullyFinishedFetching:(SELogin *)login
-{
-    NSString* message = @"Refreshed";
-    if (self.isReconnectingLogin) {
-        self.isReconnectingLogin = NO;
-        message = @"Reconnected";
-    }
-    [SVProgressHUD showSuccessWithStatus:message];
 }
 
 @end

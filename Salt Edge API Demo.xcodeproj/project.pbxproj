@@ -33,7 +33,6 @@
 		0AAB6D4E19827ACD009DCDD5 /* UIControl+SELoginInputFieldsAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AAB6D1B19827ACD009DCDD5 /* UIControl+SELoginInputFieldsAdditions.m */; };
 		0AAB6D4F19827ACD009DCDD5 /* UIView+Framing.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AAB6D1D19827ACD009DCDD5 /* UIView+Framing.m */; };
 		0AAB6D5019827ACD009DCDD5 /* AccountsTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AAB6D2019827ACD009DCDD5 /* AccountsTVC.m */; };
-		0AAB6D5119827ACD009DCDD5 /* CreateLoginVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AAB6D2219827ACD009DCDD5 /* CreateLoginVC.m */; };
 		0AAB6D5219827ACD009DCDD5 /* CredentialsVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AAB6D2419827ACD009DCDD5 /* CredentialsVC.m */; };
 		0AAB6D5319827ACD009DCDD5 /* LoginsTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AAB6D2619827ACD009DCDD5 /* LoginsTVC.m */; };
 		0AAB6D5419827ACD009DCDD5 /* PickerTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AAB6D2819827ACD009DCDD5 /* PickerTVC.m */; };
@@ -69,7 +68,6 @@
 /* Begin PBXFileReference section */
 		0A3F86DF19A1F05E00B7E5E2 /* SEAPIRequestManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SEAPIRequestManager.h; sourceTree = "<group>"; };
 		0A3F86E019A1F05E00B7E5E2 /* SEAPIRequestManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SEAPIRequestManager.m; sourceTree = "<group>"; };
-		0A3F86E119A1F05E00B7E5E2 /* SELoginCreationDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SELoginCreationDelegate.h; sourceTree = "<group>"; };
 		0A3F86E319A1F05E00B7E5E2 /* NSString+SEModelsSerializingAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+SEModelsSerializingAdditions.h"; sourceTree = "<group>"; };
 		0A3F86E419A1F05E00B7E5E2 /* NSString+SEModelsSerializingAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+SEModelsSerializingAdditions.m"; sourceTree = "<group>"; };
 		0A3F86E619A1F05E00B7E5E2 /* SEAccount.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SEAccount.h; sourceTree = "<group>"; };
@@ -115,8 +113,6 @@
 		0AAB6D1D19827ACD009DCDD5 /* UIView+Framing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Framing.m"; sourceTree = "<group>"; };
 		0AAB6D1F19827ACD009DCDD5 /* AccountsTVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AccountsTVC.h; sourceTree = "<group>"; };
 		0AAB6D2019827ACD009DCDD5 /* AccountsTVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AccountsTVC.m; sourceTree = "<group>"; };
-		0AAB6D2119827ACD009DCDD5 /* CreateLoginVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CreateLoginVC.h; sourceTree = "<group>"; };
-		0AAB6D2219827ACD009DCDD5 /* CreateLoginVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CreateLoginVC.m; sourceTree = "<group>"; };
 		0AAB6D2319827ACD009DCDD5 /* CredentialsVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CredentialsVC.h; sourceTree = "<group>"; };
 		0AAB6D2419827ACD009DCDD5 /* CredentialsVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CredentialsVC.m; sourceTree = "<group>"; };
 		0AAB6D2519827ACD009DCDD5 /* LoginsTVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginsTVC.h; sourceTree = "<group>"; };
@@ -192,7 +188,6 @@
 			children = (
 				0A3F86DF19A1F05E00B7E5E2 /* SEAPIRequestManager.h */,
 				0A3F86E019A1F05E00B7E5E2 /* SEAPIRequestManager.m */,
-				0A3F86E119A1F05E00B7E5E2 /* SELoginCreationDelegate.h */,
 			);
 			path = API;
 			sourceTree = "<group>";
@@ -361,8 +356,6 @@
 			children = (
 				0AAB6D1F19827ACD009DCDD5 /* AccountsTVC.h */,
 				0AAB6D2019827ACD009DCDD5 /* AccountsTVC.m */,
-				0AAB6D2119827ACD009DCDD5 /* CreateLoginVC.h */,
-				0AAB6D2219827ACD009DCDD5 /* CreateLoginVC.m */,
 				0AF898821986633E00F1A270 /* ConnectWebViewVC.h */,
 				0AF898831986633E00F1A270 /* ConnectWebViewVC.m */,
 				0AAB6D2319827ACD009DCDD5 /* CredentialsVC.h */,
@@ -570,7 +563,6 @@
 				0A3F870A19A1F05E00B7E5E2 /* DateUtils.m in Sources */,
 				0A3F870819A1F05E00B7E5E2 /* NSURL+SBCallbacksAdditions.m in Sources */,
 				0AAB6D5319827ACD009DCDD5 /* LoginsTVC.m in Sources */,
-				0AAB6D5119827ACD009DCDD5 /* CreateLoginVC.m in Sources */,
 				0AAB6D6119827ACD009DCDD5 /* Helpers.m in Sources */,
 				0A3F870119A1F05E00B7E5E2 /* SEAccount.m in Sources */,
 				0AF898841986633E00F1A270 /* ConnectWebViewVC.m in Sources */,

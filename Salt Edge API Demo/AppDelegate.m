@@ -14,7 +14,7 @@
 
 #pragma GCC diagnostic ignored "-Wundeclared-selector"
 
-static NSString* const kAppId = @"example-app-id";
+static NSString* const kAppId = @"your-app-id";
 
 @implementation AppDelegate
 

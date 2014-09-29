@@ -14,16 +14,12 @@
 #import "UIView+Framing.h"
 #import <SVProgressHUD.h>
 
-static CGFloat const kControlsPositionOffset  = 10.0f;
-
 static NSString* const kCustomerEmailKey = @"customer_email";
 static NSString* const kDataKey          = @"data";
 static NSString* const kConnectURLKey    = @"connect_url";
 
 @interface ConnectWebViewVC () <SEWebViewDelegate>
 
-@property (nonatomic, strong) UIButton* connectButton;
-@property (nonatomic, strong) UITapGestureRecognizer* tapRecognizer;
 @property (nonatomic, strong) SEWebView* connectWebView;
 @property (nonatomic, strong) UIActivityIndicatorView* activityIndicator;
 
@@ -39,7 +35,7 @@ static NSString* const kConnectURLKey    = @"connect_url";
 {
     [super viewDidLoad];
     self.title = @"Connect";
-    [self setupConnectButton];
+    [self connect];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -49,16 +45,6 @@ static NSString* const kConnectURLKey    = @"connect_url";
 }
 
 #pragma mark - Setup methods
-
-- (void)setupConnectButton
-{
-    self.connectButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [self.connectButton setTitle:@"Connect through web interface" forState:UIControlStateNormal];
-    [self.connectButton sizeToFit];
-    self.connectButton.center = CGPointMake(self.view.frame.size.width / 2, 5 * kControlsPositionOffset);
-    [self.connectButton addTarget:self action:@selector(connectPressed) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:self.connectButton];
-}
 
 - (void)setupConnectWebView
 {
@@ -70,7 +56,7 @@ static NSString* const kConnectURLKey    = @"connect_url";
 
 #pragma mark - Actions
 
-- (void)connectPressed
+- (void)connect
 {
     [self showActivityIndicator];
     [self requestToken];
@@ -99,11 +85,6 @@ static NSString* const kConnectURLKey    = @"connect_url";
 
 - (void)loadConnectPageWithURLString:(NSString*)connectURLString
 {
-    [self.connectButton removeFromSuperview];
-    self.connectButton = nil;
-    [self.view removeGestureRecognizer:self.tapRecognizer];
-    self.tapRecognizer = nil;
-
     [self.connectWebView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:connectURLString]]];
 }
 
@@ -116,7 +97,6 @@ static NSString* const kConnectURLKey    = @"connect_url";
 
 - (void)showActivityIndicator
 {
-    self.connectButton.userInteractionEnabled = NO;
     self.activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
     [self.activityIndicator setColor:[UIColor grayColor]];
     self.activityIndicator.center = self.view.center;
@@ -126,7 +106,6 @@ static NSString* const kConnectURLKey    = @"connect_url";
 
 - (void)hideActivityIndicator
 {
-    self.connectButton.userInteractionEnabled = YES;
     [self.activityIndicator stopAnimating];
     [self.activityIndicator removeFromSuperview];
     self.activityIndicator = nil;
@@ -134,7 +113,7 @@ static NSString* const kConnectURLKey    = @"connect_url";
 
 - (void)switchToLoginsViewController
 {
-    [self.tabBarController setSelectedIndex:2];
+    [self.tabBarController setSelectedIndex:1];
 }
 
 #pragma mark - SEWebView Delegate

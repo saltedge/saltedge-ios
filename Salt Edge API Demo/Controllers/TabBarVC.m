@@ -23,7 +23,6 @@
 {
     if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
         self.viewControllers = @[[self controllerWithIdentifier:@"ConnectWebViewVC" title:@"Connect"],
-                                 [self controllerWithIdentifier:@"CreateLoginVC" title:@"API Create"],
                                  [self controllerWithIdentifier:@"LoginsTVC" title:@"Logins"]
                                  ];
     }
