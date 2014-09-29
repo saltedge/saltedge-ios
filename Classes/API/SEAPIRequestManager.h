@@ -156,6 +156,8 @@ typedef void (^SEAPIRequestFailureBlock)(NSURLSessionDataTask* task, NSError* er
  @param success The callback block if the request succeeds.
  @param failure The callback block if the request fails.
 
+ @warning The parameters should at least contain a key "customer_email" with the corresponding customer email.
+
  @code
  // parameters example
  {
@@ -178,6 +180,8 @@ typedef void (^SEAPIRequestFailureBlock)(NSURLSessionDataTask* task, NSError* er
  @param parameters The parameters that will go with the payload. See an example above.
  @param success The callback block if the request succeeds.
  @param failure The callback block if the request fails.
+
+ @warning The parameters should at least contain a key "customer_email" with the corresponding customer email.
 
  @code
  // parameters example
