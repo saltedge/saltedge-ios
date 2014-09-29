@@ -134,7 +134,7 @@ typedef void (^SEAPIRequestFailureBlock)(NSURLSessionDataTask* task, NSError* er
 
  @warning The parameters should at least contain a key "customer_email" with the corresponding customer email.
 
- @code 
+ @code
  // parameters example
  {
     "customer_email": "customer@app.com"
@@ -157,6 +157,7 @@ typedef void (^SEAPIRequestFailureBlock)(NSURLSessionDataTask* task, NSError* er
  @param failure The callback block if the request fails.
 
  @warning The parameters should at least contain a key "customer_email" with the corresponding customer email.
+ @warning login may not be nil.
 
  @code
  // parameters example
@@ -182,6 +183,7 @@ typedef void (^SEAPIRequestFailureBlock)(NSURLSessionDataTask* task, NSError* er
  @param failure The callback block if the request fails.
 
  @warning The parameters should at least contain a key "customer_email" with the corresponding customer email.
+ @warning login may not be nil.
 
  @code
  // parameters example

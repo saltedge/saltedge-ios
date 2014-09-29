@@ -16,7 +16,7 @@
 
 static NSString* const kAppId = @"your-app-id";
 
-@interface AppDelegate(/* Private */)
+@interface AppDelegate()
 
 @property (nonatomic, strong) TabBarVC* tabBar;
 
