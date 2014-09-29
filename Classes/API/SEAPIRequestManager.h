@@ -148,5 +148,50 @@ typedef void (^SEAPIRequestFailureBlock)(NSURLSessionDataTask* task, NSError* er
                                   success:(void (^)(NSURLSessionDataTask*, NSDictionary*))success
                                   failure:(SEAPIRequestFailureBlock)failure;
 
+/**
+ Requests a token for reconnecting a login via a web view.
+
+ @param login The login for which the reconnect token is requested.
+ @param parameters The parameters that will go with the payload. See an example above.
+ @param success The callback block if the request succeeds.
+ @param failure The callback block if the request fails.
+
+ @code
+ // parameters example
+ {
+ "customer_email": "customer@app.com"
+ // optional fields here...
+ }
+ @endcode
+
+ @see https://docs.saltedge.com/guides/logins/#reconnect
+ */
+- (void)requestReconnectTokenForLogin:(SELogin*)login
+                           parameters:(NSDictionary*)parameters
+                              success:(void (^)(NSURLSessionDataTask*, NSDictionary*))success
+                              failure:(SEAPIRequestFailureBlock)failure;
+
+/**
+ Requests a token for refreshing a login via a web view.
+
+ @param login The login for which the refresh token is requested.
+ @param parameters The parameters that will go with the payload. See an example above.
+ @param success The callback block if the request succeeds.
+ @param failure The callback block if the request fails.
+
+ @code
+ // parameters example
+ {
+ "customer_email": "customer@app.com"
+ // optional fields here...
+ }
+ @endcode
+
+ @see https://docs.saltedge.com/guides/logins/#refresh
+ */
+- (void)requestRefreshTokenForLogin:(SELogin*)login
+                         parameters:(NSDictionary*)parameters
+                            success:(void (^)(NSURLSessionDataTask*, NSDictionary*))success
+                            failure:(SEAPIRequestFailureBlock)failure;
 
 @end

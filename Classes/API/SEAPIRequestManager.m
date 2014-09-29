@@ -41,6 +41,7 @@ static NSString* const kMetaKey                  = @"meta";
 static NSString* const kNextIdKey                = @"next_id";
 static NSString* const kNextPageKey              = @"next_page";
 static NSString* const kLoginIdKey               = @"login_id";
+static NSString* const kRefreshKey               = @"refresh";
 static NSString* const kCustomerEmailKey         = @"customer_email";
 static NSString* const kAccountIdKey             = @"account_id";
 static NSString* const kMobileKey                = @"mobile";
@@ -190,10 +191,49 @@ static NSURLSessionConfiguration* sessionConfiguration;
 {
     NSAssert(parameters[kCustomerEmailKey] != nil, @"Customer email cannot be nil");
 
-    NSMutableDictionary* mobileParameters = parameters.mutableCopy;
-    mobileParameters[kMobileKey] = [NSNumber numberWithBool:true];
+    [self requestTokenWithParameters:parameters success:success failure:failure];
+}
 
+- (void)requestReconnectTokenForLogin:(SELogin *)login
+                           parameters:(NSDictionary*)parameters
+                              success:(void (^)(NSURLSessionDataTask *, NSDictionary *))success
+                              failure:(SEAPIRequestFailureBlock)failure
+{
+    NSAssert(login != nil, @"Login cannot be nil");
+    NSAssert(parameters[kCustomerEmailKey] != nil, @"Customer email cannot be nil");
+
+    NSMutableDictionary* mutableParameters = parameters.mutableCopy;
+    mutableParameters[kLoginIdKey] = login.id;
+
+    [self requestTokenWithParameters:mutableParameters success:success failure:failure];
+}
+
+- (void)requestRefreshTokenForLogin:(SELogin *)login
+                         parameters:(NSDictionary*)parameters
+                            success:(void (^)(NSURLSessionDataTask *, NSDictionary *))success
+                            failure:(SEAPIRequestFailureBlock)failure
+{
+    NSAssert(login != nil, @"Login cannot be nil");
+    NSAssert(parameters[kCustomerEmailKey] != nil, @"Customer email cannot be nil");
+
+    NSMutableDictionary* mutableParameters = parameters.mutableCopy;
+    mutableParameters[kLoginIdKey] = login.id;
+    mutableParameters[kRefreshKey] = [NSNumber numberWithBool:true];
+
+    [self requestTokenWithParameters:mutableParameters success:success failure:failure];
+}
+
+#pragma mark -
+#pragma mark - Private API
+
+- (void)requestTokenWithParameters:(NSDictionary*)parameters
+                           success:(void (^)(NSURLSessionDataTask *, NSDictionary *))success
+                           failure:(SEAPIRequestFailureBlock)failure
+{
     SEAPIRequestManager* manager = [[self class] manager];
+
+    NSMutableDictionary* mobileParameters = parameters.mutableCopy;
+    mobileParameters[kMobileKey]  = [NSNumber numberWithBool:true];
 
     [manager POST:kTokensPath parameters:@{ kDataKey : mobileParameters } success:^(NSURLSessionDataTask* task, id responseObject) {
         if (success) { success(task, responseObject[kDataKey]); }
@@ -201,9 +241,6 @@ static NSURLSessionConfiguration* sessionConfiguration;
         if (failure) { failure(task, error); }
     }];
 }
-
-#pragma mark -
-#pragma mark - Private API
 
 - (void)requestPaginatedResourceWithPath:(NSString*)path
                                container:(NSMutableArray*)container

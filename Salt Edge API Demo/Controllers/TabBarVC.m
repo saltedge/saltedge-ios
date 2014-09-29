@@ -50,4 +50,12 @@
     return tabBarItem;
 }
 
+#pragma mark -
+#pragma mark - Public API
+
+- (ConnectWebViewVC*)connectController
+{
+    return [self.viewControllers[0] viewControllers][0];
+}
+
 @end

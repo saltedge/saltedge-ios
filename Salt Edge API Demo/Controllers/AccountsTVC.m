@@ -19,7 +19,12 @@
 #import "SEProvider.h"
 #import "CredentialsVC.h"
 #import "LoginsTVCDelegate.h"
+#import "ConnectWebViewVC.h"
+#import "AppDelegate.h"
+#import "TabBarVC.h"
 
+static NSString* const kLoginRefreshAction   = @"Refresh";
+static NSString* const kLoginReconnectAction = @"Reconnect";
 static NSString* const kLoginRemoveAction    = @"Remove";
 
 @interface AccountsTVC () <UIActionSheetDelegate>
@@ -57,7 +62,7 @@ static NSString* const kAccountCellReuseIdentifier = @"AccountTableViewCell";
 
 - (void)actionsPressed
 {
-    UIActionSheet* actionSheet = [[UIActionSheet alloc] initWithTitle:@"Login actions" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:kLoginRemoveAction otherButtonTitles:nil];
+    UIActionSheet* actionSheet = [[UIActionSheet alloc] initWithTitle:@"Login actions" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:kLoginRemoveAction otherButtonTitles:kLoginReconnectAction, kLoginRefreshAction, nil ];
     [actionSheet showInView:self.view];
 }
 
@@ -89,6 +94,21 @@ static NSString* const kAccountCellReuseIdentifier = @"AccountTableViewCell";
     }];
 }
 
+- (void)refreshLogin
+{
+    ConnectWebViewVC* connectController = [self connectController];
+    [connectController setLogin:self.login];
+    [connectController setRefresh:YES];
+    [self.navigationController.tabBarController setSelectedIndex:0];
+}
+
+- (void)reconnectLogin
+{
+    ConnectWebViewVC* connectController = [self connectController];
+    [connectController setLogin:self.login];
+    [self.navigationController.tabBarController setSelectedIndex:0];
+}
+
 - (void)removeLogin
 {
     SEAPIRequestManager* manager = [SEAPIRequestManager manager];
@@ -106,6 +126,12 @@ static NSString* const kAccountCellReuseIdentifier = @"AccountTableViewCell";
     } failure:^(NSURLSessionDataTask* task, NSError* error) {
         [SVProgressHUD showErrorWithStatus:error.localizedDescription];
     }];
+}
+
+- (ConnectWebViewVC*)connectController
+{
+    AppDelegate* appDelegate = (AppDelegate*) [UIApplication sharedApplication].delegate;
+    return appDelegate.tabBar.connectController;
 }
 
 #pragma mark - UITableView Data Source / Delegate
@@ -144,7 +170,11 @@ static NSString* const kAccountCellReuseIdentifier = @"AccountTableViewCell";
 {
     NSString* buttonTitle = [actionSheet buttonTitleAtIndex:buttonIndex];
 
-    if ([buttonTitle isEqualToString:kLoginRemoveAction]) {
+    if ([buttonTitle isEqualToString:kLoginRefreshAction]) {
+        [self refreshLogin];
+    } else if ([buttonTitle isEqualToString:kLoginReconnectAction]) {
+        [self reconnectLogin];
+    } else if ([buttonTitle isEqualToString:kLoginRemoveAction]) {
         [self removeLogin];
     }
 }

@@ -22,6 +22,8 @@ static NSString* const kConnectURLKey    = @"connect_url";
 
 @property (nonatomic, strong) SEWebView* connectWebView;
 @property (nonatomic, strong) UIActivityIndicatorView* activityIndicator;
+@property (nonatomic, strong) SELogin* login;
+@property (nonatomic)         BOOL refresh;
 
 @end
 
@@ -35,13 +37,20 @@ static NSString* const kConnectURLKey    = @"connect_url";
 {
     [super viewDidLoad];
     self.title = @"Connect";
-    [self connect];
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
     self.navigationController.navigationBar.translucent = NO;
+    [self connect];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    self.login = nil;
+    self.refresh = NO;
 }
 
 #pragma mark - Setup methods
@@ -68,7 +77,7 @@ static NSString* const kConnectURLKey    = @"connect_url";
 {
     SEAPIRequestManager* manager = [SEAPIRequestManager manager];
 
-    [manager requestConnectTokenWithParameters:@{ kCustomerEmailKey : CUSTOMER_EMAIL } success:^(NSURLSessionDataTask* task, NSDictionary* tokenDictionary) {
+    void (^successBlock)(NSURLSessionDataTask*, NSDictionary*) = ^(NSURLSessionDataTask* task, NSDictionary* tokenDictionary){
         NSString* connectURL = tokenDictionary[kConnectURLKey];
         if (connectURL) {
             [self setupConnectWebView];
@@ -77,10 +86,22 @@ static NSString* const kConnectURLKey    = @"connect_url";
             [self showAlertWithTitle:@"Error" message:@"Could not receive the connect URL."];
             [self hideActivityIndicator];
         }
-    } failure:^(NSURLSessionDataTask* task, NSError* error) {
+    };
+
+    void (^failureBlock)(NSURLSessionDataTask*, NSError*) = ^(NSURLSessionDataTask* task, NSError* error){
         [self showAlertWithTitle:@"Error" message:[NSString stringWithFormat:@"Error code %d: %@ (%@)", error.code, error.localizedDescription, task.response]];
         [self hideActivityIndicator];
-    }];
+    };
+
+    NSDictionary* parameters = @{ kCustomerEmailKey : CUSTOMER_EMAIL };
+
+    if (self.login && self.refresh) {
+        [manager requestRefreshTokenForLogin:self.login parameters:parameters success:successBlock failure:failureBlock];
+    } else if (self.login) {
+        [manager requestReconnectTokenForLogin:self.login parameters:parameters success:successBlock failure:failureBlock];
+    } else {
+        [manager requestConnectTokenWithParameters:parameters success:successBlock failure:failureBlock];
+    }
 }
 
 - (void)loadConnectPageWithURLString:(NSString*)connectURLString
@@ -142,6 +163,19 @@ static NSString* const kConnectURLKey    = @"connect_url";
 - (void)webViewDidFinishLoad:(UIWebView *)webView
 {
     [self hideActivityIndicator];
+}
+
+#pragma mark -
+#pragma mark - Public API
+
+- (void)setLogin:(SELogin *)login
+{
+    _login = login;
+}
+
+- (void)setRefresh:(BOOL)refresh
+{
+    _refresh = refresh;
 }
 
 @end

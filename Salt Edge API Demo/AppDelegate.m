@@ -16,6 +16,12 @@
 
 static NSString* const kAppId = @"your-app-id";
 
+@interface AppDelegate(/* Private */)
+
+@property (nonatomic, strong) TabBarVC* tabBar;
+
+@end
+
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
@@ -27,7 +33,8 @@ static NSString* const kAppId = @"your-app-id";
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     [manager POST:@"http://localhost:4567/customers" parameters:@{ @"email": CUSTOMER_EMAIL } success:^(AFHTTPRequestOperation *operation, id responseObject) {
         [SEAPIRequestManager linkAppId:kAppId customerSecret:responseObject[@"data"][@"secret"]];
-        self.window.rootViewController = [[TabBarVC alloc] init];
+        self.tabBar = [[TabBarVC alloc] init];
+        self.window.rootViewController = self.tabBar;
         [self.window makeKeyAndVisible];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         [SVProgressHUD showErrorWithStatus:[NSString stringWithFormat:@"%@\n Make sure you've set your app ID and app secret in the server script and launched it.", error.localizedDescription]];

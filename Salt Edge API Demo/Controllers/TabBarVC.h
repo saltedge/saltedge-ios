@@ -8,6 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
+@class ConnectWebViewVC;
+
 @interface TabBarVC : UITabBarController
+
+- (ConnectWebViewVC*)connectController;
 
 @end
