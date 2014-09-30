@@ -10,6 +10,7 @@
 #import <SVProgressHUD.h>
 #import "SETransaction.h"
 #import "SEAPIRequestManager.h"
+#import "TransactionTableViewCell.h"
 
 static NSString* const kTransactionCellReuseIdentifier = @"TransactionTableViewCell";
 
@@ -28,7 +29,15 @@ static NSString* const kTransactionCellReuseIdentifier = @"TransactionTableViewC
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [self setupTableView];
     [self reloadTransactionsTableView];
+}
+
+#pragma mark - Setup
+
+- (void)setupTableView
+{
+    [self.tableView registerNib:[UINib nibWithNibName:kTransactionCellReuseIdentifier bundle:nil] forCellReuseIdentifier:kTransactionCellReuseIdentifier];
 }
 
 #pragma mark - Helper methods
@@ -60,16 +69,19 @@ static NSString* const kTransactionCellReuseIdentifier = @"TransactionTableViewC
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kTransactionCellReuseIdentifier forIndexPath:indexPath];
-    SETransaction* certainTransaction = self.transactions[indexPath.row];
-    cell.textLabel.text = [NSString stringWithFormat:@"%.2f %@", certainTransaction.amount.floatValue, certainTransaction.currencyCode];
-    cell.detailTextLabel.text = certainTransaction.description;
+    TransactionTableViewCell*cell = [tableView dequeueReusableCellWithIdentifier:kTransactionCellReuseIdentifier forIndexPath:indexPath];
+    [cell setTransaction:self.transactions[indexPath.row]];
     return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return TRANSACTION_CELL_HEIGHT;
 }
 
 @end

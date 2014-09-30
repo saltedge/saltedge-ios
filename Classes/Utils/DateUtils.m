@@ -23,14 +23,23 @@
 
 #import "DateUtils.h"
 
-static NSDateFormatter* iso8601DateFormatter;
+static NSDateFormatter* iso8601DateFormatter, *ymdDateFormatter;
 
 @implementation DateUtils
+
+#pragma mark - Public API
 
 + (NSDate*)dateFromISO8601String:(NSString *)dateString
 {
     return [[self iso8601DateFormatter] dateFromString:dateString];
 }
+
++ (NSDate*)dateFromYMDString:(NSString *)dateString
+{
+    return [[self ymdDateFormatter] dateFromString:dateString];
+}
+
+#pragma mark - Private API, Singletons
 
 + (NSDateFormatter*)iso8601DateFormatter
 {
@@ -42,6 +51,18 @@ static NSDateFormatter* iso8601DateFormatter;
         [iso8601DateFormatter setTimeZone:tz];
     });
     return iso8601DateFormatter;
+}
+
++ (NSDateFormatter*)ymdDateFormatter
+{
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        ymdDateFormatter = [[NSDateFormatter alloc] init];
+        [ymdDateFormatter setDateFormat:@"yyyy'-'MM'-'dd"];
+        NSTimeZone* tz = [NSTimeZone timeZoneWithName:@"UTC"];
+        [ymdDateFormatter setTimeZone:tz];
+    });
+    return ymdDateFormatter;
 }
 
 @end

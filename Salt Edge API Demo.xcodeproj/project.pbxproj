@@ -20,6 +20,8 @@
 		0A3F870919A1F05E00B7E5E2 /* SEWebView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A3F86F919A1F05E00B7E5E2 /* SEWebView.m */; };
 		0A3F870A19A1F05E00B7E5E2 /* DateUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A3F86FE19A1F05E00B7E5E2 /* DateUtils.m */; };
 		0A3F874D19A224A800B7E5E2 /* token_server.rb in Resources */ = {isa = PBXBuildFile; fileRef = 0A3F874C19A224A800B7E5E2 /* token_server.rb */; };
+		0A939E9F19DA9F0E005BD28C /* TransactionTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A939E9D19DA9F0E005BD28C /* TransactionTableViewCell.m */; };
+		0A939EA019DA9F0E005BD28C /* TransactionTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0A939E9E19DA9F0E005BD28C /* TransactionTableViewCell.xib */; };
 		0AAB6CE519827AAA009DCDD5 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AAB6CE419827AAA009DCDD5 /* Foundation.framework */; };
 		0AAB6CE719827AAA009DCDD5 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AAB6CE619827AAA009DCDD5 /* CoreGraphics.framework */; };
 		0AAB6CE919827AAA009DCDD5 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AAB6CE819827AAA009DCDD5 /* UIKit.framework */; };
@@ -89,6 +91,9 @@
 		0A3F86FE19A1F05E00B7E5E2 /* DateUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DateUtils.m; sourceTree = "<group>"; };
 		0A3F874C19A224A800B7E5E2 /* token_server.rb */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.ruby; path = token_server.rb; sourceTree = "<group>"; };
 		0A3F875019A249C300B7E5E2 /* LoginsTVCDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LoginsTVCDelegate.h; sourceTree = "<group>"; };
+		0A939E9C19DA9F0E005BD28C /* TransactionTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransactionTableViewCell.h; sourceTree = "<group>"; };
+		0A939E9D19DA9F0E005BD28C /* TransactionTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransactionTableViewCell.m; sourceTree = "<group>"; };
+		0A939E9E19DA9F0E005BD28C /* TransactionTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TransactionTableViewCell.xib; sourceTree = "<group>"; };
 		0AAB6CE119827AAA009DCDD5 /* Salt Edge API Demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Salt Edge API Demo.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0AAB6CE419827AAA009DCDD5 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		0AAB6CE619827AAA009DCDD5 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -237,6 +242,16 @@
 			path = Utils;
 			sourceTree = "<group>";
 		};
+		0A939E9B19DA9EF0005BD28C /* Table View Cells */ = {
+			isa = PBXGroup;
+			children = (
+				0A939E9C19DA9F0E005BD28C /* TransactionTableViewCell.h */,
+				0A939E9D19DA9F0E005BD28C /* TransactionTableViewCell.m */,
+				0A939E9E19DA9F0E005BD28C /* TransactionTableViewCell.xib */,
+			);
+			path = "Table View Cells";
+			sourceTree = "<group>";
+		};
 		0AAB6CD819827AAA009DCDD5 = {
 			isa = PBXGroup;
 			children = (
@@ -277,6 +292,7 @@
 				0AAB6D1919827ACD009DCDD5 /* Categories */,
 				0AAB6D1E19827ACD009DCDD5 /* Controllers */,
 				0AAB6D2E19827ACD009DCDD5 /* Protocols */,
+				0A939E9B19DA9EF0005BD28C /* Table View Cells */,
 				0AAB6D6219827AEA009DCDD5 /* Main.storyboard */,
 				0AAB6CFC19827AAA009DCDD5 /* Images.xcassets */,
 				0AAB6CEB19827AAA009DCDD5 /* Supporting Files */,
@@ -448,6 +464,7 @@
 				0AF898931986748C00F1A270 /* circle@2x.png in Resources */,
 				0AAB6D6319827AEA009DCDD5 /* Main.storyboard in Resources */,
 				0AAB6CFD19827AAA009DCDD5 /* Images.xcassets in Resources */,
+				0A939EA019DA9F0E005BD28C /* TransactionTableViewCell.xib in Resources */,
 				0AAB6CEF19827AAA009DCDD5 /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -504,6 +521,7 @@
 				0AAB6D6619827AFB009DCDD5 /* AppDelegate.m in Sources */,
 				0A3F870019A1F05E00B7E5E2 /* NSString+SEModelsSerializingAdditions.m in Sources */,
 				0A3F870919A1F05E00B7E5E2 /* SEWebView.m in Sources */,
+				0A939E9F19DA9F0E005BD28C /* TransactionTableViewCell.m in Sources */,
 				0A3F870419A1F05E00B7E5E2 /* SEProvider.m in Sources */,
 				0AAB6D4F19827ACD009DCDD5 /* UIView+Framing.m in Sources */,
 				0AAB6D5519827ACD009DCDD5 /* TransactionsTVC.m in Sources */,
