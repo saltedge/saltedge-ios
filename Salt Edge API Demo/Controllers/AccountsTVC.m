@@ -17,7 +17,6 @@
 #import "SELogin.h"
 #import "SEProviderField.h"
 #import "SEProvider.h"
-#import "CredentialsVC.h"
 #import "LoginsTVCDelegate.h"
 #import "ConnectWebViewVC.h"
 #import "AppDelegate.h"
@@ -31,8 +30,6 @@ static NSString* const kLoginRemoveAction    = @"Remove";
 
 @property (nonatomic, strong) NSArray* accounts;
 @property (nonatomic, strong) SEProvider* loginsProvider;
-@property (nonatomic) BOOL sentInteractiveCredentials;
-@property (nonatomic) BOOL isReconnectingLogin;
 
 @end
 

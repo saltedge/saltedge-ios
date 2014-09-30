@@ -25,6 +25,8 @@
 
 @implementation SETransaction
 
+@synthesize description = __description;
+
 - (BOOL)isEqualToTransaction:(SETransaction*)transaction
 {
     return ([self.id integerValue] == [transaction.id integerValue]);
