@@ -38,7 +38,7 @@
 + (NSDate*)dateFromISO8601String:(NSString*)dateString;
 
 /**
- Converts a Year-Month-Date date string into an NSDate object.
+ Converts a Year-Month-Day date string into an NSDate object.
 
  @param dateString The YYYY-MM-DD formatted date string.
  @return The NSDate equivalent of the date string parameter.
