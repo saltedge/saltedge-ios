@@ -23,7 +23,6 @@
 {
     if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
         self.viewControllers = @[[self controllerWithIdentifier:@"ConnectWebViewVC" title:@"Connect"],
-                                 [self controllerWithIdentifier:@"CreateLoginVC" title:@"API Create"],
                                  [self controllerWithIdentifier:@"LoginsTVC" title:@"Logins"]
                                  ];
     }
@@ -49,6 +48,14 @@
 {
     UITabBarItem *tabBarItem = [[UITabBarItem alloc] initWithTitle:title image:[UIImage imageNamed:@"circle"] tag:0];
     return tabBarItem;
+}
+
+#pragma mark -
+#pragma mark - Public API
+
+- (ConnectWebViewVC*)connectController
+{
+    return [self.viewControllers[0] viewControllers][0];
 }
 
 @end

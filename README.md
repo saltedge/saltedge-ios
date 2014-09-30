@@ -29,6 +29,17 @@ Clone this repository
 
 Copy the `Salt Edge API` folder into your project.
 
+## Connecting logins using the sample app
+
+1. Install dependencies by running `$ pod install` and `$ gem install sinatra rest-client`
+2. Replace the `kAppId` constant in [AppDelegate.m:17](https://github.com/saltedge/saltedge-ios/blob/master/Salt%20Edge%20API%20Demo/AppDelegate.m#L17) with your App id
+3. Replace the `APP_ID` and `APP_SECRET` constants in [token_server.rb:5-6](https://github.com/nemesis/saltedge-ios/blob/refactor-and-updates/Salt%20Edge%20API%20Demo/token_server.rb#L5-L6) with your App id and App secret
+4. Run the token server on the port 4567 by running `$ ruby token_server.rb -p4567`
+*Note*: If you wish to run the token server on some other port, make sure to change customers POST URL in [AppDelegate.m:17](https://github.com/saltedge/saltedge-ios/blob/master/Salt%20Edge%20API%20Demo/AppDelegate.m#L28)
+5. Run the app
+
+*Note*: You can find your App id and App secret at your [profile](https://www.saltedge.com/clients/profile/settings) page.
+
 ## SEWebView
 
 A small `UIWebView` replacement for using [Salt Edge Connect](https://docs.saltedge.com/guides/connect/) within your iOS app.

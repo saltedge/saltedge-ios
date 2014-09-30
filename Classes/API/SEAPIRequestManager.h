@@ -27,7 +27,6 @@
 typedef void (^SEAPIRequestFailureBlock)(NSURLSessionDataTask* task, NSError* error);
 
 @class SEProvider, SELogin;
-@protocol SELoginCreationDelegate;
 
 /**
  SEAPIRequestManager is a subclass of AFHTTPSessionManager designed to provide convinient methods in communicating with the Salt Edge API.
@@ -54,17 +53,6 @@ typedef void (^SEAPIRequestFailureBlock)(NSURLSessionDataTask* task, NSError* er
  @param customerSecret The customer secret returned by your web server.
  */
 + (void)linkAppId:(NSString*)appId customerSecret:(NSString*)customerSecret;
-
-/**
- Fetches the whole providers list.
-
- @param success The callback block if the request succeeds.
- @param failure The callback block if the request fails.
-
- @see https://docs.saltedge.com/reference/#providers-list
- */
-- (void)fetchFullProvidersListWithSuccess:(void (^)(NSURLSessionDataTask*, NSSet*))success
-                                  failure:(SEAPIRequestFailureBlock)failure;
 
 /**
  Fetches all the logins tied to your app.
@@ -121,80 +109,6 @@ typedef void (^SEAPIRequestFailureBlock)(NSURLSessionDataTask* task, NSError* er
 - (void)fetchFullTransactionsListForAccountId:(NSNumber*)accountId
                                       success:(void(^)(NSURLSessionDataTask*, NSSet*))success
                                       failure:(SEAPIRequestFailureBlock)failure;
-/**
- Creates a login with given parameters. 
-
- @param parameters The parameters of the login that is to be created. See an example above.
- @param success The callback block if the request succeeds.
- @param failure The callback block if the request fails.
- @param delegate The delegate of the login creation that will respond to certain events.
-
- @see SELoginCreationDelegate
- @see https://docs.saltedge.com/reference/#logins-create
-
- @warning parameters cannot be nil.
-
- @code
- // parameters example
- {
-    "customer_email": "email@example.com",
-    "country_code": "XF",
-    "provider_code": "fakebank_simple_xf",
-    "credentials": {
-        "login": "username",
-        "password": "secret"
-    }
- }
- @endcode
- */
-- (void)createLoginWithParameters:(NSDictionary*)parameters
-                          success:(void (^)(NSURLSessionDataTask*, SELogin*))success
-                          failure:(SEAPIRequestFailureBlock)failure
-                         delegate:(id<SELoginCreationDelegate>)delegate;
-
-/**
- Reconnects a login with given login id and credentials.
-
- @param loginId The id of the login to reconnect.
- @param credentials The credentials object that will be used to reconnect the login. See an example above.
- @param success The callback block if the request succeeds.
- @param failure The callback block if the request fails.
- @param delegate The delegate of the login reconnect process.
-
- @warning loginId and credentials cannot be nil.
-
- @code
- // credentials example
- {
-    "login": "username",
-    "password": "secret"
- }
- @endcode
-
- @see https://docs.saltedge.com/reference/#logins-reconnect
- */
-- (void)reconnectLoginWithLoginId:(NSNumber*)loginId
-                      credentials:(NSDictionary*)credentials
-                          success:(void (^)(NSURLSessionDataTask*, SELogin*))success
-                          failure:(SEAPIRequestFailureBlock)failure
-                         delegate:(id<SELoginCreationDelegate>)delegate;
-
-/**
- Refreshes a login with given login id. If the request succeeds, the dictionary in the success callback will contain information about the login - it's id, it's refresh status, the date of the last refresh, and the date of the refresh when it's available. All of the objects listed above will be represented in Foundation classes.
-
- @param loginId The id of the login to refresh.
- @param success The callback block if the request succeeds.
- @param failure The callback block if the request fails.
- @param delegate The delegate of the login refresh process.
-
- @warning loginId cannot be nil.
-
- @see https://docs.saltedge.com/reference/#logins-refresh
- */
-- (void)refreshLoginWithId:(NSNumber*)loginId
-                   success:(void (^)(NSURLSessionDataTask*, NSDictionary*))success
-                   failure:(SEAPIRequestFailureBlock)failure
-                  delegate:(id<SELoginCreationDelegate>)delegate;
 
 /**
  Removes the login with given login id from the system, also removing all associated accounts and transactions.
@@ -212,31 +126,6 @@ typedef void (^SEAPIRequestFailureBlock)(NSURLSessionDataTask* task, NSError* er
                   failure:(SEAPIRequestFailureBlock)failure;
 
 /**
- Provides the login with the interactive credentials that are currently required.
-
- @param credentials The interactive credentials that are to be supplied. See an example above.
- @param loginId The id of the login which has requested interactive input.
- @param success The callback block if the request succeeds.
- @param failure The callback block if the request fails.
-
- @warning credentials, loginId cannot be nil.
-
- @code
- // credentials example
- {
-    "sms": 123456
- }
- @endcode
-
- @see https://docs.saltedge.com/reference/#logins-interactive
- */
-
-- (void)postInteractiveCredentials:(NSDictionary*)credentials
-                           forLoginId:(NSNumber*)loginId
-                           success:(void (^)(NSURLSessionDataTask*, SELogin*))success
-                           failure:(SEAPIRequestFailureBlock)failure;
-
-/**
  Requests a token for connecting a login via a web view.
 
  @param parameters The parameters that will go in the request payload. See an example above.
@@ -245,7 +134,7 @@ typedef void (^SEAPIRequestFailureBlock)(NSURLSessionDataTask* task, NSError* er
 
  @warning The parameters should at least contain a key "customer_email" with the corresponding customer email.
 
- @code 
+ @code
  // parameters example
  {
     "customer_email": "customer@app.com"
@@ -259,5 +148,56 @@ typedef void (^SEAPIRequestFailureBlock)(NSURLSessionDataTask* task, NSError* er
                                   success:(void (^)(NSURLSessionDataTask*, NSDictionary*))success
                                   failure:(SEAPIRequestFailureBlock)failure;
 
+/**
+ Requests a token for reconnecting a login via a web view.
+
+ @param login The login for which the reconnect token is requested.
+ @param parameters The parameters that will go with the payload. See an example above.
+ @param success The callback block if the request succeeds.
+ @param failure The callback block if the request fails.
+
+ @warning The parameters should at least contain a key "customer_email" with the corresponding customer email.
+ @warning login may not be nil.
+
+ @code
+ // parameters example
+ {
+ "customer_email": "customer@app.com"
+ // optional fields here...
+ }
+ @endcode
+
+ @see https://docs.saltedge.com/guides/logins/#reconnect
+ */
+- (void)requestReconnectTokenForLogin:(SELogin*)login
+                           parameters:(NSDictionary*)parameters
+                              success:(void (^)(NSURLSessionDataTask*, NSDictionary*))success
+                              failure:(SEAPIRequestFailureBlock)failure;
+
+/**
+ Requests a token for refreshing a login via a web view.
+
+ @param login The login for which the refresh token is requested.
+ @param parameters The parameters that will go with the payload. See an example above.
+ @param success The callback block if the request succeeds.
+ @param failure The callback block if the request fails.
+
+ @warning The parameters should at least contain a key "customer_email" with the corresponding customer email.
+ @warning login may not be nil.
+
+ @code
+ // parameters example
+ {
+ "customer_email": "customer@app.com"
+ // optional fields here...
+ }
+ @endcode
+
+ @see https://docs.saltedge.com/guides/logins/#refresh
+ */
+- (void)requestRefreshTokenForLogin:(SELogin*)login
+                         parameters:(NSDictionary*)parameters
+                            success:(void (^)(NSURLSessionDataTask*, NSDictionary*))success
+                            failure:(SEAPIRequestFailureBlock)failure;
 
 @end

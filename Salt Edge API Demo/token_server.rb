@@ -2,8 +2,8 @@ require 'sinatra'
 require 'json'
 require 'rest-client'
 
-APP_ID       = "example-app-id"
-APP_SECRET   = "example-app-secret"
+APP_ID       = "your-app-id"
+APP_SECRET   = "your-app-secret"
 CUSTOMER_URL = "https://www.saltedge.com/api/v1/customers/"
 
 def create_customer(email)

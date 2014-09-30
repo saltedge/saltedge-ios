@@ -8,6 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
+@class SELogin;
+
 @interface ConnectWebViewVC : UIViewController
+
+- (void)setLogin:(SELogin*)login;
+- (void)setRefresh:(BOOL)refresh;
 
 @end
