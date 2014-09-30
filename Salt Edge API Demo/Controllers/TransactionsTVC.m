@@ -7,10 +7,7 @@
 //
 
 #import "TransactionsTVC.h"
-#import <AFHTTPRequestOperationManager.h>
 #import <SVProgressHUD.h>
-#import "Constants.h"
-#import "Helpers.h"
 #import "SETransaction.h"
 #import "SEAPIRequestManager.h"
 

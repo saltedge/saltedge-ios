@@ -8,8 +8,6 @@
 
 #import "LoginsTVC.h"
 #import "LoginsTVCDelegate.h"
-#import <AFHTTPRequestOperationManager.h>
-#import "Helpers.h"
 #import "AccountsTVC.h"
 #import "Constants.h"
 #import <SVProgressHUD.h>

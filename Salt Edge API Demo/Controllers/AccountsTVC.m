@@ -9,14 +9,11 @@
 #import "AccountsTVC.h"
 #import <AFHTTPRequestOperationManager.h>
 #import "Constants.h"
-#import "Helpers.h"
 #import <SVProgressHUD.h>
 #import "TransactionsTVC.h"
 #import "SEAPIRequestManager.h"
 #import "SEAccount.h"
 #import "SELogin.h"
-#import "SEProviderField.h"
-#import "SEProvider.h"
 #import "LoginsTVCDelegate.h"
 #import "ConnectWebViewVC.h"
 #import "AppDelegate.h"
