@@ -9,15 +9,11 @@
 #import "AccountsTVC.h"
 #import <AFHTTPRequestOperationManager.h>
 #import "Constants.h"
-#import "Helpers.h"
 #import <SVProgressHUD.h>
 #import "TransactionsTVC.h"
 #import "SEAPIRequestManager.h"
 #import "SEAccount.h"
 #import "SELogin.h"
-#import "SEProviderField.h"
-#import "SEProvider.h"
-#import "CredentialsVC.h"
 #import "LoginsTVCDelegate.h"
 #import "ConnectWebViewVC.h"
 #import "AppDelegate.h"
@@ -31,8 +27,6 @@ static NSString* const kLoginRemoveAction    = @"Remove";
 
 @property (nonatomic, strong) NSArray* accounts;
 @property (nonatomic, strong) SEProvider* loginsProvider;
-@property (nonatomic) BOOL sentInteractiveCredentials;
-@property (nonatomic) BOOL isReconnectingLogin;
 
 @end
 

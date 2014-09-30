@@ -20,6 +20,8 @@
 		0A3F870919A1F05E00B7E5E2 /* SEWebView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A3F86F919A1F05E00B7E5E2 /* SEWebView.m */; };
 		0A3F870A19A1F05E00B7E5E2 /* DateUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A3F86FE19A1F05E00B7E5E2 /* DateUtils.m */; };
 		0A3F874D19A224A800B7E5E2 /* token_server.rb in Resources */ = {isa = PBXBuildFile; fileRef = 0A3F874C19A224A800B7E5E2 /* token_server.rb */; };
+		0A939E9F19DA9F0E005BD28C /* TransactionTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A939E9D19DA9F0E005BD28C /* TransactionTableViewCell.m */; };
+		0A939EA019DA9F0E005BD28C /* TransactionTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0A939E9E19DA9F0E005BD28C /* TransactionTableViewCell.xib */; };
 		0AAB6CE519827AAA009DCDD5 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AAB6CE419827AAA009DCDD5 /* Foundation.framework */; };
 		0AAB6CE719827AAA009DCDD5 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AAB6CE619827AAA009DCDD5 /* CoreGraphics.framework */; };
 		0AAB6CE919827AAA009DCDD5 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AAB6CE819827AAA009DCDD5 /* UIKit.framework */; };
@@ -30,15 +32,10 @@
 		0AAB6D0519827AAA009DCDD5 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AAB6CE419827AAA009DCDD5 /* Foundation.framework */; };
 		0AAB6D0619827AAA009DCDD5 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AAB6CE819827AAA009DCDD5 /* UIKit.framework */; };
 		0AAB6D0E19827AAA009DCDD5 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 0AAB6D0C19827AAA009DCDD5 /* InfoPlist.strings */; };
-		0AAB6D4E19827ACD009DCDD5 /* UIControl+SELoginInputFieldsAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AAB6D1B19827ACD009DCDD5 /* UIControl+SELoginInputFieldsAdditions.m */; };
 		0AAB6D4F19827ACD009DCDD5 /* UIView+Framing.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AAB6D1D19827ACD009DCDD5 /* UIView+Framing.m */; };
 		0AAB6D5019827ACD009DCDD5 /* AccountsTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AAB6D2019827ACD009DCDD5 /* AccountsTVC.m */; };
-		0AAB6D5219827ACD009DCDD5 /* CredentialsVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AAB6D2419827ACD009DCDD5 /* CredentialsVC.m */; };
 		0AAB6D5319827ACD009DCDD5 /* LoginsTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AAB6D2619827ACD009DCDD5 /* LoginsTVC.m */; };
-		0AAB6D5419827ACD009DCDD5 /* PickerTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AAB6D2819827ACD009DCDD5 /* PickerTVC.m */; };
 		0AAB6D5519827ACD009DCDD5 /* TransactionsTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AAB6D2A19827ACD009DCDD5 /* TransactionsTVC.m */; };
-		0AAB6D5619827ACD009DCDD5 /* OptionSelectButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AAB6D2D19827ACD009DCDD5 /* OptionSelectButton.m */; };
-		0AAB6D6119827ACD009DCDD5 /* Helpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AAB6D4D19827ACD009DCDD5 /* Helpers.m */; };
 		0AAB6D6319827AEA009DCDD5 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0AAB6D6219827AEA009DCDD5 /* Main.storyboard */; };
 		0AAB6D6619827AFB009DCDD5 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AAB6D6519827AFB009DCDD5 /* AppDelegate.m */; };
 		0AAB6D6B19827B0C009DCDD5 /* DateUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AAB6D6719827B0C009DCDD5 /* DateUtils.m */; };
@@ -94,6 +91,9 @@
 		0A3F86FE19A1F05E00B7E5E2 /* DateUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DateUtils.m; sourceTree = "<group>"; };
 		0A3F874C19A224A800B7E5E2 /* token_server.rb */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.ruby; path = token_server.rb; sourceTree = "<group>"; };
 		0A3F875019A249C300B7E5E2 /* LoginsTVCDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LoginsTVCDelegate.h; sourceTree = "<group>"; };
+		0A939E9C19DA9F0E005BD28C /* TransactionTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransactionTableViewCell.h; sourceTree = "<group>"; };
+		0A939E9D19DA9F0E005BD28C /* TransactionTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransactionTableViewCell.m; sourceTree = "<group>"; };
+		0A939E9E19DA9F0E005BD28C /* TransactionTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TransactionTableViewCell.xib; sourceTree = "<group>"; };
 		0AAB6CE119827AAA009DCDD5 /* Salt Edge API Demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Salt Edge API Demo.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0AAB6CE419827AAA009DCDD5 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		0AAB6CE619827AAA009DCDD5 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -107,25 +107,15 @@
 		0AAB6D0319827AAA009DCDD5 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		0AAB6D0B19827AAA009DCDD5 /* Salt Edge API DemoTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Salt Edge API DemoTests-Info.plist"; sourceTree = "<group>"; };
 		0AAB6D0D19827AAA009DCDD5 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		0AAB6D1A19827ACD009DCDD5 /* UIControl+SELoginInputFieldsAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIControl+SELoginInputFieldsAdditions.h"; sourceTree = "<group>"; };
-		0AAB6D1B19827ACD009DCDD5 /* UIControl+SELoginInputFieldsAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIControl+SELoginInputFieldsAdditions.m"; sourceTree = "<group>"; };
 		0AAB6D1C19827ACD009DCDD5 /* UIView+Framing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Framing.h"; sourceTree = "<group>"; };
 		0AAB6D1D19827ACD009DCDD5 /* UIView+Framing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Framing.m"; sourceTree = "<group>"; };
 		0AAB6D1F19827ACD009DCDD5 /* AccountsTVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AccountsTVC.h; sourceTree = "<group>"; };
 		0AAB6D2019827ACD009DCDD5 /* AccountsTVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AccountsTVC.m; sourceTree = "<group>"; };
-		0AAB6D2319827ACD009DCDD5 /* CredentialsVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CredentialsVC.h; sourceTree = "<group>"; };
-		0AAB6D2419827ACD009DCDD5 /* CredentialsVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CredentialsVC.m; sourceTree = "<group>"; };
 		0AAB6D2519827ACD009DCDD5 /* LoginsTVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginsTVC.h; sourceTree = "<group>"; };
 		0AAB6D2619827ACD009DCDD5 /* LoginsTVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginsTVC.m; sourceTree = "<group>"; };
-		0AAB6D2719827ACD009DCDD5 /* PickerTVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PickerTVC.h; sourceTree = "<group>"; };
-		0AAB6D2819827ACD009DCDD5 /* PickerTVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PickerTVC.m; sourceTree = "<group>"; };
 		0AAB6D2919827ACD009DCDD5 /* TransactionsTVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransactionsTVC.h; sourceTree = "<group>"; };
 		0AAB6D2A19827ACD009DCDD5 /* TransactionsTVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransactionsTVC.m; sourceTree = "<group>"; };
-		0AAB6D2C19827ACD009DCDD5 /* OptionSelectButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OptionSelectButton.h; sourceTree = "<group>"; };
-		0AAB6D2D19827ACD009DCDD5 /* OptionSelectButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OptionSelectButton.m; sourceTree = "<group>"; };
 		0AAB6D2F19827ACD009DCDD5 /* PickerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PickerDelegate.h; sourceTree = "<group>"; };
-		0AAB6D4C19827ACD009DCDD5 /* Helpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Helpers.h; sourceTree = "<group>"; };
-		0AAB6D4D19827ACD009DCDD5 /* Helpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Helpers.m; sourceTree = "<group>"; };
 		0AAB6D6219827AEA009DCDD5 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		0AAB6D6419827AFB009DCDD5 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		0AAB6D6519827AFB009DCDD5 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -252,6 +242,16 @@
 			path = Utils;
 			sourceTree = "<group>";
 		};
+		0A939E9B19DA9EF0005BD28C /* Table View Cells */ = {
+			isa = PBXGroup;
+			children = (
+				0A939E9C19DA9F0E005BD28C /* TransactionTableViewCell.h */,
+				0A939E9D19DA9F0E005BD28C /* TransactionTableViewCell.m */,
+				0A939E9E19DA9F0E005BD28C /* TransactionTableViewCell.xib */,
+			);
+			path = "Table View Cells";
+			sourceTree = "<group>";
+		};
 		0AAB6CD819827AAA009DCDD5 = {
 			isa = PBXGroup;
 			children = (
@@ -291,9 +291,8 @@
 				0AF898911986748600F1A270 /* Assets */,
 				0AAB6D1919827ACD009DCDD5 /* Categories */,
 				0AAB6D1E19827ACD009DCDD5 /* Controllers */,
-				0AAB6D2B19827ACD009DCDD5 /* Controls */,
 				0AAB6D2E19827ACD009DCDD5 /* Protocols */,
-				0AAB6D4B19827ACD009DCDD5 /* Utils */,
+				0A939E9B19DA9EF0005BD28C /* Table View Cells */,
 				0AAB6D6219827AEA009DCDD5 /* Main.storyboard */,
 				0AAB6CFC19827AAA009DCDD5 /* Images.xcassets */,
 				0AAB6CEB19827AAA009DCDD5 /* Supporting Files */,
@@ -343,8 +342,6 @@
 		0AAB6D1919827ACD009DCDD5 /* Categories */ = {
 			isa = PBXGroup;
 			children = (
-				0AAB6D1A19827ACD009DCDD5 /* UIControl+SELoginInputFieldsAdditions.h */,
-				0AAB6D1B19827ACD009DCDD5 /* UIControl+SELoginInputFieldsAdditions.m */,
 				0AAB6D1C19827ACD009DCDD5 /* UIView+Framing.h */,
 				0AAB6D1D19827ACD009DCDD5 /* UIView+Framing.m */,
 			);
@@ -358,27 +355,14 @@
 				0AAB6D2019827ACD009DCDD5 /* AccountsTVC.m */,
 				0AF898821986633E00F1A270 /* ConnectWebViewVC.h */,
 				0AF898831986633E00F1A270 /* ConnectWebViewVC.m */,
-				0AAB6D2319827ACD009DCDD5 /* CredentialsVC.h */,
-				0AAB6D2419827ACD009DCDD5 /* CredentialsVC.m */,
 				0AAB6D2519827ACD009DCDD5 /* LoginsTVC.h */,
 				0AAB6D2619827ACD009DCDD5 /* LoginsTVC.m */,
-				0AAB6D2719827ACD009DCDD5 /* PickerTVC.h */,
-				0AAB6D2819827ACD009DCDD5 /* PickerTVC.m */,
 				0AF8988E1986740200F1A270 /* TabBarVC.h */,
 				0AF8988F1986740200F1A270 /* TabBarVC.m */,
 				0AAB6D2919827ACD009DCDD5 /* TransactionsTVC.h */,
 				0AAB6D2A19827ACD009DCDD5 /* TransactionsTVC.m */,
 			);
 			path = Controllers;
-			sourceTree = "<group>";
-		};
-		0AAB6D2B19827ACD009DCDD5 /* Controls */ = {
-			isa = PBXGroup;
-			children = (
-				0AAB6D2C19827ACD009DCDD5 /* OptionSelectButton.h */,
-				0AAB6D2D19827ACD009DCDD5 /* OptionSelectButton.m */,
-			);
-			path = Controls;
 			sourceTree = "<group>";
 		};
 		0AAB6D2E19827ACD009DCDD5 /* Protocols */ = {
@@ -388,15 +372,6 @@
 				0A3F875019A249C300B7E5E2 /* LoginsTVCDelegate.h */,
 			);
 			path = Protocols;
-			sourceTree = "<group>";
-		};
-		0AAB6D4B19827ACD009DCDD5 /* Utils */ = {
-			isa = PBXGroup;
-			children = (
-				0AAB6D4C19827ACD009DCDD5 /* Helpers.h */,
-				0AAB6D4D19827ACD009DCDD5 /* Helpers.m */,
-			);
-			path = Utils;
 			sourceTree = "<group>";
 		};
 		0AF898911986748600F1A270 /* Assets */ = {
@@ -489,6 +464,7 @@
 				0AF898931986748C00F1A270 /* circle@2x.png in Resources */,
 				0AAB6D6319827AEA009DCDD5 /* Main.storyboard in Resources */,
 				0AAB6CFD19827AAA009DCDD5 /* Images.xcassets in Resources */,
+				0A939EA019DA9F0E005BD28C /* TransactionTableViewCell.xib in Resources */,
 				0AAB6CEF19827AAA009DCDD5 /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -545,16 +521,13 @@
 				0AAB6D6619827AFB009DCDD5 /* AppDelegate.m in Sources */,
 				0A3F870019A1F05E00B7E5E2 /* NSString+SEModelsSerializingAdditions.m in Sources */,
 				0A3F870919A1F05E00B7E5E2 /* SEWebView.m in Sources */,
+				0A939E9F19DA9F0E005BD28C /* TransactionTableViewCell.m in Sources */,
 				0A3F870419A1F05E00B7E5E2 /* SEProvider.m in Sources */,
-				0AAB6D5219827ACD009DCDD5 /* CredentialsVC.m in Sources */,
 				0AAB6D4F19827ACD009DCDD5 /* UIView+Framing.m in Sources */,
 				0AAB6D5519827ACD009DCDD5 /* TransactionsTVC.m in Sources */,
 				0AAB6CF119827AAA009DCDD5 /* main.m in Sources */,
-				0AAB6D5619827ACD009DCDD5 /* OptionSelectButton.m in Sources */,
-				0AAB6D5419827ACD009DCDD5 /* PickerTVC.m in Sources */,
 				0AF898901986740200F1A270 /* TabBarVC.m in Sources */,
 				0A3F870519A1F05E00B7E5E2 /* SEProviderField.m in Sources */,
-				0AAB6D4E19827ACD009DCDD5 /* UIControl+SELoginInputFieldsAdditions.m in Sources */,
 				0AAB6D5019827ACD009DCDD5 /* AccountsTVC.m in Sources */,
 				0A3F86FF19A1F05E00B7E5E2 /* SEAPIRequestManager.m in Sources */,
 				0A3F870619A1F05E00B7E5E2 /* SEProviderFieldOption.m in Sources */,
@@ -563,7 +536,6 @@
 				0A3F870A19A1F05E00B7E5E2 /* DateUtils.m in Sources */,
 				0A3F870819A1F05E00B7E5E2 /* NSURL+SBCallbacksAdditions.m in Sources */,
 				0AAB6D5319827ACD009DCDD5 /* LoginsTVC.m in Sources */,
-				0AAB6D6119827ACD009DCDD5 /* Helpers.m in Sources */,
 				0A3F870119A1F05E00B7E5E2 /* SEAccount.m in Sources */,
 				0AF898841986633E00F1A270 /* ConnectWebViewVC.m in Sources */,
 			);

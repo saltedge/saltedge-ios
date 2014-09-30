@@ -25,13 +25,14 @@
 #import "NSString+SEModelsSerializingAdditions.h"
 #import "DateUtils.h"
 
-static NSArray* datesPropertiesNames;
+static NSArray* dateTimePropertiesNames, *datePropertyNames;
 
 @implementation SEBaseModel
 
 + (void)initialize
 {
-    datesPropertiesNames = @[@"createdAt", @"updatedAt", @"deletedAt", @"lastFailAt", @"lastSuccessAt", @"lastRequestAt"];
+    dateTimePropertiesNames = @[@"createdAt", @"updatedAt", @"deletedAt", @"lastFailAt", @"lastSuccessAt", @"lastRequestAt"];
+    datePropertyNames = @[@"madeOn"];
 }
 
 + (instancetype)objectFromDictionary:(NSDictionary *)dictionary
@@ -45,8 +46,10 @@ static NSArray* datesPropertiesNames;
         SEL selector = NSSelectorFromString(setterMethodName);
         if ([object respondsToSelector:selector]) {
             id valueToSet = value;
-            if ([datesPropertiesNames containsObject:propertyName] && ![valueToSet isEqual:[NSNull null]]) {
+            if ([dateTimePropertiesNames containsObject:propertyName] && ![valueToSet isEqual:[NSNull null]]) {
                 valueToSet = [DateUtils dateFromISO8601String:value];
+            } else if ([datePropertyNames containsObject:propertyName] && ![valueToSet isEqual:[NSNull null]]) {
+                valueToSet = [DateUtils dateFromYMDString:value];
             }
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-performSelector-leaks"

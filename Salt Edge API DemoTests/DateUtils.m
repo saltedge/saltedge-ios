@@ -23,4 +23,12 @@
     XCTAssertEqualObjects(date, [NSDate dateWithTimeIntervalSince1970:0], @"dateFromISO8601String should properly convert a legit ISO 8601 string to a date object");
 }
 
+- (void)testDateFromYMDString
+{
+    NSString* dateString = @"1970-01-01";
+    NSDate* date = [DateUtils dateFromYMDString:dateString];
+
+    XCTAssertEqualObjects(date, [NSDate dateWithTimeIntervalSince1970:0], @"dateFromYMDString should properly convert a YMD date string to a date object");
+}
+
 @end
