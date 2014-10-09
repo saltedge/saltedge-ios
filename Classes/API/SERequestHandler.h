@@ -23,25 +23,25 @@
 
 #import <Foundation/Foundation.h>
 
-typedef void (^SuccessBlock)(NSDictionary *responseDictionary);
-typedef void (^FailureBlock)(NSDictionary *errorDictionary);
+typedef void (^SERequestHandlerSuccessBlock)(NSDictionary *responseDictionary);
+typedef void (^SERequestHandlerFailureBlock)(NSDictionary *errorDictionary);
 
 @interface SERequestHandler : NSObject
 
 + (void)sendPostRequestWithURL:(NSString*)urlPath
                     parameters:(NSDictionary*)parameters
                        headers:(NSDictionary*)headers
-                       success:(SuccessBlock)success
-                       failure:(FailureBlock)failure;
+                       success:(SERequestHandlerSuccessBlock)success
+                       failure:(SERequestHandlerFailureBlock)failure;
 + (void)sendGetRequestWithURL:(NSString*)urlPath
                    parameters:(NSDictionary*)parameters
                       headers:(NSDictionary*)headers
-                      success:(SuccessBlock)success
-                      failure:(FailureBlock)failure;
+                      success:(SERequestHandlerSuccessBlock)success
+                      failure:(SERequestHandlerFailureBlock)failure;
 + (void)sendDeleteRequestWithURL:(NSString*)urlPath
                       parameters:(NSDictionary*)parameters
                          headers:(NSDictionary*)headers
-                         success:(SuccessBlock)success
-                         failure:(FailureBlock)failure;
+                         success:(SERequestHandlerSuccessBlock)success
+                         failure:(SERequestHandlerFailureBlock)failure;
 
 @end

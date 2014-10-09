@@ -32,8 +32,8 @@ typedef NS_ENUM(NSInteger, RequestMethod) {
 @interface SERequestHandler ()
 
 @property (nonatomic) NSMutableData *responseData;
-@property (nonatomic, copy) SuccessBlock successBlock;
-@property (nonatomic, copy) FailureBlock failureBlock;
+@property (nonatomic, copy) SERequestHandlerSuccessBlock successBlock;
+@property (nonatomic, copy) SERequestHandlerFailureBlock failureBlock;
 
 @end
 
@@ -45,24 +45,24 @@ typedef NS_ENUM(NSInteger, RequestMethod) {
 + (void)sendPostRequestWithURL:(NSString*)urlPath
                     parameters:(NSDictionary*)parameters
                        headers:(NSDictionary*)headers
-                       success:(SuccessBlock)success
-                       failure:(FailureBlock)failure {
+                       success:(SERequestHandlerSuccessBlock)success
+                       failure:(SERequestHandlerFailureBlock)failure {
     [[self handler] sendRequest:RequestMethodPOST withURL:urlPath parameters:parameters headers:headers success:success failure:success];
 }
 
 + (void)sendGetRequestWithURL:(NSString*)urlPath
                    parameters:(NSDictionary*)parameters
                       headers:(NSDictionary*)headers
-                      success:(SuccessBlock)success
-                      failure:(FailureBlock)failure {
+                      success:(SERequestHandlerSuccessBlock)success
+                      failure:(SERequestHandlerFailureBlock)failure {
     [[self handler] sendRequest:RequestMethodGET withURL:urlPath parameters:parameters headers:headers success:success failure:success];
 }
 
 + (void)sendDeleteRequestWithURL:(NSString*)urlPath
                       parameters:(NSDictionary*)parameters
                          headers:(NSDictionary*)headers
-                         success:(SuccessBlock)success
-                         failure:(FailureBlock)failure {
+                         success:(SERequestHandlerSuccessBlock)success
+                         failure:(SERequestHandlerFailureBlock)failure {
     [[self handler] sendRequest:RequestMethodDELETE withURL:urlPath parameters:parameters headers:headers success:success failure:success];
 }
 
@@ -76,7 +76,7 @@ typedef NS_ENUM(NSInteger, RequestMethod) {
 - (void)sendRequest:(RequestMethod)method
             withURL:(NSString*)urlPath
          parameters:(NSDictionary*)parameters
-            headers:(NSDictionary*)headers success:(SuccessBlock)success failure:(FailureBlock)failure {
+            headers:(NSDictionary*)headers success:(SERequestHandlerSuccessBlock)success failure:(SERequestHandlerFailureBlock)failure {
     if ((!urlPath || (urlPath && urlPath.length == 0)) && failure) {
         failure([self errorDictionaryWithError:@"EmptyURLParh" message:@"URL path is empty"]);
         return;
@@ -91,8 +91,10 @@ typedef NS_ENUM(NSInteger, RequestMethod) {
         [request setValue:headers[header] forHTTPHeaderField:header];
     }
 
-    if (!(parameters && [self handleParameters:parameters assignmentInRequest:request])) {
-        return;
+    if (parameters) {
+        if ([self handleParameters:parameters assignmentInRequest:request]) {
+            return;
+        }
     }
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunused-value"
