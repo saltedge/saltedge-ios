@@ -23,8 +23,8 @@
 
 #import <Foundation/Foundation.h>
 
-typedef void (^SuccessBlock)(NSDictionary *responseObject);
-typedef void (^FailureBlock)(NSDictionary *message);
+typedef void (^SuccessBlock)(NSDictionary *responseDictionary);
+typedef void (^FailureBlock)(NSDictionary *errorDictionary);
 
 @interface SERequestHandler : NSObject
 
