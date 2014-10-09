@@ -91,13 +91,8 @@ typedef NS_ENUM(NSInteger, RequestMethod) {
         [request setValue:headers[header] forHTTPHeaderField:header];
     }
 
-    if (parameters) {
-        NSError *error;
-        request.HTTPBody = [NSJSONSerialization dataWithJSONObject:parameters options:0 error:&error];
-        if (error && failure) {
-            failure([self errorDictionaryWithError:error.description message:error.userInfo[NSLocalizedDescriptionKey]]);
-            return;
-        }
+    if (!(parameters && [self handleParameters:parameters assignmentInRequest:request])) {
+        return;
     }
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunused-value"
@@ -126,13 +121,21 @@ typedef NS_ENUM(NSInteger, RequestMethod) {
               @"request" : @{} };
 }
 
-- (void)handleParameters:(NSDictionary*)parameters assignmentInRequest:(NSMutableURLRequest*)request {
-    NSString *query = [self urlQueryFormatForParameters:parameters];
+- (BOOL)handleParameters:(NSDictionary*)parameters assignmentInRequest:(NSMutableURLRequest*)request {
     if ([@[@"GET", @"HEAD", @"DELETE"] containsObject:[request.HTTPMethod uppercaseString]]) {
+        NSString *query = [self urlQueryFormatForParameters:parameters];
         request.URL = [NSURL URLWithString:[request.URL.absoluteString stringByAppendingFormat:request.URL.query ? @"&%@" : @"?%@", query]];
     } else {
-        request.HTTPBody = [query dataUsingEncoding:NSUTF8StringEncoding];
+        NSError *error;
+        NSData *data = [NSJSONSerialization dataWithJSONObject:parameters options:0 error:&error];
+        if (error && self.failureBlock) {
+            self.failureBlock([self errorDictionaryWithError:error.description message:error.userInfo[NSLocalizedDescriptionKey]]);
+            return NO;
+        } else {
+            request.HTTPBody = data;
+        }
     }
+    return YES;
 }
 
 - (NSString*)urlQueryFormatForParameters:(NSDictionary*)parameters {
