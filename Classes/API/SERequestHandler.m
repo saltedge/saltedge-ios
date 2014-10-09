@@ -126,7 +126,7 @@ typedef NS_ENUM(NSInteger, SERequestMethod) {
 }
 
 - (BOOL)handleParameters:(NSDictionary*)parameters assignmentInRequest:(NSMutableURLRequest*)request {
-    if ([@[@"GET", @"HEAD", @"DELETE"] containsObject:[request.HTTPMethod uppercaseString]]) {
+    if ([[self methodsWithoutBody] containsObject:[request.HTTPMethod uppercaseString]]) {
         NSString *query = [self urlQueryFormatForParameters:parameters];
         request.URL = [NSURL URLWithString:[request.URL.absoluteString stringByAppendingFormat:request.URL.query ? @"&%@" : @"?%@", query]];
     } else {
@@ -148,6 +148,10 @@ typedef NS_ENUM(NSInteger, SERequestMethod) {
         [query appendFormat:@"%@=%@", key, parameters[key]];
     }
     return query;
+}
+
+- (NSArray*)methodsWithoutBody {
+    return @[@"GET", @"DELETE"];
 }
 
 #pragma mark NSURLConnection Delegate Methods
