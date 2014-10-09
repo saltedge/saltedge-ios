@@ -43,7 +43,7 @@ typedef NS_ENUM(NSInteger, RequestMethod) {
 #pragma mark -
 #pragma mark - Public API
 
-+ (SERequestHandler*)createRequest {
++ (SERequestHandler*)handler {
     return [[SERequestHandler alloc] init];
 }
 

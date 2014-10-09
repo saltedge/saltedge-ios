@@ -32,7 +32,7 @@ typedef void (^FailureBlock)(NSDictionary *message);
 @property (nonatomic) NSDictionary *headers;
 @property (nonatomic) NSString *urlPath;
 
-+ (SERequestHandler*)createRequest;
++ (SERequestHandler*)handler;
 
 - (void)sendPostRequestSuccess:(SuccessBlock)success failure:(FailureBlock)failure;
 - (void)sendGetRequestSuccess:(SuccessBlock)success failure:(FailureBlock)failure;
