@@ -23,10 +23,10 @@
 
 #import <Foundation/Foundation.h>
 
-@interface SERequestHandler : NSObject
-
 typedef void (^SuccessBlock)(NSDictionary *responseObject);
 typedef void (^FailureBlock)(NSDictionary *message);
+
+@interface SERequestHandler : NSObject
 
 @property (nonatomic) NSDictionary *parameters;
 @property (nonatomic) NSDictionary *headers;
