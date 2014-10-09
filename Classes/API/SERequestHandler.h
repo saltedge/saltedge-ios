@@ -28,14 +28,11 @@ typedef void (^FailureBlock)(NSDictionary *message);
 
 @interface SERequestHandler : NSObject
 
-@property (nonatomic) NSDictionary *parameters;
-@property (nonatomic) NSDictionary *headers;
-@property (nonatomic) NSString *urlPath;
-
-+ (SERequestHandler*)handler;
-
-- (void)sendPostRequestSuccess:(SuccessBlock)success failure:(FailureBlock)failure;
-- (void)sendGetRequestSuccess:(SuccessBlock)success failure:(FailureBlock)failure;
-- (void)sendDeleteRequestSuccess:(SuccessBlock)success failure:(FailureBlock)failure;
++ (void)sendPostRequestWithURL:(NSString*)urlPath parameters:(NSDictionary*)parameters
+                       headers:(NSDictionary*)headers success:(SuccessBlock)success failure:(FailureBlock)failure;
++ (void)sendGetRequestWithURL:(NSString*)urlPath parameters:(NSDictionary*)parameters
+                      headers:(NSDictionary*)headers success:(SuccessBlock)success failure:(FailureBlock)failure;
++ (void)sendDeleteRequestWithURL:(NSString*)urlPath parameters:(NSDictionary*)parameters
+                         headers:(NSDictionary*)headers success:(SuccessBlock)success failure:(FailureBlock)failure;
 
 @end

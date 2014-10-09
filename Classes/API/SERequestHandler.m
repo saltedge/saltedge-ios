@@ -43,45 +43,49 @@ typedef NS_ENUM(NSInteger, RequestMethod) {
 #pragma mark -
 #pragma mark - Public API
 
-+ (SERequestHandler*)handler {
-    return [[SERequestHandler alloc] init];
++ (void)sendPostRequestWithURL:(NSString*)urlPath parameters:(NSDictionary*)parameters
+                       headers:(NSDictionary*)headers success:(SuccessBlock)success failure:(FailureBlock)failure {
+    [[self handler] sendRequest:RequestMethodPost withURL:urlPath parameters:parameters headers:headers success:success failure:success];
 }
 
-- (void)sendPostRequestSuccess:(SuccessBlock)success failure:(FailureBlock)failure {
-    [self sendRequest:RequestMethodPost success:success failure:failure];
++ (void)sendGetRequestWithURL:(NSString*)urlPath parameters:(NSDictionary*)parameters
+                      headers:(NSDictionary*)headers success:(SuccessBlock)success failure:(FailureBlock)failure {
+    [[self handler] sendRequest:RequestMethodGet withURL:urlPath parameters:parameters headers:headers success:success failure:success];
 }
 
-- (void)sendGetRequestSuccess:(SuccessBlock)success failure:(FailureBlock)failure {
-    [self sendRequest:RequestMethodGet success:success failure:failure];
-}
-
-- (void)sendDeleteRequestSuccess:(SuccessBlock)success failure:(FailureBlock)failure {
-    [self sendRequest:RequestMethodDelete success:success failure:failure];
++ (void)sendDeleteRequestWithURL:(NSString*)urlPath parameters:(NSDictionary*)parameters
+                         headers:(NSDictionary*)headers success:(SuccessBlock)success failure:(FailureBlock)failure {
+    [[self handler] sendRequest:RequestMethodDelete withURL:urlPath parameters:parameters headers:headers success:success failure:success];
 }
 
 #pragma mark -
 #pragma mark - Private API
 
-- (void)sendRequest:(RequestMethod)method success:(SuccessBlock)success failure:(FailureBlock)failure {
-    if ((!self.urlPath || (self.urlPath && self.urlPath.length == 0)) && failure) {
++ (SERequestHandler*)handler {
+    return [[SERequestHandler alloc] init];
+}
+
+- (void)sendRequest:(RequestMethod)method withURL:(NSString*)urlPath parameters:(NSDictionary*)parameters
+            headers:(NSDictionary*)headers success:(SuccessBlock)success failure:(FailureBlock)failure {
+    if ((!urlPath || (urlPath && urlPath.length == 0)) && failure) {
         failure([self errorDictionaryWithError:@"EmptyURLParh" message:@"URL path is empty"]);
         return;
     }
 
     self.successBlock = success;
     self.failureBlock = failure;
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:self.urlPath]];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:urlPath]];
     request.HTTPMethod = [self stringForMethod:method];
 
-    if (self.headers) {
-        for (NSString *header in self.headers) {
-            [request setValue:self.headers[header] forHTTPHeaderField:header];
+    if (headers) {
+        for (NSString *header in headers) {
+            [request setValue:headers[header] forHTTPHeaderField:header];
         }
     }
 
-    if (self.parameters) {
+    if (parameters) {
         NSError *error;
-        request.HTTPBody = [NSJSONSerialization dataWithJSONObject:self.parameters options:0 error:&error];
+        request.HTTPBody = [NSJSONSerialization dataWithJSONObject:parameters options:0 error:&error];
         if (error && failure) {
             failure([self errorDictionaryWithError:error.description message:error.userInfo[NSLocalizedDescriptionKey]]);
             return;
