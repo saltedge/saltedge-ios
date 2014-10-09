@@ -170,7 +170,9 @@ static NSURLSessionConfiguration* sessionConfiguration;
     }];
 }
 
-- (void)removeLoginWithId:(NSNumber *)loginId success:(void (^)(NSURLSessionDataTask *, NSDictionary *))success failure:(SEAPIRequestFailureBlock)failure
+- (void)removeLoginWithId:(NSNumber *)loginId
+                  success:(void (^)(NSURLSessionDataTask *, NSDictionary *))success
+                  failure:(SEAPIRequestFailureBlock)failure
 {
     NSAssert(loginId != nil, @"loginId cannot be nil.");
 
