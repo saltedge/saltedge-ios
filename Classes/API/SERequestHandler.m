@@ -24,9 +24,9 @@
 #import "SERequestHandler.h"
 
 typedef NS_ENUM(NSInteger, RequestMethod) {
-    RequestMethodPost,
-    RequestMethodGet,
-    RequestMethodDelete
+    RequestMethodPOST,
+    RequestMethodGET,
+    RequestMethodDELETE
 };
 
 @interface SERequestHandler ()
@@ -47,7 +47,7 @@ typedef NS_ENUM(NSInteger, RequestMethod) {
                        headers:(NSDictionary*)headers
                        success:(SuccessBlock)success
                        failure:(FailureBlock)failure {
-    [[self handler] sendRequest:RequestMethodPost withURL:urlPath parameters:parameters headers:headers success:success failure:success];
+    [[self handler] sendRequest:RequestMethodPOST withURL:urlPath parameters:parameters headers:headers success:success failure:success];
 }
 
 + (void)sendGetRequestWithURL:(NSString*)urlPath
@@ -55,7 +55,7 @@ typedef NS_ENUM(NSInteger, RequestMethod) {
                       headers:(NSDictionary*)headers
                       success:(SuccessBlock)success
                       failure:(FailureBlock)failure {
-    [[self handler] sendRequest:RequestMethodGet withURL:urlPath parameters:parameters headers:headers success:success failure:success];
+    [[self handler] sendRequest:RequestMethodGET withURL:urlPath parameters:parameters headers:headers success:success failure:success];
 }
 
 + (void)sendDeleteRequestWithURL:(NSString*)urlPath
@@ -63,7 +63,7 @@ typedef NS_ENUM(NSInteger, RequestMethod) {
                          headers:(NSDictionary*)headers
                          success:(SuccessBlock)success
                          failure:(FailureBlock)failure {
-    [[self handler] sendRequest:RequestMethodDelete withURL:urlPath parameters:parameters headers:headers success:success failure:success];
+    [[self handler] sendRequest:RequestMethodDELETE withURL:urlPath parameters:parameters headers:headers success:success failure:success];
 }
 
 #pragma mark -
@@ -107,13 +107,13 @@ typedef NS_ENUM(NSInteger, RequestMethod) {
 
 - (NSString*)stringForMethod:(RequestMethod)method {
     switch (method) {
-        case RequestMethodPost: {
+        case RequestMethodPOST: {
             return @"POST";
         }
-        case RequestMethodGet: {
+        case RequestMethodGET: {
             return @"GET";
         }
-        case RequestMethodDelete: {
+        case RequestMethodDELETE: {
             return @"DELETE";
         }
     }
