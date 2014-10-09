@@ -143,11 +143,11 @@ typedef NS_ENUM(NSInteger, SERequestMethod) {
 }
 
 - (NSString*)urlQueryFormatForParameters:(NSDictionary*)parameters {
-    NSMutableString *query = [NSMutableString string];
-    for (NSString *key in parameters) {
-        [query appendFormat:@"%@=%@", key, parameters[key]];
+    NSMutableArray *parameterStrings = [NSMutableArray array];
+    for (NSString *parameterKey in parameters) {
+        [parameterStrings addObject:[NSString stringWithFormat:@"%@=%@", parameterKey, parameters[parameterKey]]];
     }
-    return query;
+    return [parameterStrings componentsJoinedByString:@"&"];
 }
 
 - (NSArray*)methodsWithoutBody {
