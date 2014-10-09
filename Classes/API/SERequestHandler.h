@@ -33,11 +33,13 @@ typedef void (^SERequestHandlerFailureBlock)(NSDictionary* errorDictionary);
                        headers:(NSDictionary*)headers
                        success:(SERequestHandlerSuccessBlock)success
                        failure:(SERequestHandlerFailureBlock)failure;
+
 + (void)sendGetRequestWithURL:(NSString*)url
                    parameters:(NSDictionary*)parameters
                       headers:(NSDictionary*)headers
                       success:(SERequestHandlerSuccessBlock)success
                       failure:(SERequestHandlerFailureBlock)failure;
+
 + (void)sendDeleteRequestWithURL:(NSString*)url
                       parameters:(NSDictionary*)parameters
                          headers:(NSDictionary*)headers

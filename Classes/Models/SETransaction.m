@@ -25,7 +25,7 @@
 
 @implementation SETransaction
 
-@synthesize description = __description;
+@synthesize description = _description;
 
 - (BOOL)isEqualToTransaction:(SETransaction*)transaction
 {

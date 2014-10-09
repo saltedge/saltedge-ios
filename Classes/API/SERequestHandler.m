@@ -23,13 +23,17 @@
 
 #import "SERequestHandler.h"
 
+static NSString* const kRequestMethodPOST   = @"POST";
+static NSString* const kRequestMethodGET    = @"GET";
+static NSString* const kRequestMethodDELETE = @"DELETE";
+
 typedef NS_ENUM(NSInteger, SERequestMethod) {
     SERequestMethodPOST,
     SERequestMethodGET,
     SERequestMethodDELETE
 };
 
-@interface SERequestHandler ()
+@interface SERequestHandler (/* Private */) <NSURLConnectionDelegate>
 
 @property (nonatomic) NSMutableData* responseData;
 @property (nonatomic, copy) SERequestHandlerSuccessBlock successBlock;
@@ -46,7 +50,8 @@ typedef NS_ENUM(NSInteger, SERequestMethod) {
                     parameters:(NSDictionary*)parameters
                        headers:(NSDictionary*)headers
                        success:(SERequestHandlerSuccessBlock)success
-                       failure:(SERequestHandlerFailureBlock)failure {
+                       failure:(SERequestHandlerFailureBlock)failure
+{
     [[self handler] sendRequest:SERequestMethodPOST withURL:url parameters:parameters headers:headers success:success failure:success];
 }
 
@@ -54,7 +59,8 @@ typedef NS_ENUM(NSInteger, SERequestMethod) {
                    parameters:(NSDictionary*)parameters
                       headers:(NSDictionary*)headers
                       success:(SERequestHandlerSuccessBlock)success
-                      failure:(SERequestHandlerFailureBlock)failure {
+                      failure:(SERequestHandlerFailureBlock)failure
+{
     [[self handler] sendRequest:SERequestMethodGET withURL:url parameters:parameters headers:headers success:success failure:success];
 }
 
@@ -62,25 +68,30 @@ typedef NS_ENUM(NSInteger, SERequestMethod) {
                       parameters:(NSDictionary*)parameters
                          headers:(NSDictionary*)headers
                          success:(SERequestHandlerSuccessBlock)success
-                         failure:(SERequestHandlerFailureBlock)failure {
+                         failure:(SERequestHandlerFailureBlock)failure
+{
     [[self handler] sendRequest:SERequestMethodDELETE withURL:url parameters:parameters headers:headers success:success failure:success];
 }
 
 #pragma mark -
 #pragma mark - Private API
 
-+ (SERequestHandler*)handler {
++ (SERequestHandler*)handler
+{
     return [[SERequestHandler alloc] init];
 }
 
 - (void)sendRequest:(SERequestMethod)method
             withURL:(NSString*)url
          parameters:(NSDictionary*)parameters
-            headers:(NSDictionary*)headers success:(SERequestHandlerSuccessBlock)success failure:(SERequestHandlerFailureBlock)failure {
+            headers:(NSDictionary*)headers
+            success:(SERequestHandlerSuccessBlock)success
+            failure:(SERequestHandlerFailureBlock)failure
+{
     if (url.length == 0) {
         if (failure) {
-            failure([self errorDictionaryWithError:@"EmptyUrl" message:@"URL is empty"]);
-        };
+            failure([self errorDictionaryWithError:@"EmptyURL" message:@"URL is empty"]);
+        }
         return;
     }
 
@@ -104,46 +115,51 @@ typedef NS_ENUM(NSInteger, SERequestMethod) {
 #pragma clang diagnostic pop
 }
 
-- (NSString*)stringForMethod:(SERequestMethod)method {
+- (NSString*)stringForMethod:(SERequestMethod)method
+{
     switch (method) {
         case SERequestMethodPOST: {
-            return @"POST";
+            return kRequestMethodPOST;
         }
         case SERequestMethodGET: {
-            return @"GET";
+            return kRequestMethodGET;
         }
         case SERequestMethodDELETE: {
-            return @"DELETE";
+            return kRequestMethodDELETE;
         }
     }
 }
 
 - (NSDictionary*)errorDictionaryWithError:(NSString*)error
-                                  message:(NSString*)message {
+                                  message:(NSString*)message
+{
     return @{ @"error_class" : error,
               @"message" : message,
               @"request" : @{} };
 }
 
 - (BOOL)handleParameters:(NSDictionary*)parameters
-     assignmentInRequest:(NSMutableURLRequest*)request {
-    if ([[self methodsWithoutBody] containsObject:[request.HTTPMethod uppercaseString]]) {
+     assignmentInRequest:(NSMutableURLRequest*)request
+{
+    if ([[self HTTPMethodsWithoutBody] containsObject:[request.HTTPMethod uppercaseString]]) {
         NSString* query = [self urlQueryFormatForParameters:parameters];
         request.URL = [NSURL URLWithString:[request.URL.absoluteString stringByAppendingFormat:request.URL.query ? @"&%@" : @"?%@", query]];
     } else {
         NSError* error;
         NSData* data = [NSJSONSerialization dataWithJSONObject:parameters options:0 error:&error];
-        if (error && self.failureBlock) {
-            self.failureBlock([self errorDictionaryWithError:error.description message:error.userInfo[NSLocalizedDescriptionKey]]);
+        if (error) {
+            if (self.failureBlock) {
+                self.failureBlock([self errorDictionaryWithError:error.description message:error.userInfo[NSLocalizedDescriptionKey]]);
+            }
             return NO;
-        } else {
-            request.HTTPBody = data;
         }
+        request.HTTPBody = data;
     }
     return YES;
 }
 
-- (NSString*)urlQueryFormatForParameters:(NSDictionary*)parameters {
+- (NSString*)urlQueryFormatForParameters:(NSDictionary*)parameters
+{
     NSMutableArray* parameterStrings = [NSMutableArray array];
     for (NSString* parameterKey in parameters) {
         [parameterStrings addObject:[NSString stringWithFormat:@"%@=%@", parameterKey, parameters[parameterKey]]];
@@ -151,30 +167,38 @@ typedef NS_ENUM(NSInteger, SERequestMethod) {
     return [parameterStrings componentsJoinedByString:@"&"];
 }
 
-- (NSArray*)methodsWithoutBody {
-    return @[@"GET", @"DELETE"];
+- (NSArray*)HTTPMethodsWithoutBody
+{
+    return @[kRequestMethodGET, kRequestMethodDELETE];
 }
 
-#pragma mark NSURLConnection Delegate Methods
+#pragma mark - NSURLConnection Delegate Methods
 
-- (void)connection:(NSURLConnection*)connection
-didReceiveResponse:(NSURLResponse*)response {
+- (void)connection:(NSURLConnection*)connection didReceiveResponse:(NSURLResponse*)response
+{
     self.responseData = [[NSMutableData alloc] init];
 }
 
-- (void)connection:(NSURLConnection*)connection
-    didReceiveData:(NSData*)data {
+- (void)connection:(NSURLConnection*)connection didReceiveData:(NSData*)data
+{
     [self.responseData appendData:data];
 }
 
-- (void)connectionDidFinishLoading:(NSURLConnection*)connection {
+- (void)connectionDidFinishLoading:(NSURLConnection*)connection
+{
     if (self.successBlock) {
-        self.successBlock([NSJSONSerialization JSONObjectWithData:self.responseData options:0 error:nil]);
+        NSError* error;
+        NSDictionary* data = [NSJSONSerialization JSONObjectWithData:self.responseData options:0 error:&error];
+        if (error) {
+            self.failureBlock([self errorDictionaryWithError:error.description message:error.userInfo[NSLocalizedDescriptionKey]]);
+        } else {
+            self.successBlock(data);
+        }
     }
 }
 
-- (void)connection:(NSURLConnection*)connection
-  didFailWithError:(NSError*)error {
+- (void)connection:(NSURLConnection*)connection didFailWithError:(NSError*)error
+{
     if (self.failureBlock) {
         self.failureBlock([self errorDictionaryWithError:error.description message:error.userInfo[NSLocalizedDescriptionKey]]);
     }
