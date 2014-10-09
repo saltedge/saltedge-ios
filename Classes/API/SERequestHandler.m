@@ -31,7 +31,6 @@ typedef NS_ENUM(NSInteger, RequestMethod) {
     RequestMethodDelete
 };
 
-@property (nonatomic) NSURLConnection *connection;
 @property (nonatomic) NSMutableData *responseData;
 @property (nonatomic, copy) SuccessBlock successBlock;
 @property (nonatomic, copy) FailureBlock failureBlock;
@@ -91,8 +90,10 @@ typedef NS_ENUM(NSInteger, RequestMethod) {
             return;
         }
     }
-
-    self.connection = [[NSURLConnection alloc] initWithRequest:request delegate:self];
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunused-value"
+    [[NSURLConnection alloc] initWithRequest:request delegate:self];
+#pragma clang diagnostic pop
 }
 
 - (NSString*)stringForMethod:(RequestMethod)method {
