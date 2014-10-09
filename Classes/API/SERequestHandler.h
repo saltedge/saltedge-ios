@@ -28,17 +28,17 @@ typedef void (^SERequestHandlerFailureBlock)(NSDictionary *errorDictionary);
 
 @interface SERequestHandler : NSObject
 
-+ (void)sendPostRequestWithURL:(NSString*)urlPath
++ (void)sendPostRequestWithURL:(NSString*)url
                     parameters:(NSDictionary*)parameters
                        headers:(NSDictionary*)headers
                        success:(SERequestHandlerSuccessBlock)success
                        failure:(SERequestHandlerFailureBlock)failure;
-+ (void)sendGetRequestWithURL:(NSString*)urlPath
++ (void)sendGetRequestWithURL:(NSString*)url
                    parameters:(NSDictionary*)parameters
                       headers:(NSDictionary*)headers
                       success:(SERequestHandlerSuccessBlock)success
                       failure:(SERequestHandlerFailureBlock)failure;
-+ (void)sendDeleteRequestWithURL:(NSString*)urlPath
++ (void)sendDeleteRequestWithURL:(NSString*)url
                       parameters:(NSDictionary*)parameters
                          headers:(NSDictionary*)headers
                          success:(SERequestHandlerSuccessBlock)success

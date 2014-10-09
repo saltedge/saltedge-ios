@@ -23,10 +23,10 @@
 
 #import "SERequestHandler.h"
 
-typedef NS_ENUM(NSInteger, RequestMethod) {
-    RequestMethodPOST,
-    RequestMethodGET,
-    RequestMethodDELETE
+typedef NS_ENUM(NSInteger, SERequestMethod) {
+    SERequestMethodPOST,
+    SERequestMethodGET,
+    SERequestMethodDELETE
 };
 
 @interface SERequestHandler ()
@@ -42,28 +42,28 @@ typedef NS_ENUM(NSInteger, RequestMethod) {
 #pragma mark -
 #pragma mark - Public API
 
-+ (void)sendPostRequestWithURL:(NSString*)urlPath
++ (void)sendPostRequestWithURL:(NSString*)url
                     parameters:(NSDictionary*)parameters
                        headers:(NSDictionary*)headers
                        success:(SERequestHandlerSuccessBlock)success
                        failure:(SERequestHandlerFailureBlock)failure {
-    [[self handler] sendRequest:RequestMethodPOST withURL:urlPath parameters:parameters headers:headers success:success failure:success];
+    [[self handler] sendRequest:SERequestMethodPOST withURL:url parameters:parameters headers:headers success:success failure:success];
 }
 
-+ (void)sendGetRequestWithURL:(NSString*)urlPath
++ (void)sendGetRequestWithURL:(NSString*)url
                    parameters:(NSDictionary*)parameters
                       headers:(NSDictionary*)headers
                       success:(SERequestHandlerSuccessBlock)success
                       failure:(SERequestHandlerFailureBlock)failure {
-    [[self handler] sendRequest:RequestMethodGET withURL:urlPath parameters:parameters headers:headers success:success failure:success];
+    [[self handler] sendRequest:SERequestMethodGET withURL:url parameters:parameters headers:headers success:success failure:success];
 }
 
-+ (void)sendDeleteRequestWithURL:(NSString*)urlPath
++ (void)sendDeleteRequestWithURL:(NSString*)url
                       parameters:(NSDictionary*)parameters
                          headers:(NSDictionary*)headers
                          success:(SERequestHandlerSuccessBlock)success
                          failure:(SERequestHandlerFailureBlock)failure {
-    [[self handler] sendRequest:RequestMethodDELETE withURL:urlPath parameters:parameters headers:headers success:success failure:success];
+    [[self handler] sendRequest:SERequestMethodDELETE withURL:url parameters:parameters headers:headers success:success failure:success];
 }
 
 #pragma mark -
@@ -73,18 +73,18 @@ typedef NS_ENUM(NSInteger, RequestMethod) {
     return [[SERequestHandler alloc] init];
 }
 
-- (void)sendRequest:(RequestMethod)method
-            withURL:(NSString*)urlPath
+- (void)sendRequest:(SERequestMethod)method
+            withURL:(NSString*)url
          parameters:(NSDictionary*)parameters
             headers:(NSDictionary*)headers success:(SERequestHandlerSuccessBlock)success failure:(SERequestHandlerFailureBlock)failure {
-    if ((!urlPath || (urlPath && urlPath.length == 0)) && failure) {
-        failure([self errorDictionaryWithError:@"EmptyURLParh" message:@"URL path is empty"]);
+    if (url.length == 0 && failure) {
+        failure([self errorDictionaryWithError:@"Emptyurl" message:@"URL path is empty"]);
         return;
     }
 
     self.successBlock = success;
     self.failureBlock = failure;
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:urlPath]];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:url]];
     request.HTTPMethod = [self stringForMethod:method];
 
     for (NSString *header in headers) {
@@ -102,15 +102,15 @@ typedef NS_ENUM(NSInteger, RequestMethod) {
 #pragma clang diagnostic pop
 }
 
-- (NSString*)stringForMethod:(RequestMethod)method {
+- (NSString*)stringForMethod:(SERequestMethod)method {
     switch (method) {
-        case RequestMethodPOST: {
+        case SERequestMethodPOST: {
             return @"POST";
         }
-        case RequestMethodGET: {
+        case SERequestMethodGET: {
             return @"GET";
         }
-        case RequestMethodDELETE: {
+        case SERequestMethodDELETE: {
             return @"DELETE";
         }
     }
