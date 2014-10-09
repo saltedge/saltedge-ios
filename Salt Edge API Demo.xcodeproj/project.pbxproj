@@ -49,6 +49,7 @@
 		0AF898841986633E00F1A270 /* ConnectWebViewVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AF898831986633E00F1A270 /* ConnectWebViewVC.m */; };
 		0AF898901986740200F1A270 /* TabBarVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AF8988F1986740200F1A270 /* TabBarVC.m */; };
 		0AF898931986748C00F1A270 /* circle@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0AF898921986748C00F1A270 /* circle@2x.png */; };
+		5897167D19E6ACB3001E2AA9 /* SERequestHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 5897167C19E6ACB3001E2AA9 /* SERequestHandler.m */; };
 		B275BB778B184F04BB4FB069 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FA121862E2A4454C95F78533 /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -132,6 +133,8 @@
 		0AF8988E1986740200F1A270 /* TabBarVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TabBarVC.h; sourceTree = "<group>"; };
 		0AF8988F1986740200F1A270 /* TabBarVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TabBarVC.m; sourceTree = "<group>"; };
 		0AF898921986748C00F1A270 /* circle@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "circle@2x.png"; sourceTree = "<group>"; };
+		5897167B19E6ACB3001E2AA9 /* SERequestHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SERequestHandler.h; sourceTree = "<group>"; };
+		5897167C19E6ACB3001E2AA9 /* SERequestHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SERequestHandler.m; sourceTree = "<group>"; };
 		BB33E063D75F472A97ADC1A5 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 		FA121862E2A4454C95F78533 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -176,6 +179,8 @@
 		0A3F86DE19A1F05E00B7E5E2 /* API */ = {
 			isa = PBXGroup;
 			children = (
+				5897167B19E6ACB3001E2AA9 /* SERequestHandler.h */,
+				5897167C19E6ACB3001E2AA9 /* SERequestHandler.m */,
 				0A3F86DF19A1F05E00B7E5E2 /* SEAPIRequestManager.h */,
 				0A3F86E019A1F05E00B7E5E2 /* SEAPIRequestManager.m */,
 			);
@@ -527,6 +532,7 @@
 				0AAB6D5519827ACD009DCDD5 /* TransactionsTVC.m in Sources */,
 				0AAB6CF119827AAA009DCDD5 /* main.m in Sources */,
 				0AF898901986740200F1A270 /* TabBarVC.m in Sources */,
+				5897167D19E6ACB3001E2AA9 /* SERequestHandler.m in Sources */,
 				0A3F870519A1F05E00B7E5E2 /* SEProviderField.m in Sources */,
 				0AAB6D5019827ACD009DCDD5 /* AccountsTVC.m in Sources */,
 				0A3F86FF19A1F05E00B7E5E2 /* SEAPIRequestManager.m in Sources */,
