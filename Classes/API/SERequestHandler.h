@@ -25,8 +25,8 @@
 
 @interface SERequestHandler : NSObject
 
-typedef void (^SuccessBlock)(NSDictionary* responseObject);
-typedef void (^FailureBlock)(NSDictionary* message);
+typedef void (^SuccessBlock)(NSDictionary *responseObject);
+typedef void (^FailureBlock)(NSDictionary *message);
 
 @property (nonatomic) NSDictionary *parameters;
 @property (nonatomic) NSDictionary *headers;
