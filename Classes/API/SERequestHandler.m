@@ -77,8 +77,10 @@ typedef NS_ENUM(NSInteger, SERequestMethod) {
             withURL:(NSString*)url
          parameters:(NSDictionary*)parameters
             headers:(NSDictionary*)headers success:(SERequestHandlerSuccessBlock)success failure:(SERequestHandlerFailureBlock)failure {
-    if (url.length == 0 && failure) {
-        failure([self errorDictionaryWithError:@"EmptyUrl" message:@"URL is empty"]);
+    if (url.length == 0) {
+        if (failure) {
+            failure([self errorDictionaryWithError:@"EmptyUrl" message:@"URL is empty"]);
+        };
         return;
     }
 
@@ -92,7 +94,7 @@ typedef NS_ENUM(NSInteger, SERequestMethod) {
     }
 
     if (parameters) {
-        if ([self handleParameters:parameters assignmentInRequest:request]) {
+        if (![self handleParameters:parameters assignmentInRequest:request]) {
             return;
         }
     }
