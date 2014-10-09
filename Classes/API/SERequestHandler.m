@@ -23,13 +23,13 @@
 
 #import "SERequestHandler.h"
 
-@interface SERequestHandler ()
-
 typedef NS_ENUM(NSInteger, RequestMethod) {
     RequestMethodPost,
     RequestMethodGet,
     RequestMethodDelete
 };
+
+@interface SERequestHandler ()
 
 @property (nonatomic) NSMutableData *responseData;
 @property (nonatomic, copy) SuccessBlock successBlock;
@@ -42,18 +42,27 @@ typedef NS_ENUM(NSInteger, RequestMethod) {
 #pragma mark -
 #pragma mark - Public API
 
-+ (void)sendPostRequestWithURL:(NSString*)urlPath parameters:(NSDictionary*)parameters
-                       headers:(NSDictionary*)headers success:(SuccessBlock)success failure:(FailureBlock)failure {
++ (void)sendPostRequestWithURL:(NSString*)urlPath
+                    parameters:(NSDictionary*)parameters
+                       headers:(NSDictionary*)headers
+                       success:(SuccessBlock)success
+                       failure:(FailureBlock)failure {
     [[self handler] sendRequest:RequestMethodPost withURL:urlPath parameters:parameters headers:headers success:success failure:success];
 }
 
-+ (void)sendGetRequestWithURL:(NSString*)urlPath parameters:(NSDictionary*)parameters
-                      headers:(NSDictionary*)headers success:(SuccessBlock)success failure:(FailureBlock)failure {
++ (void)sendGetRequestWithURL:(NSString*)urlPath
+                   parameters:(NSDictionary*)parameters
+                      headers:(NSDictionary*)headers
+                      success:(SuccessBlock)success
+                      failure:(FailureBlock)failure {
     [[self handler] sendRequest:RequestMethodGet withURL:urlPath parameters:parameters headers:headers success:success failure:success];
 }
 
-+ (void)sendDeleteRequestWithURL:(NSString*)urlPath parameters:(NSDictionary*)parameters
-                         headers:(NSDictionary*)headers success:(SuccessBlock)success failure:(FailureBlock)failure {
++ (void)sendDeleteRequestWithURL:(NSString*)urlPath
+                      parameters:(NSDictionary*)parameters
+                         headers:(NSDictionary*)headers
+                         success:(SuccessBlock)success
+                         failure:(FailureBlock)failure {
     [[self handler] sendRequest:RequestMethodDelete withURL:urlPath parameters:parameters headers:headers success:success failure:success];
 }
 
@@ -64,7 +73,9 @@ typedef NS_ENUM(NSInteger, RequestMethod) {
     return [[SERequestHandler alloc] init];
 }
 
-- (void)sendRequest:(RequestMethod)method withURL:(NSString*)urlPath parameters:(NSDictionary*)parameters
+- (void)sendRequest:(RequestMethod)method
+            withURL:(NSString*)urlPath
+         parameters:(NSDictionary*)parameters
             headers:(NSDictionary*)headers success:(SuccessBlock)success failure:(FailureBlock)failure {
     if ((!urlPath || (urlPath && urlPath.length == 0)) && failure) {
         failure([self errorDictionaryWithError:@"EmptyURLParh" message:@"URL path is empty"]);
@@ -76,10 +87,8 @@ typedef NS_ENUM(NSInteger, RequestMethod) {
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:urlPath]];
     request.HTTPMethod = [self stringForMethod:method];
 
-    if (headers) {
-        for (NSString *header in headers) {
-            [request setValue:headers[header] forHTTPHeaderField:header];
-        }
+    for (NSString *header in headers) {
+        [request setValue:headers[header] forHTTPHeaderField:header];
     }
 
     if (parameters) {
@@ -110,10 +119,28 @@ typedef NS_ENUM(NSInteger, RequestMethod) {
     }
 }
 
-- (NSDictionary*)errorDictionaryWithError:(NSString*)error message:(NSString*)message {
+- (NSDictionary*)errorDictionaryWithError:(NSString*)error
+                                  message:(NSString*)message {
     return @{ @"error_class" : error,
               @"message" : message,
               @"request" : @{} };
+}
+
+- (void)handleParameters:(NSDictionary*)parameters assignmentInRequest:(NSMutableURLRequest*)request {
+    NSString *query = [self urlQueryFormatForParameters:parameters];
+    if ([@[@"GET", @"HEAD", @"DELETE"] containsObject:[request.HTTPMethod uppercaseString]]) {
+        request.URL = [NSURL URLWithString:[request.URL.absoluteString stringByAppendingFormat:request.URL.query ? @"&%@" : @"?%@", query]];
+    } else {
+        request.HTTPBody = [query dataUsingEncoding:NSUTF8StringEncoding];
+    }
+}
+
+- (NSString*)urlQueryFormatForParameters:(NSDictionary*)parameters {
+    NSMutableString *query = [NSMutableString string];
+    for (NSString *key in parameters) {
+        [query appendFormat:@"%@=%@", key, parameters[key]];
+    }
+    return query;
 }
 
 #pragma mark NSURLConnection Delegate Methods
@@ -122,7 +149,8 @@ typedef NS_ENUM(NSInteger, RequestMethod) {
     self.responseData = [[NSMutableData alloc] init];
 }
 
-- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data {
+- (void)connection:(NSURLConnection *)connection
+    didReceiveData:(NSData *)data {
     [self.responseData appendData:data];
 }
 
