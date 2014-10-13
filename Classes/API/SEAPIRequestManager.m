@@ -263,9 +263,7 @@ static NSDictionary* sessionHeaders;
     NSAssert(parameters[kReturnToKey] != nil, @"Return to cannot be nil.");
     NSAssert(parameters[kCustomerIdKey] != nil, @"Customer ID cannot be nil.");
 
-    NSMutableDictionary* mutableParameters = parameters.mutableCopy;
-    mutableParameters[kMobileKey] = @YES;
-    NSDictionary* dataParameters = @{ kDataKey: mutableParameters };
+    NSDictionary* dataParameters = @{ kDataKey: parameters };
 
     [self requestTokenWithPath:kCreateTokenPath
                        headers:sessionHeaders
