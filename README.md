@@ -25,7 +25,7 @@ Install the pod
 
 Clone this repository
 
-`$ git clone git@github.com:saltedge/saltbridge-ios.git`
+`$ git clone git@github.com:saltedge/saltedge-ios.git`
 
 Copy the `Salt Edge API` folder into your project.
 
