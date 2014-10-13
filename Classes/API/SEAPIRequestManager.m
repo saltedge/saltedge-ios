@@ -28,11 +28,16 @@
 #import "SEAccount.h"
 #import "SETransaction.h"
 #import "DateUtils.h"
+#import "SERequestHandler.h"
+#import "SEError.h"
 
 /* HTTP Headers */
-static NSString* const kAppIdHeaderKey           = @"App-id";
+
 static NSString* const kAppSecretHeaderKey       = @"App-secret";
-static NSString* const kCustomerSecretHeaderKey  = @"Customer-secret";
+static NSString* const kClientIdHeaderKey        = @"Client-id";
+static NSString* const kLoginSecretHeaderKey     = @"Login-secret";
+static NSString* const kContentTypeHeaderKey     = @"Content-type";
+static NSString* const kJSONContentTypeValue     = @"application/json";
 
 /* Keys of responses and post bodies */
 static NSString* const kFromIdKey                = @"from_id";
@@ -42,12 +47,22 @@ static NSString* const kNextIdKey                = @"next_id";
 static NSString* const kNextPageKey              = @"next_page";
 static NSString* const kLoginIdKey               = @"login_id";
 static NSString* const kRefreshKey               = @"refresh";
-static NSString* const kCustomerEmailKey         = @"customer_email";
+static NSString* const kCountryCode              = @"country_code";
+static NSString* const kProviderCodeKey          = @"provider_code";
+static NSString* const kReturnToKey              = @"return_to";
+static NSString* const kCustomerIdKey            = @"customer_id";
 static NSString* const kAccountIdKey             = @"account_id";
 static NSString* const kMobileKey                = @"mobile";
+static NSString* const kIdentifierKey            = @"identifier";
 
 /* HTTP Session config */
-static NSURLSessionConfiguration* sessionConfiguration;
+static NSDictionary* sessionHeaders;
+
+@interface SEAPIRequestManager(/* Private */)
+
+@property (nonatomic, strong) NSString* baseURL;
+
+@end
 
 @implementation SEAPIRequestManager
 
@@ -59,210 +74,314 @@ static NSURLSessionConfiguration* sessionConfiguration;
 {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        NSAssert(sessionConfiguration != nil, @"Session configuration not set. Did you forget to link your app id and app/customer secret?");
+        NSAssert(sessionHeaders != nil, @"Session configuration not set. Did you forget to link your client ID and app secret?");
     });
 
-    SEAPIRequestManager* manager = [[[self class] alloc] initWithBaseURL:[NSURL URLWithString:kRootURL] sessionConfiguration:sessionConfiguration];
-    manager.securityPolicy.allowInvalidCertificates = YES;
-    manager.requestSerializer = [AFJSONRequestSerializer serializerWithWritingOptions:0];
+    SEAPIRequestManager* manager = [[[self class] alloc] initWithBaseURL:kRootURL];
     return manager;
 }
 
-+ (void)linkAppId:(NSString *)appId appSecret:(NSString *)appSecret
++ (void)linkClientId:(NSString *)clientId appSecret:(NSString *)appSecret
 {
-    NSAssert(sessionConfiguration == nil, @"Session configuration is already set up.");
-    NSAssert(appId != nil, @"App id can't be nil");
-    NSAssert(appSecret != nil, @"App secret can't be nil");
+    NSAssert(sessionHeaders == nil, @"Session headers are already set up.");
+    NSAssert(clientId != nil, @"Client ID cannot be nil");
+    NSAssert(appSecret != nil, @"App secret cannot be nil");
 
-    sessionConfiguration = [NSURLSessionConfiguration defaultSessionConfiguration];
-    [sessionConfiguration setHTTPAdditionalHeaders:@{ kAppIdHeaderKey : appId, kAppSecretHeaderKey : appSecret }];
-}
-
-+ (void)linkAppId:(NSString *)appId customerSecret:(NSString *)customerSecret
-{
-    NSAssert(sessionConfiguration == nil, @"Session configuration is already set up.");
-    NSAssert(appId != nil, @"App id can't be nil");
-    NSAssert(customerSecret != nil, @"Customer secret can't be nil");
-
-    sessionConfiguration = [NSURLSessionConfiguration defaultSessionConfiguration];
-    [sessionConfiguration setHTTPAdditionalHeaders:@{ kAppIdHeaderKey : appId, kCustomerSecretHeaderKey : customerSecret }];
+    sessionHeaders = @{ kClientIdHeaderKey : clientId, kAppSecretHeaderKey : appSecret, kContentTypeHeaderKey : kJSONContentTypeValue };
 }
 
 #pragma mark - Instance Methods
 
-- (void)fetchFullLoginsListWithSuccess:(void (^)(NSURLSessionDataTask *, NSSet *))success
-                               failure:(SEAPIRequestFailureBlock)failure
+- (void)createCustomerWithIdentifier:(NSString *)identifier
+                             success:(void (^)(NSDictionary *))success
+                             failure:(SEAPIRequestFailureBlock)failure
 {
-    [self requestPaginatedResourceWithPath:kLoginsPath container:@[].mutableCopy success:^(NSURLSessionDataTask* task, NSArray* loginsDictionaries) {
-        if (success) {
-            NSMutableSet* fullLoginsList = [NSMutableSet setWithCapacity:loginsDictionaries.count];
-            for (NSDictionary* loginDictionary in loginsDictionaries) {
-                [fullLoginsList addObject:[SELogin objectFromDictionary:loginDictionary]];
-            }
-            success(task, (NSSet*) fullLoginsList);
-        }
-    } failure:^(NSURLSessionDataTask* task, NSError* error) {
-        if (failure) { failure(task, error); }
-    } full:YES];
-}
+    NSAssert(identifier != nil, @"Customer identifier cannot be nil.");
 
-- (void)fetchFullAccountsListForLoginId:(NSNumber *)loginId
-                                success:(void (^)(NSURLSessionDataTask *, NSSet *))success
-                                failure:(SEAPIRequestFailureBlock)failure
-{
-    NSAssert(loginId != nil, @"loginId cannot be nil.");
+    NSDictionary* parameters = @{ kDataKey: @{ kIdentifierKey: identifier  } };
 
-    SEAPIRequestManager* manager = [[self class] manager];
-
-    [manager GET:kAccountsPath parameters:@{ kLoginIdKey : loginId } success:^(NSURLSessionDataTask* task, id responseObject) {
-        if (success) {
-            NSArray* accountsDictionaries = responseObject[kDataKey];
-            NSMutableSet* accountsObjects = [NSMutableSet setWithCapacity:accountsDictionaries.count];
-            for (NSDictionary* accountDictionary in accountsDictionaries) {
-                [accountsObjects addObject:[SEAccount objectFromDictionary:accountDictionary]];
-            }
-            success(task, (NSSet*) accountsObjects);
-        }
-    } failure:^(NSURLSessionDataTask* task, NSError* error) {
-        if (failure) { failure(task, error); }
-    }];
-}
-
-- (void)fetchFullTransactionsListForAccountId:(NSNumber *)accountId
-                                      success:(void (^)(NSURLSessionDataTask *, NSSet *))success
-                                      failure:(SEAPIRequestFailureBlock)failure
-{
-    NSAssert(accountId != nil, @"accountId cannot be nil.");
-
-    NSString* url = [kTransactionsPath stringByAppendingFormat:@"?%@=%@", kAccountIdKey, accountId.description];
-    [self requestPaginatedResourceWithPath:url container:@[].mutableCopy success:^(NSURLSessionDataTask* task, NSArray* transactionDictionaries) {
-        if (success) {
-            NSMutableSet* transactionsObjects = [NSMutableSet setWithCapacity:transactionDictionaries.count];
-            for (NSDictionary* transactionDictionary in transactionDictionaries) {
-                [transactionsObjects addObject:[SETransaction objectFromDictionary:transactionDictionary]];
-            }
-            success(task, (NSSet*) transactionsObjects);
-        }
-    } failure:^(NSURLSessionDataTask* task, NSError* error) {
-        if (failure) { failure(task, error); }
-    } full:YES];
+    [SERequestHandler sendPOSTRequestWithURL:[self baseURLStringByAppendingPathComponent:kCustomersPath]
+                                  parameters:parameters
+                                     headers:sessionHeaders
+                                     success:^(NSDictionary* responseObject) {
+                                         if (success) {
+                                             success(responseObject);
+                                         }
+                                     }
+                                     failure:^(NSDictionary* errorDictionary) {
+                                         if (!failure) { return; }
+                                         SEError* error = [SEError objectFromDictionary:errorDictionary];
+                                         failure(error);
+                                     }];
 }
 
 - (void)fetchProviderWithCode:(NSString *)code
-                      success:(void (^)(NSURLSessionDataTask *, SEProvider *))success
+                      success:(void (^)(SEProvider *))success
                       failure:(SEAPIRequestFailureBlock)failure
 {
-    NSAssert(code != nil, @"code cannot be nil.");
+    NSAssert(code != nil, @"Provider code cannot be nil.");
 
-    SEAPIRequestManager* manager = [[self class] manager];
-    NSString* url = [kProvidersPath stringByAppendingPathComponent:code];
+    NSString* providerPath = [[self baseURLStringByAppendingPathComponent:kProvidersPath] stringByAppendingPathComponent:code];
 
-    [manager GET:url parameters:nil success:^(NSURLSessionDataTask* task, id responseObject) {
-        if (success) {
-            NSDictionary* providerDictionary = responseObject[kDataKey];
-            if (providerDictionary) {
-                SEProvider* provider = [SEProvider objectFromDictionary:providerDictionary];
-                success(task, provider);
-            }
-        }
-    } failure:^(NSURLSessionDataTask* task, NSError* error) {
-        if (failure) { failure(task, error); }
-    }];
+    [SERequestHandler sendGETRequestWithURL:providerPath
+                                 parameters:nil
+                                    headers:sessionHeaders
+                                    success:^(NSDictionary* responseObject) {
+                                        if (!success) { return; }
+                                        NSDictionary* providerDictionary = responseObject[kDataKey];
+                                        if (providerDictionary) {
+                                            SEProvider* provider = [SEProvider objectFromDictionary:providerDictionary];
+                                            success(provider);
+                                        }
+                                    }
+                                    failure:^(NSDictionary* errorDictionary) {
+                                        if (!failure) { return; }
+                                        SEError* error = [SEError objectFromDictionary:errorDictionary];
+                                        failure(error);
+                                    }];
 }
 
-- (void)removeLoginWithId:(NSNumber *)loginId success:(void (^)(NSURLSessionDataTask *, NSDictionary *))success failure:(SEAPIRequestFailureBlock)failure
-{
-    NSAssert(loginId != nil, @"loginId cannot be nil.");
-
-    NSString* url = [[kLoginsPath stringByAppendingPathComponent:loginId.description] stringByAppendingPathComponent:kLoginsRemove];
-
-    SEAPIRequestManager* manager = [[self class] manager];
-
-    [manager POST:url parameters:nil success:^(NSURLSessionDataTask* task, id responseObject) {
-        if (success) { success(task, responseObject); }
-    } failure:^(NSURLSessionDataTask* task, NSError* error) {
-        if (failure) { failure(task, error); }
-    }];
-}
-
-- (void)requestConnectTokenWithParameters:(NSDictionary *)parameters
-                                  success:(void (^)(NSURLSessionDataTask *, NSDictionary *))success
+- (void)fetchFullProvidersListWithSuccess:(void (^)(NSSet *))success
                                   failure:(SEAPIRequestFailureBlock)failure
 {
-    NSAssert(parameters[kCustomerEmailKey] != nil, @"Customer email cannot be nil");
-
-    [self requestTokenWithParameters:parameters success:success failure:failure];
+    [self requestPaginatedResourceWithPath:kProvidersPath
+                                 container:@[].mutableCopy
+                                   headers:sessionHeaders
+                                parameters:nil
+                                   success:^(NSArray* providersDictionaries) {
+                                       if (!success) { return; }
+                                       NSMutableSet* fullProvidersList = [NSMutableSet setWithCapacity:providersDictionaries.count];
+                                       for (NSDictionary* providerDictionary in providersDictionaries) {
+                                            [fullProvidersList addObject:[SEProvider objectFromDictionary:providerDictionary]];
+                                        }
+                                       success((NSSet*) fullProvidersList);
+                                   }
+                                   failure:^(SEError* error) {
+                                       if (!failure) { return; }
+                                       failure(error);
+                                   } full:YES];
 }
 
-- (void)requestReconnectTokenForLogin:(SELogin *)login
-                           parameters:(NSDictionary*)parameters
-                              success:(void (^)(NSURLSessionDataTask *, NSDictionary *))success
-                              failure:(SEAPIRequestFailureBlock)failure
+- (void)fetchFullAccountsListForLoginSecret:(NSString*)loginSecret
+                                success:(void (^)(NSSet *))success
+                                failure:(SEAPIRequestFailureBlock)failure
 {
-    NSAssert(login != nil, @"Login cannot be nil");
-    NSAssert(parameters[kCustomerEmailKey] != nil, @"Customer email cannot be nil");
+    NSAssert(loginSecret != nil, @"Login secret cannot be nil.");
 
-    NSMutableDictionary* mutableParameters = parameters.mutableCopy;
-    mutableParameters[kLoginIdKey] = login.id;
-
-    [self requestTokenWithParameters:mutableParameters success:success failure:failure];
+    [SERequestHandler sendGETRequestWithURL:[self baseURLStringByAppendingPathComponent:kAccountsPath]
+                                 parameters:nil
+                                    headers:[self sessionHeadersWithLoginSecret:loginSecret]
+                                    success:^(NSDictionary* responseObject) {
+                                        if (!success) { return; }
+                                        NSArray* accountDictionaries = responseObject[kDataKey];
+                                        NSMutableSet* accountsObjects = [NSMutableSet setWithCapacity:accountDictionaries.count];
+                                        for (NSDictionary* accountDictionary in accountDictionaries) {
+                                            [accountsObjects addObject:[SEAccount objectFromDictionary:accountDictionary]];
+                                        }
+                                        success((NSSet*) accountsObjects);
+                                    }
+                                    failure:^(NSDictionary* errorDictionary) {
+                                        if (!failure) { return; }
+                                        SEError* error = [SEError objectFromDictionary:errorDictionary];
+                                        failure(error);
+                                    }];
 }
 
-- (void)requestRefreshTokenForLogin:(SELogin *)login
-                         parameters:(NSDictionary*)parameters
-                            success:(void (^)(NSURLSessionDataTask *, NSDictionary *))success
-                            failure:(SEAPIRequestFailureBlock)failure
+- (void)fetchFullTransactionsListForAccountId:(NSNumber *)accountId
+                                  loginSecret:(NSString *)loginSecret
+                                      success:(void (^)(NSSet *))success
+                                      failure:(SEAPIRequestFailureBlock)failure
 {
-    NSAssert(login != nil, @"Login cannot be nil");
-    NSAssert(parameters[kCustomerEmailKey] != nil, @"Customer email cannot be nil");
+    NSAssert(accountId != nil, @"Account id cannot be nil.");
+
+    [self requestPaginatedResourceWithPath:kTransactionsPath
+                                 container:@[].mutableCopy
+                                   headers:[self sessionHeadersWithLoginSecret:loginSecret]
+                                parameters:@{ kAccountIdKey: accountId.description }
+                                   success:^(NSArray* transactionDictionaries) {
+                                       if (!success) { return; }
+                                       NSMutableSet* transactionsObjects = [NSMutableSet setWithCapacity:transactionDictionaries.count];
+                                       for (NSDictionary* transactionDictionary in transactionDictionaries) {
+                                           [transactionsObjects addObject:[SETransaction objectFromDictionary:transactionDictionary]];
+                                       }
+                                       success((NSSet*) transactionsObjects);
+                                   }
+                                   failure:^(SEError* error) {
+                                       if (failure) { failure(error); }
+                                   } full:YES];
+}
+
+- (void)fetchLoginWithSecret:(NSString*)loginSecret
+                     success:(void(^)(SELogin*))success
+                     failure:(SEAPIRequestFailureBlock)failure
+{
+    NSAssert(loginSecret != nil, @"Login secret cannot be nil.");
+
+    [SERequestHandler sendGETRequestWithURL:[self baseURLStringByAppendingPathComponent:kLoginPath]
+                                 parameters:nil
+                                    headers:[self sessionHeadersWithLoginSecret:loginSecret]
+                                    success:^(NSDictionary* responseObject) {
+                                        if (!success) { return; }
+                                        SELogin* fetchedLogin = [SELogin objectFromDictionary:responseObject[kDataKey]];
+                                        success(fetchedLogin);
+                                    }
+                                    failure:^(NSDictionary* errorDictionary) {
+                                        if (!failure) { return; }
+                                        SEError* error = [SEError objectFromDictionary:errorDictionary];
+                                        failure(error);
+                                    }];
+}
+
+- (void)removeLoginWithSecret:(NSString *)loginSecret
+                      success:(void (^)(NSDictionary *))success
+                      failure:(SEAPIRequestFailureBlock)failure
+{
+    NSAssert(loginSecret != nil, @"Login secret cannot be nil.");
+
+    NSString* removeURL = [[self baseURLStringByAppendingPathComponent:kLoginPath] stringByAppendingPathComponent:kLoginRemove];
+    [SERequestHandler sendPOSTRequestWithURL:removeURL
+                                  parameters:nil
+                                     headers:[self sessionHeadersWithLoginSecret:loginSecret]
+                                     success:^(NSDictionary* responseObject) {
+                                         if (success) {
+                                             success(responseObject);
+                                         }
+                                     }
+                                     failure:^(NSDictionary* errorDictionary) {
+                                         if (!failure) { return; }
+                                         SEError* error = [SEError objectFromDictionary:errorDictionary];
+                                         failure(error);
+                                     }];
+}
+
+- (void)requestCreateTokenWithParameters:(NSDictionary *)parameters
+                                 success:(void (^)(NSDictionary *))success
+                                 failure:(SEAPIRequestFailureBlock)failure
+{
+    NSAssert(parameters[kCountryCode] != nil, @"Country code cannot be nil.");
+    NSAssert(parameters[kProviderCodeKey] != nil, @"Provider code cannot be nil.");
+    NSAssert(parameters[kReturnToKey] != nil, @"Return to cannot be nil.");
+    NSAssert(parameters[kCustomerIdKey] != nil, @"Customer ID cannot be nil.");
 
     NSMutableDictionary* mutableParameters = parameters.mutableCopy;
-    mutableParameters[kLoginIdKey] = login.id;
-    mutableParameters[kRefreshKey] = [NSNumber numberWithBool:true];
+    mutableParameters[kMobileKey] = @YES;
+    NSDictionary* dataParameters = @{ kDataKey: mutableParameters };
 
-    [self requestTokenWithParameters:mutableParameters success:success failure:failure];
+    [self requestTokenWithPath:kCreateTokenPath
+                       headers:sessionHeaders
+                    parameters:dataParameters
+                       success:success
+                       failure:failure];
+}
+
+- (void)requestReconnectTokenForLoginSecret:(NSString *)loginSecret
+                                 parameters:(NSDictionary *)parameters
+                                    success:(void (^)(NSDictionary *))success
+                                    failure:(SEAPIRequestFailureBlock)failure
+{
+    NSAssert(loginSecret != nil, @"Login secret cannot be nil.");
+    NSAssert(parameters[kReturnToKey] != nil, @"Return to cannot be nil.");
+
+    [self requestTokenWithPath:kReconnectTokenPath
+                       headers:[self sessionHeadersWithLoginSecret:loginSecret]
+                    parameters:parameters
+                       success:success
+                       failure:failure];
+}
+
+- (void)requestRefreshTokenForLoginSecret:(NSString *)loginSecret
+                               parameters:(NSDictionary *)parameters
+                                  success:(void (^)(NSDictionary *))success
+                                  failure:(SEAPIRequestFailureBlock)failure
+{
+    NSAssert(loginSecret != nil, @"Login secret cannot be nil.");
+    NSAssert(parameters[kReturnToKey] != nil, @"Return to cannot be nil.");
+
+    [self requestTokenWithPath:kRefreshTokenPath
+                       headers:[self sessionHeadersWithLoginSecret:loginSecret]
+                    parameters:parameters
+                       success:success
+                       failure:failure];
 }
 
 #pragma mark -
 #pragma mark - Private API
 
-- (void)requestTokenWithParameters:(NSDictionary*)parameters
-                           success:(void (^)(NSURLSessionDataTask *, NSDictionary *))success
-                           failure:(SEAPIRequestFailureBlock)failure
+- (instancetype)initWithBaseURL:(NSString*)baseURL
 {
-    SEAPIRequestManager* manager = [[self class] manager];
+    if (self = [super init]) {
+        self.baseURL = baseURL;
+    }
+    return self;
+}
 
-    NSMutableDictionary* mobileParameters = parameters.mutableCopy;
-    mobileParameters[kMobileKey]  = [NSNumber numberWithBool:true];
-
-    [manager POST:kTokensPath parameters:@{ kDataKey : mobileParameters } success:^(NSURLSessionDataTask* task, id responseObject) {
-        if (success) { success(task, responseObject[kDataKey]); }
-    } failure:^(NSURLSessionDataTask* task, NSError* error) {
-        if (failure) { failure(task, error); }
-    }];
+- (void)requestTokenWithPath:(NSString*)path
+                     headers:(NSDictionary*)headers
+                  parameters:(NSDictionary*)parameters
+                     success:(void (^)(NSDictionary *))success
+                     failure:(SEAPIRequestFailureBlock)failure
+{
+    [SERequestHandler sendPOSTRequestWithURL:[self baseURLStringByAppendingPathComponent:path]
+                                  parameters:parameters
+                                     headers:headers
+                                     success:^(NSDictionary* responseObject) {
+                                         if (success) {
+                                             success(responseObject);
+                                         }
+                                     }
+                                     failure:^(NSDictionary* errorDictionary) {
+                                         if (!failure) { return; }
+                                         SEError* error = [SEError objectFromDictionary:errorDictionary];
+                                         failure(error);
+                                     }];
 }
 
 - (void)requestPaginatedResourceWithPath:(NSString*)path
                                container:(NSMutableArray*)container
-                                 success:(void (^)(NSURLSessionDataTask* task, NSArray*))success
-                                 failure:(SEAPIRequestFailureBlock)failure full:(BOOL)full
+                                 headers:(NSDictionary*)headers
+                              parameters:(NSDictionary*)parameters
+                                 success:(void (^)(NSArray*))success
+                                 failure:(SEAPIRequestFailureBlock)failure
+                                    full:(BOOL)full
 {
-    SEAPIRequestManager* manager = [[self class] manager];
 
-    [manager GET:path parameters:nil success:^(NSURLSessionDataTask* task, id responseObject) {
-        [container addObjectsFromArray:responseObject[kDataKey]];
-        NSNumber* nextId = responseObject[kMetaKey][kNextIdKey];
-        if (nextId && ![nextId isEqual:[NSNull null]] && full) {
-            NSString* nextPage = responseObject[kMetaKey][kNextPageKey];
-            [self requestPaginatedResourceWithPath:nextPage container:container success:success failure:failure full:full];
-        } else {
-            if (success) {
-                success(task, (NSArray*) container);
-            }
-        }
-    } failure:^(NSURLSessionDataTask* task, NSError* error) {
-        if (failure) { failure(task, error); }
-    }];
+    [SERequestHandler sendGETRequestWithURL:[self baseURLStringByAppendingPathComponent:path]
+                                 parameters:parameters
+                                    headers:headers
+                                    success:^(NSDictionary* responseObject) {
+                                        if (!success) { return; }
+                                        [container addObjectsFromArray:responseObject[kDataKey]];
+                                        NSNumber* nextId = responseObject[kMetaKey][kNextIdKey];
+                                        if (nextId && ![nextId isEqual:[NSNull null]] && full) {
+                                            NSString* nextPage = responseObject[kMetaKey][kNextPageKey];
+                                            [self requestPaginatedResourceWithPath:nextPage container:container headers:headers parameters:nil success:success failure:failure full:full];
+                                        } else {
+                                            success((NSArray*) container);
+                                        }
+                                    } failure:^(NSDictionary* errorDictionary) {
+                                        if (!failure) { return; }
+                                        SEError* error = [SEError objectFromDictionary:errorDictionary];
+                                        failure(error);
+                                    }];
+}
+
+#pragma mark - Helper methods
+
+- (NSString*)baseURLStringByAppendingPathComponent:(NSString*)path
+{
+    return [self.baseURL stringByAppendingPathComponent:path];
+}
+
+- (NSDictionary*)sessionHeadersWithLoginSecret:(NSString*)loginSecret
+{
+    return [[self class] sessionHeadersWithLoginSecret:loginSecret];
+}
+
++ (NSDictionary*)sessionHeadersWithLoginSecret:(NSString*)loginSecret
+{
+    NSMutableDictionary* mutableSessionHeaders = sessionHeaders.mutableCopy;
+    mutableSessionHeaders[kLoginSecretHeaderKey] = loginSecret;
+    return [NSDictionary dictionaryWithDictionary:mutableSessionHeaders];
 }
 
 @end

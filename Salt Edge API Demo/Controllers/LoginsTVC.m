@@ -13,12 +13,14 @@
 #import <SVProgressHUD.h>
 #import "SEAPIRequestManager.h"
 #import "SELogin.h"
+#import "AppDelegate.h"
+#import "SEError.h"
 
 static NSString* const kLoginTableViewCellReuseIdentifier = @"LoginTableViewCell";
 
 @interface LoginsTVC ()
 
-@property (nonatomic, strong) NSArray* logins;
+@property (atomic, strong) NSArray* logins;
 @property (nonatomic) BOOL isLoadingLogins;
 
 @end
@@ -43,27 +45,32 @@ static NSString* const kLoginTableViewCellReuseIdentifier = @"LoginTableViewCell
     self.navigationController.navigationBarHidden = NO;
     [self reloadLoginsTableViewController];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(reload)];
+    self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
 }
 
 #pragma mark - Helper methods
 
 - (void)reloadLoginsTableViewController
 {
+    self.logins = @[];
+    NSArray* loginSecrets = [[NSUserDefaults standardUserDefaults] arrayForKey:kLoginSecretsDefaultsKey];
     if (!self.isLoadingLogins) {
         [SVProgressHUD showWithStatus:@"Loading..."];
         self.isLoadingLogins = YES;
         SEAPIRequestManager* manager = [SEAPIRequestManager manager];
 
-        [manager fetchFullLoginsListWithSuccess:^(NSURLSessionDataTask* task, NSSet* logins) {
-            self.logins = [[logins allObjects] sortedArrayUsingComparator:^NSComparisonResult (SELogin* first, SELogin* second) {
-                return [first.providerName localizedCaseInsensitiveCompare:second.providerName];
+        for (NSString* loginSecret in loginSecrets) {
+            [manager fetchLoginWithSecret:loginSecret success:^(SELogin* login) {
+                NSMutableArray* mutableLogins = self.logins.mutableCopy;
+                [mutableLogins addObject:login];
+                self.logins = [NSArray arrayWithArray:mutableLogins];
+                [self.tableView reloadData];
+                self.isLoadingLogins = NO;
+                [SVProgressHUD dismiss];
+            } failure:^(SEError* error) {
+                self.isLoadingLogins = NO;
             }];
-            [self.tableView reloadData];
-            self.isLoadingLogins = NO;
-            [SVProgressHUD dismiss];
-        } failure:^(NSURLSessionDataTask* task, NSError* error) {
-            [SVProgressHUD showErrorWithStatus:error.localizedDescription];
-        }];
+        }
     }
 }
 
@@ -92,7 +99,6 @@ static NSString* const kLoginTableViewCellReuseIdentifier = @"LoginTableViewCell
     SELogin* theLogin = self.logins[indexPath.row];
     cell.textLabel.text = theLogin.providerName;
     cell.detailTextLabel.text = theLogin.customerEmail;
-
     return cell;
 }
 

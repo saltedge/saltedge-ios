@@ -23,24 +23,26 @@
 
 #import <Foundation/Foundation.h>
 
+@class SEError;
+
 typedef void (^SERequestHandlerSuccessBlock)(NSDictionary* responseDictionary);
 typedef void (^SERequestHandlerFailureBlock)(NSDictionary* errorDictionary);
 
 @interface SERequestHandler : NSObject
 
-+ (void)sendPostRequestWithURL:(NSString*)url
++ (void)sendPOSTRequestWithURL:(NSString*)url
                     parameters:(NSDictionary*)parameters
                        headers:(NSDictionary*)headers
                        success:(SERequestHandlerSuccessBlock)success
                        failure:(SERequestHandlerFailureBlock)failure;
 
-+ (void)sendGetRequestWithURL:(NSString*)url
++ (void)sendGETRequestWithURL:(NSString*)url
                    parameters:(NSDictionary*)parameters
                       headers:(NSDictionary*)headers
                       success:(SERequestHandlerSuccessBlock)success
                       failure:(SERequestHandlerFailureBlock)failure;
 
-+ (void)sendDeleteRequestWithURL:(NSString*)url
++ (void)sendDELETERequestWithURL:(NSString*)url
                       parameters:(NSDictionary*)parameters
                          headers:(NSDictionary*)headers
                          success:(SERequestHandlerSuccessBlock)success

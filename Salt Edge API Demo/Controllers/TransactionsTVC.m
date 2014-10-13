@@ -11,6 +11,7 @@
 #import "SETransaction.h"
 #import "SEAPIRequestManager.h"
 #import "TransactionTableViewCell.h"
+#import "SEError.h"
 
 static NSString* const kTransactionCellReuseIdentifier = @"TransactionTableViewCell";
 
@@ -38,6 +39,7 @@ static NSString* const kTransactionCellReuseIdentifier = @"TransactionTableViewC
 - (void)setupTableView
 {
     [self.tableView registerNib:[UINib nibWithNibName:kTransactionCellReuseIdentifier bundle:nil] forCellReuseIdentifier:kTransactionCellReuseIdentifier];
+    self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
 }
 
 #pragma mark - Helper methods
@@ -46,12 +48,13 @@ static NSString* const kTransactionCellReuseIdentifier = @"TransactionTableViewC
 {
     [SVProgressHUD showWithStatus:@"Loading"];
     SEAPIRequestManager* manager = [SEAPIRequestManager manager];
-    [manager fetchFullTransactionsListForAccountId:self.accountId success:^(NSURLSessionDataTask* task, NSSet* transactions) {
+    [manager fetchFullTransactionsListForAccountId:self.accountId loginSecret:self.loginSecret success:^(NSSet* transactions) {
         self.transactions = [transactions allObjects];
         [self.tableView reloadData];
         [SVProgressHUD dismiss];
-    } failure:^(NSURLSessionDataTask* task, NSError* error) {
-        [SVProgressHUD showErrorWithStatus:error.localizedDescription];
+    } failure:^(SEError* error) {
+        NSLog(@"%@", error);
+        [SVProgressHUD showErrorWithStatus:error.message];
     }];
 }
 

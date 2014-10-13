@@ -13,6 +13,10 @@
 #import "SEAPIRequestManager.h"
 #import "UIView+Framing.h"
 #import <SVProgressHUD.h>
+#import "SELogin.h"
+#import "SEError.h"
+#import "PickerTVC.h"
+#import "SEProvider.h"
 
 static NSString* const kCustomerEmailKey = @"customer_email";
 static NSString* const kDataKey          = @"data";
@@ -22,6 +26,8 @@ static NSString* const kConnectURLKey    = @"connect_url";
 
 @property (nonatomic, strong) SEWebView* connectWebView;
 @property (nonatomic, strong) UIActivityIndicatorView* activityIndicator;
+@property (nonatomic, strong) NSSet* providers;
+@property (nonatomic, strong) SEProvider* provider;
 @property (nonatomic, strong) SELogin* login;
 @property (nonatomic)         BOOL refresh;
 
@@ -36,14 +42,15 @@ static NSString* const kConnectURLKey    = @"connect_url";
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.title = @"Connect";
+    [self setup];
+    [self fetchProviders];
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
     self.navigationController.navigationBar.translucent = NO;
-    [self connect];
+    [self setupConnectWebView];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -55,10 +62,21 @@ static NSString* const kConnectURLKey    = @"connect_url";
 
 #pragma mark - Setup methods
 
+- (void)setup
+{
+    self.title = @"Connect";
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Providers" style:UIBarButtonItemStylePlain target:self action:@selector(showProviders)];
+    
+    SVProgressHUD* hud = [SVProgressHUD performSelector:@selector(sharedView)];
+    [hud setHudBackgroundColor:[UIColor blackColor]];
+    [hud setHudForegroundColor:[UIColor whiteColor]];
+}
+
 - (void)setupConnectWebView
 {
     CGFloat tabBarHeight = self.tabBarController.tabBar.height;
     self.connectWebView = [[SEWebView alloc] initWithFrame:CGRectMake(0.0, self.view.yOrigin - tabBarHeight - 15.0, self.view.width, self.view.height - tabBarHeight) stateDelegate:self];
+    self.connectWebView.hidden = YES;
     [self.view addSubview:self.connectWebView];
     [self.view bringSubviewToFront:self.activityIndicator];
 }
@@ -73,39 +91,63 @@ static NSString* const kConnectURLKey    = @"connect_url";
 
 #pragma mark - Utility methods
 
+- (void)fetchProviders
+{
+    if (self.providers.count == 0) {
+        SEAPIRequestManager* manager = [SEAPIRequestManager manager];
+        [SVProgressHUD showWithStatus:@"Loading..." maskType:SVProgressHUDMaskTypeGradient];
+        [manager fetchFullProvidersListWithSuccess:^(NSSet* providers) {
+            self.providers = providers;
+            [SVProgressHUD dismiss];
+            [self showProviders];
+        } failure:^(SEError* error) {
+            [SVProgressHUD showErrorWithStatus:error.message];
+        }];
+    }
+}
+
+- (void)showProviders
+{
+    NSArray* providers = [[[self.providers.allObjects filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"mode != %@", @"file"]] valueForKeyPath:@"name"] sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)];
+    UINavigationController* picker = [PickerTVC pickerWithItems:providers completionBlock:^(id pickedProviderName) {
+        NSPredicate* namePredicate = [NSPredicate predicateWithFormat:@"name = %@", pickedProviderName];
+        self.provider = [self.providers.allObjects filteredArrayUsingPredicate:namePredicate][0];
+        [self requestToken];
+    }];
+    [self presentViewController:picker animated:YES completion:nil];
+}
+
 - (void)requestToken
 {
     SEAPIRequestManager* manager = [SEAPIRequestManager manager];
-
-    void (^successBlock)(NSURLSessionDataTask*, NSDictionary*) = ^(NSURLSessionDataTask* task, NSDictionary* tokenDictionary){
-        NSString* connectURL = tokenDictionary[kConnectURLKey];
-        if (connectURL) {
-            [self setupConnectWebView];
-            [self loadConnectPageWithURLString:connectURL];
-        } else {
-            [self showAlertWithTitle:@"Error" message:@"Could not receive the connect URL."];
-            [self hideActivityIndicator];
-        }
-    };
-
-    void (^failureBlock)(NSURLSessionDataTask*, NSError*) = ^(NSURLSessionDataTask* task, NSError* error){
-        [self showAlertWithTitle:@"Error" message:[NSString stringWithFormat:@"Error code %d: %@ (%@)", error.code, error.localizedDescription, task.response]];
-        [self hideActivityIndicator];
-    };
-
-    NSDictionary* parameters = @{ kCustomerEmailKey : CUSTOMER_EMAIL };
-
-    if (self.login && self.refresh) {
-        [manager requestRefreshTokenForLogin:self.login parameters:parameters success:successBlock failure:failureBlock];
-    } else if (self.login) {
-        [manager requestReconnectTokenForLogin:self.login parameters:parameters success:successBlock failure:failureBlock];
+    [SVProgressHUD showWithStatus:@"Loading..." maskType:SVProgressHUDMaskTypeGradient];
+    if (!self.login) {
+        NSString* customerId = [[NSUserDefaults standardUserDefaults] stringForKey:kCustomerIdDefaultsKey];
+        [manager requestCreateTokenWithParameters:@{ @"country_code" : self.provider.countryCode, @"provider_code" : self.provider.code, @"return_to" : @"http://httpbin.org", @"customer_id" : customerId } success:^(NSDictionary* responseObject) {
+            [self loadConnectPageWithURLString:responseObject[@"data"][@"connect_url"]];
+        } failure:^(SEError* error) {
+            NSLog(@"%@", error);
+        }];
+    } else if (self.refresh) {
+        [manager requestRefreshTokenForLoginSecret:self.login.secret parameters:@{ @"return_to": @"http://httpbin.org" } success:^(NSDictionary* responseObject) {
+            [self loadConnectPageWithURLString:responseObject[@"data"][@"connect_url"]];
+        } failure:^(SEError* error) {
+            NSLog(@"%@", error);
+            [SVProgressHUD showErrorWithStatus:error.message];
+        }];
     } else {
-        [manager requestConnectTokenWithParameters:parameters success:successBlock failure:failureBlock];
+        [manager requestReconnectTokenForLoginSecret:self.login.secret parameters:@{ @"return_to": @"http://httpbin.org" } success:^(NSDictionary* responseObject) {
+            [self loadConnectPageWithURLString:responseObject[@"data"][@"connect_url"]];
+        } failure:^(SEError* error) {
+            NSLog(@"%@", error);
+            [SVProgressHUD showErrorWithStatus:error.message];
+        }];
     }
 }
 
 - (void)loadConnectPageWithURLString:(NSString*)connectURLString
 {
+    self.connectWebView.hidden = NO;
     [self.connectWebView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:connectURLString]]];
 }
 
@@ -147,6 +189,14 @@ static NSString* const kConnectURLKey    = @"connect_url";
         [self switchToLoginsViewController];
         [SVProgressHUD dismiss];
     } else if ([loginState isEqualToString:SELoginStateFetching]) {
+        NSString* loginSecret = response[@"data"][@"secret"];
+        NSMutableSet* loginSecrets = [NSSet setWithArray:[[NSUserDefaults standardUserDefaults] arrayForKey:kLoginSecretsDefaultsKey]].mutableCopy;
+        if (!loginSecrets) {
+            loginSecrets = [NSMutableSet set];
+        }
+        [loginSecrets addObject:loginSecret];
+        [[NSUserDefaults standardUserDefaults] setObject:[loginSecrets allObjects] forKey:kLoginSecretsDefaultsKey];
+        [[NSUserDefaults standardUserDefaults] synchronize];
         [SVProgressHUD showWithStatus:@"Loading..." maskType:SVProgressHUDMaskTypeGradient];
     } else if ([loginState isEqualToString:SELoginStateError]) {
         [SVProgressHUD showErrorWithStatus:@"Error"];

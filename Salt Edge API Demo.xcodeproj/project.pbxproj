@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0A1BEB7619EBD0E5000C0D64 /* PickerTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A1BEB7519EBD0E5000C0D64 /* PickerTVC.m */; };
 		0A3F86FF19A1F05E00B7E5E2 /* SEAPIRequestManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A3F86E019A1F05E00B7E5E2 /* SEAPIRequestManager.m */; };
 		0A3F870019A1F05E00B7E5E2 /* NSString+SEModelsSerializingAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A3F86E419A1F05E00B7E5E2 /* NSString+SEModelsSerializingAdditions.m */; };
 		0A3F870119A1F05E00B7E5E2 /* SEAccount.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A3F86E719A1F05E00B7E5E2 /* SEAccount.m */; };
@@ -19,7 +20,6 @@
 		0A3F870819A1F05E00B7E5E2 /* NSURL+SBCallbacksAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A3F86F719A1F05E00B7E5E2 /* NSURL+SBCallbacksAdditions.m */; };
 		0A3F870919A1F05E00B7E5E2 /* SEWebView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A3F86F919A1F05E00B7E5E2 /* SEWebView.m */; };
 		0A3F870A19A1F05E00B7E5E2 /* DateUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A3F86FE19A1F05E00B7E5E2 /* DateUtils.m */; };
-		0A3F874D19A224A800B7E5E2 /* token_server.rb in Resources */ = {isa = PBXBuildFile; fileRef = 0A3F874C19A224A800B7E5E2 /* token_server.rb */; };
 		0A939E9F19DA9F0E005BD28C /* TransactionTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A939E9D19DA9F0E005BD28C /* TransactionTableViewCell.m */; };
 		0A939EA019DA9F0E005BD28C /* TransactionTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0A939E9E19DA9F0E005BD28C /* TransactionTableViewCell.xib */; };
 		0AAB6CE519827AAA009DCDD5 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AAB6CE419827AAA009DCDD5 /* Foundation.framework */; };
@@ -38,13 +38,14 @@
 		0AAB6D5519827ACD009DCDD5 /* TransactionsTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AAB6D2A19827ACD009DCDD5 /* TransactionsTVC.m */; };
 		0AAB6D6319827AEA009DCDD5 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0AAB6D6219827AEA009DCDD5 /* Main.storyboard */; };
 		0AAB6D6619827AFB009DCDD5 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AAB6D6519827AFB009DCDD5 /* AppDelegate.m */; };
-		0AAB6D6B19827B0C009DCDD5 /* DateUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AAB6D6719827B0C009DCDD5 /* DateUtils.m */; };
+		0AAB6D6B19827B0C009DCDD5 /* DateUtilsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AAB6D6719827B0C009DCDD5 /* DateUtilsTests.m */; };
 		0AAB6D6C19827B0C009DCDD5 /* NSString+SEModelsSerializingAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AAB6D6819827B0C009DCDD5 /* NSString+SEModelsSerializingAdditions.m */; };
 		0AAB6D6D19827B0C009DCDD5 /* SEBaseModelTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AAB6D6919827B0C009DCDD5 /* SEBaseModelTests.m */; };
 		0AAB6D6E19827B0C009DCDD5 /* SEProviderTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AAB6D6A19827B0C009DCDD5 /* SEProviderTests.m */; };
 		0AAB6D7019827D9B009DCDD5 /* SELoginTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AAB6D6F19827D9B009DCDD5 /* SELoginTests.m */; };
 		0AAB6D7219827E45009DCDD5 /* SEAccountTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AAB6D7119827E45009DCDD5 /* SEAccountTests.m */; };
 		0AAB6D7419827ECE009DCDD5 /* SETransactionTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AAB6D7319827ECE009DCDD5 /* SETransactionTests.m */; };
+		0AD2C2E019E7EEF1003D2FD0 /* SEError.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AD2C2DF19E7EEF1003D2FD0 /* SEError.m */; };
 		0AF898811986632F00F1A270 /* NSURL+SBCallbacksAdditionsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AF898801986632F00F1A270 /* NSURL+SBCallbacksAdditionsTests.m */; };
 		0AF898841986633E00F1A270 /* ConnectWebViewVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AF898831986633E00F1A270 /* ConnectWebViewVC.m */; };
 		0AF898901986740200F1A270 /* TabBarVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AF8988F1986740200F1A270 /* TabBarVC.m */; };
@@ -64,6 +65,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0A1BEB7419EBD0E5000C0D64 /* PickerTVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PickerTVC.h; sourceTree = "<group>"; };
+		0A1BEB7519EBD0E5000C0D64 /* PickerTVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PickerTVC.m; sourceTree = "<group>"; };
 		0A3F86DF19A1F05E00B7E5E2 /* SEAPIRequestManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SEAPIRequestManager.h; sourceTree = "<group>"; };
 		0A3F86E019A1F05E00B7E5E2 /* SEAPIRequestManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SEAPIRequestManager.m; sourceTree = "<group>"; };
 		0A3F86E319A1F05E00B7E5E2 /* NSString+SEModelsSerializingAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+SEModelsSerializingAdditions.h"; sourceTree = "<group>"; };
@@ -90,7 +93,6 @@
 		0A3F86FC19A1F05E00B7E5E2 /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
 		0A3F86FD19A1F05E00B7E5E2 /* DateUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DateUtils.h; sourceTree = "<group>"; };
 		0A3F86FE19A1F05E00B7E5E2 /* DateUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DateUtils.m; sourceTree = "<group>"; };
-		0A3F874C19A224A800B7E5E2 /* token_server.rb */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.ruby; path = token_server.rb; sourceTree = "<group>"; };
 		0A3F875019A249C300B7E5E2 /* LoginsTVCDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LoginsTVCDelegate.h; sourceTree = "<group>"; };
 		0A939E9C19DA9F0E005BD28C /* TransactionTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransactionTableViewCell.h; sourceTree = "<group>"; };
 		0A939E9D19DA9F0E005BD28C /* TransactionTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransactionTableViewCell.m; sourceTree = "<group>"; };
@@ -116,26 +118,28 @@
 		0AAB6D2619827ACD009DCDD5 /* LoginsTVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginsTVC.m; sourceTree = "<group>"; };
 		0AAB6D2919827ACD009DCDD5 /* TransactionsTVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransactionsTVC.h; sourceTree = "<group>"; };
 		0AAB6D2A19827ACD009DCDD5 /* TransactionsTVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransactionsTVC.m; sourceTree = "<group>"; };
-		0AAB6D2F19827ACD009DCDD5 /* PickerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PickerDelegate.h; sourceTree = "<group>"; };
 		0AAB6D6219827AEA009DCDD5 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		0AAB6D6419827AFB009DCDD5 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		0AAB6D6519827AFB009DCDD5 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		0AAB6D6719827B0C009DCDD5 /* DateUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DateUtils.m; sourceTree = "<group>"; };
+		0AAB6D6719827B0C009DCDD5 /* DateUtilsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DateUtilsTests.m; sourceTree = "<group>"; };
 		0AAB6D6819827B0C009DCDD5 /* NSString+SEModelsSerializingAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+SEModelsSerializingAdditions.m"; sourceTree = "<group>"; };
 		0AAB6D6919827B0C009DCDD5 /* SEBaseModelTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SEBaseModelTests.m; sourceTree = "<group>"; };
 		0AAB6D6A19827B0C009DCDD5 /* SEProviderTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SEProviderTests.m; sourceTree = "<group>"; };
 		0AAB6D6F19827D9B009DCDD5 /* SELoginTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SELoginTests.m; sourceTree = "<group>"; };
 		0AAB6D7119827E45009DCDD5 /* SEAccountTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SEAccountTests.m; sourceTree = "<group>"; };
 		0AAB6D7319827ECE009DCDD5 /* SETransactionTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SETransactionTests.m; sourceTree = "<group>"; };
+		0AD2C2DE19E7EEF1003D2FD0 /* SEError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SEError.h; sourceTree = "<group>"; };
+		0AD2C2DF19E7EEF1003D2FD0 /* SEError.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SEError.m; sourceTree = "<group>"; };
 		0AF898801986632F00F1A270 /* NSURL+SBCallbacksAdditionsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSURL+SBCallbacksAdditionsTests.m"; sourceTree = "<group>"; };
 		0AF898821986633E00F1A270 /* ConnectWebViewVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConnectWebViewVC.h; sourceTree = "<group>"; };
 		0AF898831986633E00F1A270 /* ConnectWebViewVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConnectWebViewVC.m; sourceTree = "<group>"; };
 		0AF8988E1986740200F1A270 /* TabBarVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TabBarVC.h; sourceTree = "<group>"; };
 		0AF8988F1986740200F1A270 /* TabBarVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TabBarVC.m; sourceTree = "<group>"; };
 		0AF898921986748C00F1A270 /* circle@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "circle@2x.png"; sourceTree = "<group>"; };
+		2C0784B772D58925FF30C31D /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		5897167B19E6ACB3001E2AA9 /* SERequestHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SERequestHandler.h; sourceTree = "<group>"; };
 		5897167C19E6ACB3001E2AA9 /* SERequestHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SERequestHandler.m; sourceTree = "<group>"; };
-		BB33E063D75F472A97ADC1A5 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
+		AF22E7D9C5005FC665DAEF23 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		FA121862E2A4454C95F78533 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -203,6 +207,8 @@
 				0A3F86E719A1F05E00B7E5E2 /* SEAccount.m */,
 				0A3F86E819A1F05E00B7E5E2 /* SEBaseModel.h */,
 				0A3F86E919A1F05E00B7E5E2 /* SEBaseModel.m */,
+				0AD2C2DE19E7EEF1003D2FD0 /* SEError.h */,
+				0AD2C2DF19E7EEF1003D2FD0 /* SEError.m */,
 				0A3F86EA19A1F05E00B7E5E2 /* SELogin.h */,
 				0A3F86EB19A1F05E00B7E5E2 /* SELogin.m */,
 				0A3F86EC19A1F05E00B7E5E2 /* SEProvider.h */,
@@ -265,7 +271,7 @@
 				0AAB6D0919827AAA009DCDD5 /* Salt Edge API DemoTests */,
 				0AAB6CE319827AAA009DCDD5 /* Frameworks */,
 				0AAB6CE219827AAA009DCDD5 /* Products */,
-				BB33E063D75F472A97ADC1A5 /* Pods.xcconfig */,
+				7267ADA62BAF7A4997D6B3CD /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -308,7 +314,6 @@
 		0AAB6CEB19827AAA009DCDD5 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				0A3F874C19A224A800B7E5E2 /* token_server.rb */,
 				0AAB6D6419827AFB009DCDD5 /* AppDelegate.h */,
 				0AAB6D6519827AFB009DCDD5 /* AppDelegate.m */,
 				0AAB6CEC19827AAA009DCDD5 /* Salt Edge API Demo-Info.plist */,
@@ -322,7 +327,7 @@
 		0AAB6D0919827AAA009DCDD5 /* Salt Edge API DemoTests */ = {
 			isa = PBXGroup;
 			children = (
-				0AAB6D6719827B0C009DCDD5 /* DateUtils.m */,
+				0AAB6D6719827B0C009DCDD5 /* DateUtilsTests.m */,
 				0AF898801986632F00F1A270 /* NSURL+SBCallbacksAdditionsTests.m */,
 				0AAB6D6819827B0C009DCDD5 /* NSString+SEModelsSerializingAdditions.m */,
 				0AAB6D6919827B0C009DCDD5 /* SEBaseModelTests.m */,
@@ -362,6 +367,8 @@
 				0AF898831986633E00F1A270 /* ConnectWebViewVC.m */,
 				0AAB6D2519827ACD009DCDD5 /* LoginsTVC.h */,
 				0AAB6D2619827ACD009DCDD5 /* LoginsTVC.m */,
+				0A1BEB7419EBD0E5000C0D64 /* PickerTVC.h */,
+				0A1BEB7519EBD0E5000C0D64 /* PickerTVC.m */,
 				0AF8988E1986740200F1A270 /* TabBarVC.h */,
 				0AF8988F1986740200F1A270 /* TabBarVC.m */,
 				0AAB6D2919827ACD009DCDD5 /* TransactionsTVC.h */,
@@ -373,7 +380,6 @@
 		0AAB6D2E19827ACD009DCDD5 /* Protocols */ = {
 			isa = PBXGroup;
 			children = (
-				0AAB6D2F19827ACD009DCDD5 /* PickerDelegate.h */,
 				0A3F875019A249C300B7E5E2 /* LoginsTVCDelegate.h */,
 			);
 			path = Protocols;
@@ -385,6 +391,15 @@
 				0AF898921986748C00F1A270 /* circle@2x.png */,
 			);
 			path = Assets;
+			sourceTree = "<group>";
+		};
+		7267ADA62BAF7A4997D6B3CD /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				2C0784B772D58925FF30C31D /* Pods.debug.xcconfig */,
+				AF22E7D9C5005FC665DAEF23 /* Pods.release.xcconfig */,
+			);
+			name = Pods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -465,7 +480,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0A3F874D19A224A800B7E5E2 /* token_server.rb in Resources */,
 				0AF898931986748C00F1A270 /* circle@2x.png in Resources */,
 				0AAB6D6319827AEA009DCDD5 /* Main.storyboard in Resources */,
 				0AAB6CFD19827AAA009DCDD5 /* Images.xcassets in Resources */,
@@ -512,7 +526,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Pods-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -524,6 +538,7 @@
 			files = (
 				0A3F870719A1F05E00B7E5E2 /* SETransaction.m in Sources */,
 				0AAB6D6619827AFB009DCDD5 /* AppDelegate.m in Sources */,
+				0A1BEB7619EBD0E5000C0D64 /* PickerTVC.m in Sources */,
 				0A3F870019A1F05E00B7E5E2 /* NSString+SEModelsSerializingAdditions.m in Sources */,
 				0A3F870919A1F05E00B7E5E2 /* SEWebView.m in Sources */,
 				0A939E9F19DA9F0E005BD28C /* TransactionTableViewCell.m in Sources */,
@@ -534,6 +549,7 @@
 				0AF898901986740200F1A270 /* TabBarVC.m in Sources */,
 				5897167D19E6ACB3001E2AA9 /* SERequestHandler.m in Sources */,
 				0A3F870519A1F05E00B7E5E2 /* SEProviderField.m in Sources */,
+				0AD2C2E019E7EEF1003D2FD0 /* SEError.m in Sources */,
 				0AAB6D5019827ACD009DCDD5 /* AccountsTVC.m in Sources */,
 				0A3F86FF19A1F05E00B7E5E2 /* SEAPIRequestManager.m in Sources */,
 				0A3F870619A1F05E00B7E5E2 /* SEProviderFieldOption.m in Sources */,
@@ -556,7 +572,7 @@
 				0AAB6D6D19827B0C009DCDD5 /* SEBaseModelTests.m in Sources */,
 				0AAB6D6E19827B0C009DCDD5 /* SEProviderTests.m in Sources */,
 				0AAB6D7219827E45009DCDD5 /* SEAccountTests.m in Sources */,
-				0AAB6D6B19827B0C009DCDD5 /* DateUtils.m in Sources */,
+				0AAB6D6B19827B0C009DCDD5 /* DateUtilsTests.m in Sources */,
 				0AF898811986632F00F1A270 /* NSURL+SBCallbacksAdditionsTests.m in Sources */,
 				0AAB6D6C19827B0C009DCDD5 /* NSString+SEModelsSerializingAdditions.m in Sources */,
 			);
@@ -624,7 +640,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 			};
@@ -656,7 +672,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -664,13 +680,14 @@
 		};
 		0AAB6D1419827AAB009DCDD5 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = BB33E063D75F472A97ADC1A5 /* Pods.xcconfig */;
+			baseConfigurationReference = 2C0784B772D58925FF30C31D /* Pods.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Salt Edge API Demo/Salt Edge API Demo-Prefix.pch";
 				INFOPLIST_FILE = "Salt Edge API Demo/Salt Edge API Demo-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -678,13 +695,14 @@
 		};
 		0AAB6D1519827AAB009DCDD5 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = BB33E063D75F472A97ADC1A5 /* Pods.xcconfig */;
+			baseConfigurationReference = AF22E7D9C5005FC665DAEF23 /* Pods.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Salt Edge API Demo/Salt Edge API Demo-Prefix.pch";
 				INFOPLIST_FILE = "Salt Edge API Demo/Salt Edge API Demo-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};

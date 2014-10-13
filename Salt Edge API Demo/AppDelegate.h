@@ -10,7 +10,8 @@
 
 @class TabBarVC;
 
-#define CUSTOMER_EMAIL @"customers.email@example.com"
+static NSString* const kLoginSecretsDefaultsKey = @"LoginSecretsArray";
+static NSString* const kCustomerIdDefaultsKey   = @"CustomerIdKey";
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 

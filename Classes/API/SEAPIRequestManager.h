@@ -22,48 +22,41 @@
 //  THE SOFTWARE.
 
 #import <Foundation/Foundation.h>
-#import <AFHTTPSessionManager.h>
 
-typedef void (^SEAPIRequestFailureBlock)(NSURLSessionDataTask* task, NSError* error);
+@class SEProvider, SELogin, SEError;
 
-@class SEProvider, SELogin;
+typedef void (^SEAPIRequestFailureBlock)(SEError* error);
 
 /**
- SEAPIRequestManager is a subclass of AFHTTPSessionManager designed to provide convinient methods in communicating with the Salt Edge API.
+ SEAPIRequestManager is a class designed to provide convinient methods in communicating with the Salt Edge API.
  */
-@interface SEAPIRequestManager : AFHTTPSessionManager
+@interface SEAPIRequestManager : NSObject
 
 /**
- Creates and returns an SEAPIRequestManager instance.
+ Creates and returns an SEAPIRequestManager instance, which can communicate with the Salt Edge API.
  */
 + (instancetype)manager;
 
 /**
- Links your App id and App Secret to the request manager. All outgoing requests will have the proper app-related HTTP headers set by default.
+ Links your Client ID and App Secret to the request manager. All outgoing requests will have the proper app-related HTTP headers set by default.
 
- @param appId The App id of the app.
+ @param clientId The ID of the client.
  @param appSecret The App Secret of the app.
  */
-+ (void)linkAppId:(NSString*)appId appSecret:(NSString*)appSecret;
++ (void)linkClientId:(NSString*)clientId appSecret:(NSString*)appSecret;
 
 /**
- Links your App id and Customer Secret to the request manager. All outgoing requests will have the proper app-related HTTP headers set by default. Also note that the customer secret is retrieved from the web server that the client should set up.
+ Creates a new customer or returns an error if such customer exists.
 
- @param appId The App id of the app.
- @param customerSecret The customer secret returned by your web server.
- */
-+ (void)linkAppId:(NSString*)appId customerSecret:(NSString*)customerSecret;
-
-/**
- Fetches all the logins tied to your app.
-
+ @param identifier A string that identifies the customer.
  @param success The callback block if the request succeeds.
  @param failure The callback block if the request fails.
 
- @see https://docs.saltedge.com/reference/#logins-list
+ @warning identifier cannot be nil.
  */
-- (void)fetchFullLoginsListWithSuccess:(void (^)(NSURLSessionDataTask*, NSSet*))success
-                               failure:(SEAPIRequestFailureBlock)failure;
+- (void)createCustomerWithIdentifier:(NSString*)identifier
+                             success:(void (^)(NSDictionary*))success
+                             failure:(SEAPIRequestFailureBlock)failure;
 
 /**
  Fetches a certain provider.
@@ -77,28 +70,40 @@ typedef void (^SEAPIRequestFailureBlock)(NSURLSessionDataTask* task, NSError* er
  @see https://docs.saltedge.com/reference/#providers-show
  */
 - (void)fetchProviderWithCode:(NSString*)code
-                      success:(void (^)(NSURLSessionDataTask*, SEProvider*))success
+                      success:(void (^)(SEProvider*))success
                       failure:(SEAPIRequestFailureBlock)failure;
+
+/**
+ Fetches the whole providers list.
+
+ @param success The callback block if the request succeeds.
+ @param failure The callback block if the request fails.
+
+ @see https://docs.saltedge.com/reference/#providers-list
+ */
+- (void)fetchFullProvidersListWithSuccess:(void (^)(NSSet *))success
+                                  failure:(SEAPIRequestFailureBlock)failure;
 
 /**
  Fetches all accounts tied to a login.
 
- @param loginId The id of the login whose accounts are going to be fetched.
+ @param loginSecret The secret of the login whose accounts are going to be fetched.
  @param success The callback block if the request succeeds.
  @param failure The callback block if the request fails.
 
- @warning loginId cannot be nil.
+ @warning loginSecret cannot be nil.
 
  @see https://docs.saltedge.com/reference/#accounts-list
  */
-- (void)fetchFullAccountsListForLoginId:(NSNumber*)loginId
-                            success:(void(^)(NSURLSessionDataTask*, NSSet*))success
-                            failure:(SEAPIRequestFailureBlock)failure;
+- (void)fetchFullAccountsListForLoginSecret:(NSString*)loginSecret
+                                    success:(void(^)(NSSet*))success
+                                    failure:(SEAPIRequestFailureBlock)failure;
 
 /**
  Fetches all transactions tied to an account.
 
  @param accountId The id of the account whose transactions are going to be fetched.
+ @param loginSecret The login secret of the accounts' login.
  @param success The callback block if the request succeeds.
  @param failure The callback block if the request fails.
 
@@ -107,23 +112,35 @@ typedef void (^SEAPIRequestFailureBlock)(NSURLSessionDataTask* task, NSError* er
  @see https://docs.saltedge.com/reference/#transactions-list
  */
 - (void)fetchFullTransactionsListForAccountId:(NSNumber*)accountId
-                                      success:(void(^)(NSURLSessionDataTask*, NSSet*))success
+                                  loginSecret:(NSString*)loginSecret
+                                      success:(void(^)(NSSet*))success
                                       failure:(SEAPIRequestFailureBlock)failure;
 
 /**
- Removes the login with given login id from the system, also removing all associated accounts and transactions.
+ Fetches a login with a given login secret.
 
- @param loginId The id of the login to remove.
+ @param loginSecret The secret of the login which is to be fetched.
  @param success The callback block if the request succeeds.
  @param failure The callback block if the request fails.
 
- @warning loginId cannot be nil.
-
- @see https://docs.saltedge.com/reference/#logins-remove
+ @warning loginSecret cannot be nil.
  */
-- (void)removeLoginWithId:(NSNumber*)loginId
-                  success:(void (^)(NSURLSessionDataTask*, NSDictionary*))success
-                  failure:(SEAPIRequestFailureBlock)failure;
+- (void)fetchLoginWithSecret:(NSString*)loginSecret
+                     success:(void(^)(SELogin*))success
+                     failure:(SEAPIRequestFailureBlock)failure;
+
+/**
+ Removes a login from the Salt Edge system. All its accounts and transactions will be removed as well.
+
+ @param loginSecret The secret of the login which is to be removed.
+ @param success The callback block if the request succeeds.
+ @param failure The callback block if the request fails.
+
+ @warning loginSecret cannot be nil.
+ */
+- (void)removeLoginWithSecret:(NSString*)loginSecret
+                      success:(void(^)(NSDictionary*))success
+                      failure:(SEAPIRequestFailureBlock)failure;
 
 /**
  Requests a token for connecting a login via a web view.
@@ -137,21 +154,23 @@ typedef void (^SEAPIRequestFailureBlock)(NSURLSessionDataTask* task, NSError* er
  @code
  // parameters example
  {
-    "customer_email": "customer@app.com"
-    // optional fields here...
+   "country_code": "XO"
+   "provider_code": "paypal_xo",
+   "customer_id": "customer id string",
+   "return_to": "http://example.com"
  }
  @endcode
 
  @see https://docs.saltedge.com/reference/#tokens-create
  */
-- (void)requestConnectTokenWithParameters:(NSDictionary*)parameters
-                                  success:(void (^)(NSURLSessionDataTask*, NSDictionary*))success
-                                  failure:(SEAPIRequestFailureBlock)failure;
+- (void)requestCreateTokenWithParameters:(NSDictionary*)parameters
+                                 success:(void (^)(NSDictionary*))success
+                                 failure:(SEAPIRequestFailureBlock)failure;
 
 /**
  Requests a token for reconnecting a login via a web view.
 
- @param login The login for which the reconnect token is requested.
+ @param loginSecret The login secret for which the reconnect token is requested.
  @param parameters The parameters that will go with the payload. See an example above.
  @param success The callback block if the request succeeds.
  @param failure The callback block if the request fails.
@@ -162,22 +181,22 @@ typedef void (^SEAPIRequestFailureBlock)(NSURLSessionDataTask* task, NSError* er
  @code
  // parameters example
  {
- "customer_email": "customer@app.com"
- // optional fields here...
+   "return_to": "http://example.com"
+   // optional fields here...
  }
  @endcode
 
  @see https://docs.saltedge.com/guides/logins/#reconnect
  */
-- (void)requestReconnectTokenForLogin:(SELogin*)login
-                           parameters:(NSDictionary*)parameters
-                              success:(void (^)(NSURLSessionDataTask*, NSDictionary*))success
-                              failure:(SEAPIRequestFailureBlock)failure;
+- (void)requestReconnectTokenForLoginSecret:(NSString*)loginSecret
+                                 parameters:(NSDictionary*)parameters
+                                    success:(void (^)(NSDictionary*))success
+                                    failure:(SEAPIRequestFailureBlock)failure;
 
 /**
  Requests a token for refreshing a login via a web view.
 
- @param login The login for which the refresh token is requested.
+ @param loginSecret The login secret for which the refresh token is requested.
  @param parameters The parameters that will go with the payload. See an example above.
  @param success The callback block if the request succeeds.
  @param failure The callback block if the request fails.
@@ -188,16 +207,16 @@ typedef void (^SEAPIRequestFailureBlock)(NSURLSessionDataTask* task, NSError* er
  @code
  // parameters example
  {
- "customer_email": "customer@app.com"
- // optional fields here...
+   "return_to": "http://example.com"
+   // optional fields here...
  }
  @endcode
 
  @see https://docs.saltedge.com/guides/logins/#refresh
  */
-- (void)requestRefreshTokenForLogin:(SELogin*)login
-                         parameters:(NSDictionary*)parameters
-                            success:(void (^)(NSURLSessionDataTask*, NSDictionary*))success
-                            failure:(SEAPIRequestFailureBlock)failure;
+- (void)requestRefreshTokenForLoginSecret:(NSString*)loginSecret
+                               parameters:(NSDictionary*)parameters
+                                  success:(void (^)(NSDictionary*))success
+                                  failure:(SEAPIRequestFailureBlock)failure;
 
 @end
