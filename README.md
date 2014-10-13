@@ -25,17 +25,17 @@ Install the pod
 
 Clone this repository
 
-`$ git clone git@github.com:saltedge/saltbridge-ios.git`
+`$ git clone git@github.com:saltedge/saltedge-ios.git`
 
-Copy the `Salt Edge API` folder into your project.
+Copy the `Classes` folder into your project.
 
 ## Connecting logins using the sample app
 
-1. Install dependencies by running `$ pod install` and `$ gem install sinatra rest-client`
+1. Install dependencies by running `$ pod install`
 2. Replace the `clientId` and `appSecret` constants in [AppDelegate.m:28-29](https://github.com/saltedge/saltedge-ios/blob/master/Salt%20Edge%20API%20Demo/AppDelegate.m#L28-L29) with your Client ID and corresponding App secret
 3. Run the app
 
-*Note*: You can find your App id and App secret at your [profile](https://www.saltedge.com/clients/profile/settings) page.
+*Note*: You can find your Client ID and App secret at your [profile](https://www.saltedge.com/clients/profile/settings) page.
 
 ## SEWebView
 
@@ -44,11 +44,11 @@ A small `UIWebView` replacement for using [Salt Edge Connect](https://docs.salte
 ### Usage
 
 * Import the class and delegate files into your view controller
-* Add a `SEWebView` instance to your view controllers' view, also set a `stageDelegate` for the web view
+* Add a `SEWebView` instance to your view controllers' view, also set a `stateDelegate` for the web view
 * Implement the `SEWebViewDelegate` methods in delegates' class
 * Load the connect page in the web view
 
-**NOTE:** Do not use the `delegate` property on `SEWebView`, since an `SEWebView` acts like a proxy object. If your class does need to respond to the `UIWebView` delegate methods, just implement them and the `SEWebView` instance will forward those messages to its `stageDelegate`.
+**NOTE:** Do not use the `delegate` property on `SEWebView`, since an `SEWebView` acts like a proxy object. If your class does need to respond to the `UIWebView` delegate methods, just implement them and the `SEWebView` instance will forward those messages to its `stateDelegate`.
 
 ### Example
 
@@ -108,7 +108,7 @@ A class designed with convenience methods for interacting with and querying the 
 
 ### Usage
 
-Import the manager class and link your client id and app secret in the first place before using it.
+Import the manager class and link your Client ID and Appp secret in the first place before using it.
 
 ### Example
 
@@ -166,7 +166,7 @@ Documentation is available for all of the components. Use quick documentation (A
 ## Running the demo
 
 To run the demo app contained in here, you have to provide the demo with your client ID, app secret, and a customer identifier.
-Set up the `clientId` and `appSecret` constants to your client ID and corresponding app secret in [AppDelegate.m:28-29](https://github.com/saltedge/saltedge-ios/blob/master/Salt%20Edge%20API%20Demo/AppDelegate.m#L28-L29). Afterwards, set up a customer identifier in [AppDelegate.m:42](https://github.com/saltedge/saltedge-ios/blob/master/Salt%20Edge%20API%20Demo/AppDelegate.m#L42) so that when you run the demo, it will create a customer for you to work with.
+Set up the `clientId` and `appSecret` constants to your Client ID and corresponding App secret in [AppDelegate.m:28-29](https://github.com/saltedge/saltedge-ios/blob/master/Salt%20Edge%20API%20Demo/AppDelegate.m#L28-L29). Afterwards, set up a customer identifier in [AppDelegate.m:42](https://github.com/saltedge/saltedge-ios/blob/master/Salt%20Edge%20API%20Demo/AppDelegate.m#L42) so that when you run the demo, it will create a customer for you to work with.
 
 ## License
 
