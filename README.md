@@ -108,7 +108,7 @@ A class designed with convenience methods for interacting with and querying the 
 
 ### Usage
 
-Import the manager class and link your Client ID and Appp secret in the first place before using it.
+Import the manager class and link your Client ID and App secret in the first place before using it.
 
 ### Example
 
