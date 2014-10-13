@@ -137,13 +137,11 @@ typedef NS_ENUM(NSInteger, SERequestMethod) {
             if (success) {
                 NSError* error;
                 NSDictionary* responseObject = [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
-                if (error) {
-                    if (failure) {
-                        failure(@{ @"error_class": @"NSJSONSerializationError",
-                                   @"message": @"Could not serialize request parameters",
-                                   @"request": request
-                                   });
-                    }
+                if (error && failure) {
+                    failure(@{ @"error_class": @"NSJSONSerializationError",
+                               @"message": @"Could not serialize request parameters",
+                               @"request": request
+                               });
                 } else {
                     success(responseObject);
                 }
