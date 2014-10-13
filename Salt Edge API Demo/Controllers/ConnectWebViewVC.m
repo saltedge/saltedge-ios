@@ -124,20 +124,20 @@ static NSString* const kConnectURLKey    = @"connect_url";
     if (!self.login) {
         NSString* customerId = [[NSUserDefaults standardUserDefaults] stringForKey:kCustomerIdDefaultsKey];
         [manager requestCreateTokenWithParameters:@{ @"country_code" : self.provider.countryCode, @"provider_code" : self.provider.code, @"return_to" : @"http://httpbin.org", @"customer_id" : customerId } success:^(NSDictionary* responseObject) {
-            [self loadConnectPageWithURLString:responseObject[@"data"][@"connect_url"]];
+            [self loadConnectPageWithURLString:responseObject[kDataKey][kConnectURLKey]];
         } failure:^(SEError* error) {
             NSLog(@"%@", error);
         }];
     } else if (self.refresh) {
         [manager requestRefreshTokenForLoginSecret:self.login.secret parameters:@{ @"return_to": @"http://httpbin.org" } success:^(NSDictionary* responseObject) {
-            [self loadConnectPageWithURLString:responseObject[@"data"][@"connect_url"]];
+            [self loadConnectPageWithURLString:responseObject[kDataKey][kConnectURLKey]];
         } failure:^(SEError* error) {
             NSLog(@"%@", error);
             [SVProgressHUD showErrorWithStatus:error.message];
         }];
     } else {
         [manager requestReconnectTokenForLoginSecret:self.login.secret parameters:@{ @"return_to": @"http://httpbin.org" } success:^(NSDictionary* responseObject) {
-            [self loadConnectPageWithURLString:responseObject[@"data"][@"connect_url"]];
+            [self loadConnectPageWithURLString:responseObject[kDataKey][kConnectURLKey]];
         } failure:^(SEError* error) {
             NSLog(@"%@", error);
             [SVProgressHUD showErrorWithStatus:error.message];
@@ -189,7 +189,7 @@ static NSString* const kConnectURLKey    = @"connect_url";
         [self switchToLoginsViewController];
         [SVProgressHUD dismiss];
     } else if ([loginState isEqualToString:SELoginStateFetching]) {
-        NSString* loginSecret = response[@"data"][@"secret"];
+        NSString* loginSecret = response[kDataKey][SELoginSecretKey];
         NSMutableSet* loginSecrets = [NSSet setWithArray:[[NSUserDefaults standardUserDefaults] arrayForKey:kLoginSecretsDefaultsKey]].mutableCopy;
         if (!loginSecrets) {
             loginSecrets = [NSMutableSet set];

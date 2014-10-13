@@ -4,7 +4,7 @@ A handful of classes to help you interact with the Salt Edge API from your iOS a
 
 ## Requirements
 
-iOS 7+, ARC.
+iOS 6+, ARC.
 
 ## Installation
 ### CocoaPods
@@ -32,11 +32,8 @@ Copy the `Salt Edge API` folder into your project.
 ## Connecting logins using the sample app
 
 1. Install dependencies by running `$ pod install` and `$ gem install sinatra rest-client`
-2. Replace the `kAppId` constant in [AppDelegate.m:17](https://github.com/saltedge/saltedge-ios/blob/master/Salt%20Edge%20API%20Demo/AppDelegate.m#L17) with your App id
-3. Replace the `APP_ID` and `APP_SECRET` constants in [token_server.rb:5-6](https://github.com/nemesis/saltedge-ios/blob/refactor-and-updates/Salt%20Edge%20API%20Demo/token_server.rb#L5-L6) with your App id and App secret
-4. Run the token server on the port 4567 by running `$ ruby token_server.rb -p4567`
-*Note*: If you wish to run the token server on some other port, make sure to change customers POST URL in [AppDelegate.m:17](https://github.com/saltedge/saltedge-ios/blob/master/Salt%20Edge%20API%20Demo/AppDelegate.m#L28)
-5. Run the app
+2. Replace the `clientId` and `appSecret` constants in [AppDelegate.m:28-29](https://github.com/saltedge/saltedge-ios/blob/master/Salt%20Edge%20API%20Demo/AppDelegate.m#L28-L29) with your Client ID and corresponding App secret
+3. Run the app
 
 *Note*: You can find your App id and App secret at your [profile](https://www.saltedge.com/clients/profile/settings) page.
 
@@ -79,8 +76,8 @@ Implement the `SEWebViewDelegate` methods in your controller:
 
 - (void)webView:(SEWebView *)webView receivedCallbackWithResponse:(NSDictionary *)response
 {
-    NSNumber* loginID    = response[SELoginDataKey][SELoginIdKey];
-    NSString* loginState = response[SELoginDataKey][SELoginStateKey];
+    NSString* loginSecret = response[SELoginDataKey][SELoginSecretKey];
+    NSString* loginState  = response[SELoginDataKey][SELoginStateKey];
     // do something with the data...
 }
 
@@ -107,11 +104,11 @@ Load the Salt Edge Connect URL into the web view and you're good to go:
 
 ## SEAPIRequestManager
 
-An `AFHTTPSessionManager` subclass, designed with convenience methods for interacting with and querying the Salt Edge API. Contains methods for fetching entities (logins, transactions, et al.), also for creating logins via the REST API. In addition, if you're using the `SEWebView` to create or reconnect logins, this class provides a method for requesting a Connect token as well.
+A class designed with convenience methods for interacting with and querying the Salt Edge API. Contains methods for fetching entities (logins, transactions, accounts, et al.), also for requesting login tokens for connecting, reconnecting and refreshing logins via a `SEWebView`.
 
 ### Usage
 
-Import the manager class and link your app id and app secret in the first place before using it.
+Import the manager class and link your client id and app secret in the first place before using it.
 
 ### Example
 
@@ -121,7 +118,7 @@ Import the manager class and link your app id and app secret in the first place 
 // ... snip ...
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    [SEAPIRequestManager linkAppId:kAppId appSecret:kAppSecret];
+    [SEAPIRequestManager linkClientId:@"example-client-id" appSecret:@"example-app-secret"];
     // ... snip ...
 }
 ```
@@ -133,10 +130,10 @@ Use the manager to interact with the provided API:
 {
     SEAPIRequestManager* manager = [SEAPIRequestManager manager];
 
-    [manager requestConnectTokenWithParameters:@{ @"customer_email" : @"user@example.com" } success:^(NSURLSessionDataTask* task, NSDictionary* tokenDictionary) {
-        NSString* connectURL = tokenDictionary[kConnectURLKey];
+    [manager requestCreateTokenWithParameters:@{ @"country_code" : @"XO", @"provider_code" : @"paypal_xo", @"return_to" : @"http://example.com", @"customer_id" : @"example-customer-id" } success:^(NSDictionary* responseObject) {
+        NSString* connectURL = responseObject[kDataKey][kConnectURLKey];
         // load the connect URL into the SEWebView...
-    } failure:^(NSURLSessionDataTask* task, NSError* error) {
+    } failure:^(SEError* error) {
         // handle the error...
     }];
 }
@@ -150,6 +147,7 @@ Models contained within the components:
 
 * `SEAccount`
 * `SELogin`
+* `SEError`
 * `SEProvider`
 * `SEProviderField`
 * `SEProviderFieldOption`
@@ -167,11 +165,8 @@ Documentation is available for all of the components. Use quick documentation (A
 
 ## Running the demo
 
-First, make sure that the command `$ gem install sinatra rest-client` succeeds. You will need these two gems in order to run the customer tokens server.
-
-To run the demo app contained in here, you have to provide the demo with your app's ID and secret.
-First, set up the `kAppId` constant to your app ID in [AppDelegate.m](https://github.com/saltedge/saltedge-ios/blob/master/Salt%20Edge%20API%20Demo/AppDelegate.m#L17).
-Afterwards, you will have to provide the app credentials [in the server file](https://github.com/saltedge/saltedge-ios/blob/master/Salt%20Edge%20API%20Demo/token_server.rb#L5-L6) that will be requesting [customer secret tokens](https://docs.saltedge.com/guides/authentication/#app_id_and_customer_secret). The server file (`token_server.rb`) is contained in the `Salt Edge API Demo` folder, and is under `Salt Edge API Demo`'s `Supporting Files` folder when navigating the file hierarchy in Xcode.
+To run the demo app contained in here, you have to provide the demo with your client ID, app secret, and a customer identifier.
+Set up the `clientId` and `appSecret` constants to your client ID and corresponding app secret in [AppDelegate.m:28-29](https://github.com/saltedge/saltedge-ios/blob/master/Salt%20Edge%20API%20Demo/AppDelegate.m#L28-L29). Afterwards, set up a customer identifier in [AppDelegate.m:42](https://github.com/saltedge/saltedge-ios/blob/master/Salt%20Edge%20API%20Demo/AppDelegate.m#L42) so that when you run the demo, it will create a customer for you to work with.
 
 ## License
 

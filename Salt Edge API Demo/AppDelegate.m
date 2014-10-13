@@ -25,8 +25,9 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    NSString* clientId  = nil; // insert your client ID here
-    NSString* appSecret = nil; // insert your app secret here
+    static NSString* const clientId  = nil; // insert your client ID here
+    static NSString* const appSecret = nil; // insert your app secret here
+
     [SEAPIRequestManager linkClientId:clientId appSecret:appSecret];
 
     void (^setWindowRootViewController)() = ^() {
@@ -38,7 +39,7 @@
     __block NSString* customerId = [[NSUserDefaults standardUserDefaults] stringForKey:kCustomerIdDefaultsKey];
     if (!customerId) {
         SEAPIRequestManager* manager = [SEAPIRequestManager manager];
-        [manager createCustomerWithIdentifier:@"your-customer-identifier" success:^(NSDictionary* responseObject) {
+        [manager createCustomerWithIdentifier:nil success:^(NSDictionary* responseObject) {
             customerId = responseObject[@"data"][@"customer_id"];
             [[NSUserDefaults standardUserDefaults] setObject:customerId forKey:kCustomerIdDefaultsKey];
             [[NSUserDefaults standardUserDefaults] synchronize];
