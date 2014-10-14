@@ -129,34 +129,36 @@ typedef NS_ENUM(NSInteger, SERequestMethod) {
     }
 
     [NSURLConnection sendAsynchronousRequest:request queue:[[self class] requestOperationQueue] completionHandler:^(NSURLResponse* response, NSData* data, NSError* connectionError) {
-        NSInteger statusCode = [(NSHTTPURLResponse*)response statusCode];
-        if (connectionError || !(statusCode >= 200 && statusCode < 300)) {
-            if (failure) {
-                NSError* error;
-                NSDictionary* errorDictionary = [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
-                if ((error || !errorDictionary) && connectionError) {
-                    failure(@{ kErrorClassKey: connectionError.domain,
-                               kMessageKey: connectionError.localizedDescription,
-                               kRequestKey: request
-                               });
-                } else {
-                    failure(errorDictionary);
+        dispatch_async(dispatch_get_main_queue(), ^{
+            NSInteger statusCode = [(NSHTTPURLResponse*)response statusCode];
+            if (connectionError || !(statusCode >= 200 && statusCode < 300)) {
+                if (failure) {
+                    NSError* error;
+                    NSDictionary* errorDictionary = [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
+                    if ((error || !errorDictionary) && connectionError) {
+                        failure(@{ kErrorClassKey: connectionError.domain,
+                                   kMessageKey: connectionError.localizedDescription,
+                                   kRequestKey: request
+                                   });
+                    } else {
+                        failure(errorDictionary);
+                    }
+                }
+            } else {
+                if (success) {
+                    NSError* error;
+                    NSDictionary* responseObject = [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
+                    if (error && failure) {
+                        failure(@{ kErrorClassKey: error.domain,
+                                   kMessageKey: error.localizedDescription,
+                                   kRequestKey: request
+                                   });
+                    } else {
+                        success(responseObject);
+                    }
                 }
             }
-        } else {
-            if (success) {
-                NSError* error;
-                NSDictionary* responseObject = [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
-                if (error && failure) {
-                    failure(@{ kErrorClassKey: error.domain,
-                               kMessageKey: error.localizedDescription,
-                               kRequestKey: request
-                               });
-                } else {
-                    success(responseObject);
-                }
-            }
-        }
+        });
     }];
 }
 

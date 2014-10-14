@@ -97,8 +97,8 @@ static NSString* const kConnectURLKey    = @"connect_url";
         [SVProgressHUD showWithStatus:@"Loading..." maskType:SVProgressHUDMaskTypeGradient];
         [manager fetchFullProvidersListWithSuccess:^(NSSet* providers) {
             self.providers = providers;
-            [SVProgressHUD dismiss];
             [self showProviders];
+            [SVProgressHUD dismiss];
         } failure:^(SEError* error) {
             [SVProgressHUD showErrorWithStatus:error.message];
         }];
@@ -211,8 +211,10 @@ static NSString* const kConnectURLKey    = @"connect_url";
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView
 {
-    [SVProgressHUD dismiss];
-    [self hideActivityIndicator];
+    if ([[webView stringByEvaluatingJavaScriptFromString:@"document.readyState"] isEqualToString:@"complete"]) {
+        [SVProgressHUD dismiss];
+        [self hideActivityIndicator];
+    }
 }
 
 #pragma mark -
