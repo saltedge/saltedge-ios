@@ -27,6 +27,12 @@
 {
     static NSString* const clientId  = nil; // insert your client ID here
     static NSString* const appSecret = nil; // insert your app secret here
+    static NSString* const customerIdentifier = nil; // insert customer identifier here
+
+    if (!clientId || !appSecret || !customerIdentifier) {
+        [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Client ID, App Secret or Customer Identifier is not set. Please see AppDelegate.m or consult the README file." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil] show];
+        return YES;
+    }
 
     [SEAPIRequestManager linkClientId:clientId appSecret:appSecret];
 
@@ -39,14 +45,13 @@
     __block NSString* customerId = [[NSUserDefaults standardUserDefaults] stringForKey:kCustomerIdDefaultsKey];
     if (!customerId) {
         SEAPIRequestManager* manager = [SEAPIRequestManager manager];
-        [manager createCustomerWithIdentifier:nil success:^(NSDictionary* responseObject) {
+        [manager createCustomerWithIdentifier:customerIdentifier success:^(NSDictionary* responseObject) {
             customerId = responseObject[@"data"][@"customer_id"];
             [[NSUserDefaults standardUserDefaults] setObject:customerId forKey:kCustomerIdDefaultsKey];
             [[NSUserDefaults standardUserDefaults] synchronize];
             setWindowRootViewController();
         } failure:^(SEError* error) {
             NSLog(@"%@", error);
-            [SVProgressHUD showErrorWithStatus:error.message];
         }];
     } else {
         setWindowRootViewController();
