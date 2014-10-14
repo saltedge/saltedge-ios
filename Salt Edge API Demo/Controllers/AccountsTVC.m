@@ -7,7 +7,6 @@
 //
 
 #import "AccountsTVC.h"
-#import <AFHTTPRequestOperationManager.h>
 #import "Constants.h"
 #import <SVProgressHUD.h>
 #import "TransactionsTVC.h"
@@ -18,6 +17,7 @@
 #import "ConnectWebViewVC.h"
 #import "AppDelegate.h"
 #import "TabBarVC.h"
+#import "SEError.h"
 
 static NSString* const kLoginRefreshAction   = @"Refresh";
 static NSString* const kLoginReconnectAction = @"Reconnect";
@@ -50,13 +50,14 @@ static NSString* const kAccountCellReuseIdentifier = @"AccountTableViewCell";
 - (void)setup
 {
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Actions" style:UIBarButtonItemStylePlain target:self action:@selector(actionsPressed)];
+    self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
 }
 
 #pragma mark - Actions
 
 - (void)actionsPressed
 {
-    UIActionSheet* actionSheet = [[UIActionSheet alloc] initWithTitle:@"Login actions" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:kLoginRemoveAction otherButtonTitles:kLoginReconnectAction, kLoginRefreshAction, nil];
+    UIActionSheet* actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:kLoginRemoveAction otherButtonTitles:kLoginReconnectAction, kLoginRefreshAction, nil];
     [actionSheet showInView:self.view];
 }
 
@@ -68,23 +69,23 @@ static NSString* const kAccountCellReuseIdentifier = @"AccountTableViewCell";
 
     SEAPIRequestManager* manager = [SEAPIRequestManager manager];
 
-    [manager fetchProviderWithCode:self.login.providerCode success:^(NSURLSessionDataTask* task, SEProvider* provider) {
+    [manager fetchProviderWithCode:self.login.providerCode success:^(SEProvider* provider) {
         self.loginsProvider = provider;
 
-        [manager fetchFullAccountsListForLoginId:self.login.id success:^(NSURLSessionDataTask* task, NSSet* accounts) {
+        [manager fetchFullAccountsListForLoginSecret:self.login.secret success:^(NSSet* accounts) {
             self.accounts = [[accounts allObjects] sortedArrayUsingComparator:^NSComparisonResult(SEAccount* first, SEAccount* second) {
                 return [first.name localizedCaseInsensitiveCompare:second.name];
             }];
             [self.tableView reloadData];
             [SVProgressHUD dismiss];
-        } failure:^(NSURLSessionDataTask* task, NSError* error) {
+        } failure:^(SEError* error) {
             NSLog(@"Error: %@", error);
-            [SVProgressHUD showErrorWithStatus:error.localizedDescription];
+            [SVProgressHUD showErrorWithStatus:error.message];
         }];
-        
-    } failure:^(NSURLSessionDataTask* task, NSError* error) {
+
+    } failure:^(SEError* error) {
         NSLog(@"Error: %@", error);
-        [SVProgressHUD showErrorWithStatus:error.localizedDescription];
+        [SVProgressHUD showErrorWithStatus:error.message];
     }];
 }
 
@@ -107,7 +108,7 @@ static NSString* const kAccountCellReuseIdentifier = @"AccountTableViewCell";
 {
     SEAPIRequestManager* manager = [SEAPIRequestManager manager];
 
-    [manager removeLoginWithId:self.login.id success:^(NSURLSessionDataTask* task, id responseObject) {
+    [manager removeLoginWithSecret:self.login.secret success:^(NSDictionary* responseObject) {
         if ([responseObject[@"data"][@"removed"] boolValue]) {
             [SVProgressHUD showSuccessWithStatus:@"Removed"];
             if ([self.delegate respondsToSelector:@selector(removedLogin:)]) {
@@ -117,8 +118,8 @@ static NSString* const kAccountCellReuseIdentifier = @"AccountTableViewCell";
         } else {
             [SVProgressHUD showErrorWithStatus:@"Couldn't remove login"];
         }
-    } failure:^(NSURLSessionDataTask* task, NSError* error) {
-        [SVProgressHUD showErrorWithStatus:error.localizedDescription];
+    } failure:^(SEError* error) {
+        [SVProgressHUD showErrorWithStatus:error.message];
     }];
 }
 
@@ -154,6 +155,7 @@ static NSString* const kAccountCellReuseIdentifier = @"AccountTableViewCell";
     SEAccount* selectedAccount = self.accounts[indexPath.row];
     TransactionsTVC* transactions = [self.storyboard instantiateViewControllerWithIdentifier:@"TransactionsTVC"];
     [transactions setAccountId:selectedAccount.id];
+    [transactions setLoginSecret:self.login.secret];
     transactions.title = selectedAccount.name;
     [self.navigationController pushViewController:transactions animated:YES];
 }
@@ -170,6 +172,9 @@ static NSString* const kAccountCellReuseIdentifier = @"AccountTableViewCell";
         [self reconnectLogin];
     } else if ([buttonTitle isEqualToString:kLoginRemoveAction]) {
         [self removeLogin];
+    }
+    if (![buttonTitle isEqualToString:@"Cancel"]) {
+        [self.navigationController popViewControllerAnimated:NO];
     }
 }
 

@@ -1,5 +1,5 @@
 //
-//  SETransaction.m
+//  SEError.m
 //
 //  Copyright (c) 2014 Salt Edge. https://saltedge.com
 //
@@ -21,33 +21,13 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 
-#import "SETransaction.h"
+#import "SEError.h"
 
-@implementation SETransaction
+@implementation SEError
 
-@synthesize description = _description;
-
-- (BOOL)isEqualToTransaction:(SETransaction*)transaction
+- (NSString*)description
 {
-    return ([self.id integerValue] == [transaction.id integerValue]);
-}
-
-- (BOOL)isEqual:(id)object
-{
-    if (self == object) {
-        return YES;
-    }
-
-    if (![object isKindOfClass:[self class]]) {
-        return NO;
-    }
-
-    return [self isEqualToTransaction:object];
-}
-
-- (NSUInteger)hash
-{
-    return self.id.unsignedIntegerValue;
+    return [NSString stringWithFormat:@"*** ERROR: %@ -> %@. REQUEST: %@", self.errorClass, self.message, self.request];
 }
 
 @end

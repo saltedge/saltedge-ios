@@ -1,5 +1,5 @@
 //
-//  SETransaction.m
+//  SEError.h
 //
 //  Copyright (c) 2014 Salt Edge. https://saltedge.com
 //
@@ -21,33 +21,17 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 
-#import "SETransaction.h"
+#import "SEBaseModel.h"
 
-@implementation SETransaction
+/**
+ SEError represents an error object returned from Salt Edge API responses.
 
-@synthesize description = _description;
+ @see https://docs.saltedge.com/reference/#errors
+ */
+@interface SEError : SEBaseModel
 
-- (BOOL)isEqualToTransaction:(SETransaction*)transaction
-{
-    return ([self.id integerValue] == [transaction.id integerValue]);
-}
-
-- (BOOL)isEqual:(id)object
-{
-    if (self == object) {
-        return YES;
-    }
-
-    if (![object isKindOfClass:[self class]]) {
-        return NO;
-    }
-
-    return [self isEqualToTransaction:object];
-}
-
-- (NSUInteger)hash
-{
-    return self.id.unsignedIntegerValue;
-}
+@property (nonatomic, strong) NSString* errorClass;
+@property (nonatomic, strong) NSString* message;
+@property (nonatomic, strong) NSDictionary* request;
 
 @end

@@ -1,5 +1,5 @@
 //
-//  SETransaction.m
+//  SERequestHandler.h
 //
 //  Copyright (c) 2014 Salt Edge. https://saltedge.com
 //
@@ -21,33 +21,31 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 
-#import "SETransaction.h"
+#import <Foundation/Foundation.h>
 
-@implementation SETransaction
+@class SEError;
 
-@synthesize description = _description;
+typedef void (^SERequestHandlerSuccessBlock)(NSDictionary* responseDictionary);
+typedef void (^SERequestHandlerFailureBlock)(NSDictionary* errorDictionary);
 
-- (BOOL)isEqualToTransaction:(SETransaction*)transaction
-{
-    return ([self.id integerValue] == [transaction.id integerValue]);
-}
+@interface SERequestHandler : NSObject
 
-- (BOOL)isEqual:(id)object
-{
-    if (self == object) {
-        return YES;
-    }
++ (void)sendPOSTRequestWithURL:(NSString*)url
+                    parameters:(NSDictionary*)parameters
+                       headers:(NSDictionary*)headers
+                       success:(SERequestHandlerSuccessBlock)success
+                       failure:(SERequestHandlerFailureBlock)failure;
 
-    if (![object isKindOfClass:[self class]]) {
-        return NO;
-    }
++ (void)sendGETRequestWithURL:(NSString*)url
+                   parameters:(NSDictionary*)parameters
+                      headers:(NSDictionary*)headers
+                      success:(SERequestHandlerSuccessBlock)success
+                      failure:(SERequestHandlerFailureBlock)failure;
 
-    return [self isEqualToTransaction:object];
-}
-
-- (NSUInteger)hash
-{
-    return self.id.unsignedIntegerValue;
-}
++ (void)sendDELETERequestWithURL:(NSString*)url
+                      parameters:(NSDictionary*)parameters
+                         headers:(NSDictionary*)headers
+                         success:(SERequestHandlerSuccessBlock)success
+                         failure:(SERequestHandlerFailureBlock)failure;
 
 @end

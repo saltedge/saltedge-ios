@@ -28,7 +28,7 @@ static NSString* const SELoginStateFetching = @"fetching";
 static NSString* const SELoginStateSuccess  = @"success";
 
 static NSString* const SELoginStateKey      = @"state";
-static NSString* const SELoginIdKey         = @"login_id";
+static NSString* const SELoginSecretKey     = @"secret";
 static NSString* const SELoginDataKey       = @"data";
 
 @protocol SEWebViewDelegate;

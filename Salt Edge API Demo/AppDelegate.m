@@ -10,11 +10,10 @@
 #import "SEAPIRequestManager.h"
 #import "TabBarVC.h"
 #import <SVProgressHUD.h>
-#import <AFHTTPRequestOperationManager.h>
+#import "SERequestHandler.h"
+#import "SEError.h"
 
 #pragma GCC diagnostic ignored "-Wundeclared-selector"
-
-static NSString* const kAppId = @"your-app-id";
 
 @interface AppDelegate()
 
@@ -26,26 +25,36 @@ static NSString* const kAppId = @"your-app-id";
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    SVProgressHUD* hud = [SVProgressHUD performSelector:@selector(sharedView)];
-    [hud setHudBackgroundColor:[UIColor blackColor]];
-    [hud setHudForegroundColor:[UIColor whiteColor]];
+    static NSString* const clientId  = nil; // insert your client ID here
+    static NSString* const appSecret = nil; // insert your app secret here
 
-    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-    [manager POST:@"http://localhost:4567/customers" parameters:@{ @"email": CUSTOMER_EMAIL } success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        [SEAPIRequestManager linkAppId:kAppId customerSecret:responseObject[@"data"][@"secret"]];
+    [SEAPIRequestManager linkClientId:clientId appSecret:appSecret];
+
+    void (^setWindowRootViewController)() = ^() {
         self.tabBar = [[TabBarVC alloc] init];
         self.window.rootViewController = self.tabBar;
         [self.window makeKeyAndVisible];
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        [SVProgressHUD showErrorWithStatus:[NSString stringWithFormat:@"%@\n Make sure you've set your app ID and app secret in the server script and launched it.", error.localizedDescription]];
-    }];
+    };
 
-    self.window.rootViewController = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"EmptyVC"];
-    [self.window makeKeyAndVisible];
+    __block NSString* customerId = [[NSUserDefaults standardUserDefaults] stringForKey:kCustomerIdDefaultsKey];
+    if (!customerId) {
+        SEAPIRequestManager* manager = [SEAPIRequestManager manager];
+        [manager createCustomerWithIdentifier:nil success:^(NSDictionary* responseObject) {
+            customerId = responseObject[@"data"][@"customer_id"];
+            [[NSUserDefaults standardUserDefaults] setObject:customerId forKey:kCustomerIdDefaultsKey];
+            [[NSUserDefaults standardUserDefaults] synchronize];
+            setWindowRootViewController();
+        } failure:^(SEError* error) {
+            NSLog(@"%@", error);
+            [SVProgressHUD showErrorWithStatus:error.message];
+        }];
+    } else {
+        setWindowRootViewController();
+    }
 
     return YES;
 }
-							
+
 - (void)applicationWillResignActive:(UIApplication *)application
 {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.

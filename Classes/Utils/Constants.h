@@ -25,17 +25,19 @@
 #define _SaltEdge_API_Demo_Constants_h
 
 /* Routes */
-static NSString* const kRootURL           = @"https://www.saltedge.com";
-static NSString* const kTokensPath        = @"api/v1/tokens";
-static NSString* const kLoginsPath        = @"api/v1/logins";
-static NSString* const kAccountsPath      = @"api/v1/accounts";
-static NSString* const kTransactionsPath  = @"api/v1/transactions";
-static NSString* const kProvidersPath     = @"api/v1/providers";
-static NSString* const kCustomersPath     = @"customers";
-static NSString* const kLoginsInteractive = @"interactive";
-static NSString* const kLoginsReconnect   = @"reconnect";
-static NSString* const kLoginsRefresh     = @"refresh";
-static NSString* const kLoginsRemove      = @"remove";
+static NSString* const kRootURL             = @"https://www.saltedge.com";
+static NSString* const kCreateTokenPath     = @"api/v2/tokens/create";
+static NSString* const kReconnectTokenPath  = @"api/v2/tokens/reconnect";
+static NSString* const kRefreshTokenPath    = @"api/v2/tokens/refresh";
+static NSString* const kLoginPath           = @"api/v2/login";
+static NSString* const kAccountsPath        = @"api/v2/accounts";
+static NSString* const kTransactionsPath    = @"api/v2/transactions";
+static NSString* const kProvidersPath       = @"api/v2/providers";
+static NSString* const kCustomersPath       = @"api/v2/customers";
+static NSString* const kLoginInteractive    = @"interactive";
+static NSString* const kLoginReconnect      = @"reconnect";
+static NSString* const kLoginRefresh        = @"refresh";
+static NSString* const kLoginRemove         = @"remove";
 
 /* Provider input fields types */
 static NSString* const SEProviderFieldTypeText     = @"text";

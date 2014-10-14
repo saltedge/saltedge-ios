@@ -11,5 +11,6 @@
 @interface TransactionsTVC : UITableViewController
 
 @property (nonatomic, strong) NSNumber* accountId;
+@property (nonatomic, strong) NSString* loginSecret;
 
 @end
