@@ -33,6 +33,7 @@
 @property (nonatomic, strong) NSNumber* id;
 @property (nonatomic, strong) NSString* secret;
 @property (nonatomic, strong) NSNumber* finished;
+@property (nonatomic, strong) NSNumber* finishedRecent;
 @property (nonatomic, strong) NSNumber* partial;
 @property (nonatomic, strong) NSString* providerCode;
 @property (nonatomic, strong) NSString* providerName;

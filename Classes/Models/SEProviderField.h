@@ -36,6 +36,7 @@
 @property (nonatomic, strong) NSString* name;
 @property (nonatomic, strong) NSString* nature;
 @property (nonatomic, strong) NSNumber* position;
+@property (nonatomic, strong) NSNumber* optional;
 @property (nonatomic, strong) NSArray*  fieldOptions;
 
 @end
