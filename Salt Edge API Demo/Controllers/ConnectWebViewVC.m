@@ -212,6 +212,7 @@ static NSString* const kConnectURLKey    = @"connect_url";
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView
 {
+    [SVProgressHUD dismiss];
     [self hideActivityIndicator];
 }
 

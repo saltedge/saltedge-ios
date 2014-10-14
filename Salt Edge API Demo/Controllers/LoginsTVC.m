@@ -20,7 +20,8 @@ static NSString* const kLoginTableViewCellReuseIdentifier = @"LoginTableViewCell
 
 @interface LoginsTVC ()
 
-@property (atomic, strong) NSArray* logins;
+@property (atomic, strong)    NSArray* logins;
+@property (nonatomic, strong) UILabel* noDataLabel;
 @property (nonatomic) BOOL isLoadingLogins;
 
 @end
@@ -37,15 +38,29 @@ static NSString* const kLoginTableViewCellReuseIdentifier = @"LoginTableViewCell
     [self setup];
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [self reloadLoginsTableViewController];
+}
+
 #pragma mark - Setup
 
 - (void)setup
 {
     self.title = @"Logins";
     self.navigationController.navigationBarHidden = NO;
-    [self reloadLoginsTableViewController];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(reload)];
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
+}
+
+- (void)setupNoDataLabel
+{
+    self.noDataLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+    self.noDataLabel.text = @"No data to show";
+    [self.noDataLabel sizeToFit];
+    self.noDataLabel.center = CGPointMake(self.view.frame.size.width / 2, self.view.frame.size.height / 2);
+    [self.view addSubview:self.noDataLabel];
 }
 
 #pragma mark - Helper methods
@@ -54,8 +69,10 @@ static NSString* const kLoginTableViewCellReuseIdentifier = @"LoginTableViewCell
 {
     self.logins = @[];
     NSArray* loginSecrets = [[NSUserDefaults standardUserDefaults] arrayForKey:kLoginSecretsDefaultsKey];
-    if (!self.isLoadingLogins) {
-        [SVProgressHUD showWithStatus:@"Loading..."];
+    if (loginSecrets.count == 0) {
+        [self setupNoDataLabel];
+    } else if (!self.isLoadingLogins) {
+        [self removeNoDataLabel];
         self.isLoadingLogins = YES;
         SEAPIRequestManager* manager = [SEAPIRequestManager manager];
 
@@ -72,6 +89,12 @@ static NSString* const kLoginTableViewCellReuseIdentifier = @"LoginTableViewCell
             }];
         }
     }
+}
+
+- (void)removeNoDataLabel
+{
+    [self.noDataLabel removeFromSuperview];
+    self.noDataLabel = nil;
 }
 
 #pragma mark - Actions
