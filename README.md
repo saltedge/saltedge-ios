@@ -33,7 +33,8 @@ Copy the `Classes` folder into your project.
 
 1. Install dependencies by running `$ pod install`
 2. Replace the `clientId` and `appSecret` constants in [AppDelegate.m:28-29](https://github.com/saltedge/saltedge-ios/blob/master/Salt%20Edge%20API%20Demo/AppDelegate.m#L28-L29) with your Client ID and corresponding App secret
-3. Run the app
+3. Set up a customer identifier in [AppDelegate.m:42](https://github.com/saltedge/saltedge-ios/blob/master/Salt%20Edge%20API%20Demo/AppDelegate.m#L42) which will be used when requesting tokens for creating logins
+4. Run the app
 
 *Note*: You can find your Client ID and App secret at your [profile](https://www.saltedge.com/clients/profile/settings) page.
 
