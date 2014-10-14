@@ -28,6 +28,10 @@ static NSString* const kRequestMethodPOST   = @"POST";
 static NSString* const kRequestMethodGET    = @"GET";
 static NSString* const kRequestMethodDELETE = @"DELETE";
 
+static NSString* const kErrorClassKey = @"error_class";
+static NSString* const kMessageKey    = @"message";
+static NSString* const kRequestKey    = @"request";
+
 typedef NS_ENUM(NSInteger, SERequestMethod) {
     SERequestMethodPOST,
     SERequestMethodGET,
@@ -100,9 +104,9 @@ typedef NS_ENUM(NSInteger, SERequestMethod) {
 {
     if (url.length == 0) {
         if (failure) {
-            failure(@{ @"error_class": @"EmptyURLError",
-                       @"message": @"Cannot send a request to empty URL.",
-                       @"request": @{ @"parameters" : parameters ? parameters : [NSNull null] }
+            failure(@{ kErrorClassKey: @"EmptyURLError",
+                       kMessageKey: @"Cannot send a request to empty URL.",
+                       kRequestKey: @{ @"parameters" : parameters ? parameters : [NSNull null] }
                        });
         }
         return;
@@ -125,28 +129,36 @@ typedef NS_ENUM(NSInteger, SERequestMethod) {
     }
 
     [NSURLConnection sendAsynchronousRequest:request queue:[[self class] requestOperationQueue] completionHandler:^(NSURLResponse* response, NSData* data, NSError* connectionError) {
-        NSInteger statusCode = [(NSHTTPURLResponse*)response statusCode];
-        if (connectionError || !(statusCode >= 200 && statusCode < 300)) {
-            if (failure) {
-                self.failureBlock(@{ @"error_class": connectionError.domain,
-                                     @"message": connectionError.localizedDescription,
-                                     @"request": request
-                                     });
-            }
-        } else {
-            if (success) {
-                NSError* error;
-                NSDictionary* responseObject = [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
-                if (error && failure) {
-                    failure(@{ @"error_class": error.domain,
-                               @"message": error.localizedDescription,
-                               @"request": request
-                               });
-                } else {
-                    success(responseObject);
+        dispatch_async(dispatch_get_main_queue(), ^{
+            NSInteger statusCode = [(NSHTTPURLResponse*)response statusCode];
+            if (connectionError || !(statusCode >= 200 && statusCode < 300)) {
+                if (failure) {
+                    NSError* error;
+                    NSDictionary* errorDictionary = [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
+                    if ((error || !errorDictionary) && connectionError) {
+                        failure(@{ kErrorClassKey: connectionError.domain,
+                                   kMessageKey: connectionError.localizedDescription,
+                                   kRequestKey: request
+                                   });
+                    } else {
+                        failure(errorDictionary);
+                    }
+                }
+            } else {
+                if (success) {
+                    NSError* error;
+                    NSDictionary* responseObject = [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
+                    if (error && failure) {
+                        failure(@{ kErrorClassKey: error.domain,
+                                   kMessageKey: error.localizedDescription,
+                                   kRequestKey: request
+                                   });
+                    } else {
+                        success(responseObject);
+                    }
                 }
             }
-        }
+        });
     }];
 }
 
@@ -176,9 +188,9 @@ typedef NS_ENUM(NSInteger, SERequestMethod) {
         NSData* data = [NSJSONSerialization dataWithJSONObject:parameters options:0 error:&error];
         if (error) {
             if (self.failureBlock) {
-                self.failureBlock(@{ @"error_class": error.domain,
-                                     @"message": error.localizedDescription,
-                                     @"request": parameters
+                self.failureBlock(@{ kErrorClassKey: error.domain,
+                                     kMessageKey: error.localizedDescription,
+                                     kRequestKey: parameters
                                      });
             }
             return NO;

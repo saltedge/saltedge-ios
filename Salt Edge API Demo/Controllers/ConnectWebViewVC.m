@@ -66,7 +66,6 @@ static NSString* const kConnectURLKey    = @"connect_url";
 {
     self.title = @"Connect";
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Providers" style:UIBarButtonItemStylePlain target:self action:@selector(showProviders)];
-    
     SVProgressHUD* hud = [SVProgressHUD performSelector:@selector(sharedView)];
     [hud setHudBackgroundColor:[UIColor blackColor]];
     [hud setHudForegroundColor:[UIColor whiteColor]];
@@ -98,8 +97,8 @@ static NSString* const kConnectURLKey    = @"connect_url";
         [SVProgressHUD showWithStatus:@"Loading..." maskType:SVProgressHUDMaskTypeGradient];
         [manager fetchFullProvidersListWithSuccess:^(NSSet* providers) {
             self.providers = providers;
-            [SVProgressHUD dismiss];
             [self showProviders];
+            [SVProgressHUD dismiss];
         } failure:^(SEError* error) {
             [SVProgressHUD showErrorWithStatus:error.message];
         }];
@@ -212,7 +211,10 @@ static NSString* const kConnectURLKey    = @"connect_url";
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView
 {
-    [self hideActivityIndicator];
+    if ([[webView stringByEvaluatingJavaScriptFromString:@"document.readyState"] isEqualToString:@"complete"]) {
+        [SVProgressHUD dismiss];
+        [self hideActivityIndicator];
+    }
 }
 
 #pragma mark -

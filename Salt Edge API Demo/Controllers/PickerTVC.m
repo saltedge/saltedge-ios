@@ -80,7 +80,7 @@ static NSString* const kPickerCellReuseIdentifier = @"PickerTableViewCell";
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (self.completionBlock) {
-        NSString* selectedItem = [self.items[indexPath.row] description];
+        NSString* selectedItem = [self.itemsToDisplay[indexPath.row] description];
         self.completionBlock(selectedItem);
         [self dismissViewControllerAnimated:YES completion:nil];
     }
