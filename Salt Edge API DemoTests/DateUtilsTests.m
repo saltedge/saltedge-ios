@@ -31,4 +31,12 @@
     XCTAssertEqualObjects(date, [NSDate dateWithTimeIntervalSince1970:0], @"dateFromYMDString should properly convert a YMD date string to a date object");
 }
 
+- (void)testYMDStringFromDate
+{
+    NSTimeInterval januaryInterval = 60 * 60 * 24 * 31;
+    NSDate* theDate = [NSDate dateWithTimeIntervalSince1970:januaryInterval];
+
+    XCTAssertEqualObjects(@"1970-02-01", [DateUtils YMDStringFromDate:theDate], @"YMDStringFromDate should properly convert a NSDate object into a string");
+}
+
 @end

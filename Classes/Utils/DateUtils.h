@@ -45,4 +45,12 @@
  */
 + (NSDate*)dateFromYMDString:(NSString*)dateString;
 
+/**
+ Converts a NSDate object into a YYYY-MM-DD formatted date string.
+
+ @param date The date object which will be converted into a string.
+ @return The YYYY-MM-DD string equivalent of the date object parameter.
+ */
++ (NSString*)YMDStringFromDate:(NSDate*)date;
+
 @end
