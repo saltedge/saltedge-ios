@@ -141,7 +141,7 @@ Use the manager to interact with the provided API:
 
 ## Models
 
-There are some provided models for serializing the objects received in the API responses. These represent the providers, logins, accounts, transactions, provider fields and their options. Whenever you request a resource that returns one of these types, they will always get serialized into Objective-C classes. (For instance, the `fetchFullLoginsListWithSuccess:failure:` method has a `NSSet` containing `SELogin` instances in it's success callback.)
+There are some provided models for serializing the objects received in the API responses. These represent the providers, logins, accounts, transactions, provider fields and their options. Whenever you request a resource that returns one of these types, they will always get serialized into Objective-C classes. (For instance, the `fetchFullTransactionsListForAccountId:loginSecret:success:failure` method has a `NSSet` containing `SETransaction` instances in it's success callback.)
 
 Models contained within the components:
 
