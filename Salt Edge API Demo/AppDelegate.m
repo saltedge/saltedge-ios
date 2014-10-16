@@ -33,7 +33,6 @@
         [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Client ID, App Secret or Customer Identifier is not set. Please see AppDelegate.m or consult the README file." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil] show];
         return YES;
     }
-
     [SEAPIRequestManager linkClientId:clientId appSecret:appSecret];
 
     void (^setWindowRootViewController)() = ^() {

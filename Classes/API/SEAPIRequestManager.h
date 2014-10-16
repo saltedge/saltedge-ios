@@ -117,6 +117,79 @@ typedef void (^SEAPIRequestFailureBlock)(SEError* error);
                                       failure:(SEAPIRequestFailureBlock)failure;
 
 /**
+ Fetches certain transactions tied to an account, based on the passed parameters.
+
+ @param accountId The id of the account whose transactions are going to be fetched.
+ @param loginSecret The login secret of the accounts' login.
+ @param parameters Optional constraints set to the fetch query. See an example above.
+ @param success The callback block if the request succeeds.
+ @param failure The callback block if the request fails.
+
+ @warning accountId cannot not be nil.
+
+ @code
+ // parameters example
+ {
+    "from_id": 1839,
+    "from_made_on": [NSDate dateWithTimeIntervalSinceReferenceDate:0],
+    "to_made_on": [NSDate date]
+ }
+ @endcode
+
+ @see https://docs.saltedge.com/reference/#transactions-list
+ */
+- (void)fetchTransactionsListForAccountId:(NSNumber*)accountId
+                              loginSecret:(NSString*)loginSecret
+                               parameters:(NSDictionary*)parameters
+                                  success:(void(^)(NSSet*))success
+                                  failure:(SEAPIRequestFailureBlock)failure;
+
+/**
+ Fetches all pending transactions tied to an account.
+
+ @param accountId The id of the account whose pending transactions are going to be fetched.
+ @param loginSecret The login secret of the accounts' login.
+ @param success The callback block if the request succeeds.
+ @param failure The callback block if the request fails.
+
+ @warning accountId cannot not be nil.
+
+ @see https://docs.saltedge.com/reference/#transactions-list
+ */
+- (void)fetchFullPendingTransactionsListForAccountId:(NSNumber*)accountId
+                                         loginSecret:(NSString*)loginSecret
+                                             success:(void(^)(NSSet*))success
+                                             failure:(SEAPIRequestFailureBlock)failure;
+
+/**
+ Fetches certain pending transactions tied to an account, based on the passed parameters.
+
+ @param accountId The id of the account whose pending transactions are going to be fetched.
+ @param loginSecret The login secret of the accounts' login.
+ @param parameters Optional constraints set to the fetch query. See an example above.
+ @param success The callback block if the request succeeds.
+ @param failure The callback block if the request fails.
+
+ @warning accountId cannot not be nil.
+
+ @code
+ // parameters example
+ {
+    "from_id": 2370,
+    "from_made_on": [NSDate date],
+    "to_made_on": [NSDate dateWithTimeIntervalSinceNow:oneDayInterval]
+ }
+ @endcode
+
+ @see https://docs.saltedge.com/reference/#transactions-list
+ */
+- (void)fetchPendingTransactionsListForAccountId:(NSNumber*)accountId
+                                     loginSecret:(NSString*)loginSecret
+                                      parameters:(NSDictionary*)parameters
+                                         success:(void(^)(NSSet*))success
+                                         failure:(SEAPIRequestFailureBlock)failure;
+
+/**
  Fetches a login with a given login secret.
 
  @param loginSecret The secret of the login which is to be fetched.
@@ -154,10 +227,10 @@ typedef void (^SEAPIRequestFailureBlock)(SEError* error);
  @code
  // parameters example
  {
-   "country_code": "XO"
-   "provider_code": "paypal_xo",
-   "customer_id": "customer id string",
-   "return_to": "http://example.com"
+    "country_code": "XO"
+    "provider_code": "paypal_xo",
+    "customer_id": "customer id string",
+    "return_to": "http://example.com"
  }
  @endcode
 
@@ -181,8 +254,8 @@ typedef void (^SEAPIRequestFailureBlock)(SEError* error);
  @code
  // parameters example
  {
-   "return_to": "http://example.com"
-   // optional fields here...
+    "return_to": "http://example.com"
+    // optional fields here...
  }
  @endcode
 
@@ -207,8 +280,8 @@ typedef void (^SEAPIRequestFailureBlock)(SEError* error);
  @code
  // parameters example
  {
-   "return_to": "http://example.com"
-   // optional fields here...
+    "return_to": "http://example.com"
+    // optional fields here...
  }
  @endcode
 

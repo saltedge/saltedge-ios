@@ -25,19 +25,20 @@
 #define _SaltEdge_API_Demo_Constants_h
 
 /* Routes */
-static NSString* const kRootURL             = @"https://www.saltedge.com";
-static NSString* const kCreateTokenPath     = @"api/v2/tokens/create";
-static NSString* const kReconnectTokenPath  = @"api/v2/tokens/reconnect";
-static NSString* const kRefreshTokenPath    = @"api/v2/tokens/refresh";
-static NSString* const kLoginPath           = @"api/v2/login";
-static NSString* const kAccountsPath        = @"api/v2/accounts";
-static NSString* const kTransactionsPath    = @"api/v2/transactions";
-static NSString* const kProvidersPath       = @"api/v2/providers";
-static NSString* const kCustomersPath       = @"api/v2/customers";
-static NSString* const kLoginInteractive    = @"interactive";
-static NSString* const kLoginReconnect      = @"reconnect";
-static NSString* const kLoginRefresh        = @"refresh";
-static NSString* const kLoginRemove         = @"remove";
+static NSString* const kRootURL                 = @"https://www.saltedge.com";
+static NSString* const kCreateTokenPath         = @"api/v2/tokens/create";
+static NSString* const kReconnectTokenPath      = @"api/v2/tokens/reconnect";
+static NSString* const kRefreshTokenPath        = @"api/v2/tokens/refresh";
+static NSString* const kLoginPath               = @"api/v2/login";
+static NSString* const kAccountsPath            = @"api/v2/accounts";
+static NSString* const kTransactionsPath        = @"api/v2/transactions";
+static NSString* const kPendingTransactionsPath = @"api/v2/transactions/pending";
+static NSString* const kProvidersPath           = @"api/v2/providers";
+static NSString* const kCustomersPath           = @"api/v2/customers";
+static NSString* const kLoginInteractive        = @"interactive";
+static NSString* const kLoginReconnect          = @"reconnect";
+static NSString* const kLoginRefresh            = @"refresh";
+static NSString* const kLoginRemove             = @"remove";
 
 /* Provider input fields types */
 static NSString* const SEProviderFieldTypeText     = @"text";

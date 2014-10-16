@@ -39,6 +39,11 @@ static NSDateFormatter* iso8601DateFormatter, *ymdDateFormatter;
     return [[self ymdDateFormatter] dateFromString:dateString];
 }
 
++ (NSString*)YMDStringFromDate:(NSDate *)date
+{
+    return [[self ymdDateFormatter] stringFromDate:date];
+}
+
 #pragma mark - Private API, Singletons
 
 + (NSDateFormatter*)iso8601DateFormatter

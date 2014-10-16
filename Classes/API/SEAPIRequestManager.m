@@ -52,6 +52,8 @@ static NSString* const kProviderCodeKey          = @"provider_code";
 static NSString* const kReturnToKey              = @"return_to";
 static NSString* const kCustomerIdKey            = @"customer_id";
 static NSString* const kAccountIdKey             = @"account_id";
+static NSString* const kFromMadeOnKey            = @"from_made_on";
+static NSString* const kToMadeOnKey              = @"to_made_on";
 static NSString* const kMobileKey                = @"mobile";
 static NSString* const kIdentifierKey            = @"identifier";
 
@@ -192,23 +194,51 @@ static NSDictionary* sessionHeaders;
                                       success:(void (^)(NSSet *))success
                                       failure:(SEAPIRequestFailureBlock)failure
 {
-    NSAssert(accountId != nil, @"Account id cannot be nil.");
+    [self fetchTransactionsListForAccountId:accountId
+                                loginSecret:loginSecret
+                                 parameters:nil
+                                    success:success
+                                    failure:failure];
+}
 
-    [self requestPaginatedResourceWithPath:kTransactionsPath
-                                 container:@[].mutableCopy
-                                   headers:[self sessionHeadersWithLoginSecret:loginSecret]
-                                parameters:@{ kAccountIdKey: accountId.description }
-                                   success:^(NSArray* transactionDictionaries) {
-                                       if (!success) { return; }
-                                       NSMutableSet* transactionsObjects = [NSMutableSet setWithCapacity:transactionDictionaries.count];
-                                       for (NSDictionary* transactionDictionary in transactionDictionaries) {
-                                           [transactionsObjects addObject:[SETransaction objectFromDictionary:transactionDictionary]];
-                                       }
-                                       success((NSSet*) transactionsObjects);
-                                   }
-                                   failure:^(SEError* error) {
-                                       if (failure) { failure(error); }
-                                   } full:YES];
+- (void)fetchTransactionsListForAccountId:(NSNumber *)accountId
+                              loginSecret:(NSString *)loginSecret
+                               parameters:(NSDictionary *)parameters
+                                  success:(void (^)(NSSet *))success
+                                  failure:(SEAPIRequestFailureBlock)failure
+{
+    [self requestTransactionsListWithPath:kTransactionsPath
+                                accountId:accountId
+                              loginSecret:loginSecret
+                               parameters:parameters
+                                  success:success
+                                  failure:failure];
+}
+
+- (void)fetchFullPendingTransactionsListForAccountId:(NSNumber *)accountId
+                                         loginSecret:(NSString *)loginSecret
+                                             success:(void (^)(NSSet *))success
+                                             failure:(SEAPIRequestFailureBlock)failure
+{
+    [self fetchPendingTransactionsListForAccountId:accountId
+                                       loginSecret:loginSecret
+                                        parameters:nil
+                                           success:success
+                                           failure:failure];
+}
+
+- (void)fetchPendingTransactionsListForAccountId:(NSNumber *)accountId
+                                     loginSecret:(NSString *)loginSecret
+                                      parameters:(NSDictionary *)parameters
+                                         success:(void (^)(NSSet *))success
+                                         failure:(SEAPIRequestFailureBlock)failure
+{
+    [self requestTransactionsListWithPath:kPendingTransactionsPath
+                                accountId:accountId
+                              loginSecret:loginSecret
+                               parameters:parameters
+                                  success:success
+                                  failure:failure];
 }
 
 - (void)fetchLoginWithSecret:(NSString*)loginSecret
@@ -361,6 +391,44 @@ static NSDictionary* sessionHeaders;
                                         SEError* error = [SEError objectFromDictionary:errorDictionary];
                                         failure(error);
                                     }];
+}
+
+- (void)requestTransactionsListWithPath:(NSString*)transactionsPath
+                              accountId:(NSNumber*)accountId
+                            loginSecret:(NSString*)loginSecret
+                             parameters:(NSDictionary*)parameters
+                                success:(void (^)(NSSet *))success
+                                failure:(SEAPIRequestFailureBlock)failure
+{
+    NSAssert(accountId != nil, @"Account id cannot be nil.");
+    NSAssert(loginSecret != nil, @"Login secret cannot be nil.");
+
+    NSMutableDictionary* finalParameters = parameters ? parameters.mutableCopy : [NSMutableDictionary dictionary];
+    finalParameters[kAccountIdKey] = accountId;
+
+    if (finalParameters[kFromMadeOnKey]) {
+        finalParameters[kFromMadeOnKey] = [DateUtils YMDStringFromDate:finalParameters[kFromMadeOnKey]];
+    }
+
+    if (finalParameters[kToMadeOnKey]) {
+        finalParameters[kToMadeOnKey] = [DateUtils YMDStringFromDate:finalParameters[kToMadeOnKey]];
+    }
+
+    [self requestPaginatedResourceWithPath:transactionsPath
+                                 container:@[].mutableCopy
+                                   headers:[self sessionHeadersWithLoginSecret:loginSecret]
+                                parameters:[NSDictionary dictionaryWithDictionary:finalParameters]
+                                   success:^(NSArray* transactionDictionaries) {
+                                       if (!success) { return; }
+                                       NSMutableSet* transactionsObjects = [NSMutableSet setWithCapacity:transactionDictionaries.count];
+                                       for (NSDictionary* transactionDictionary in transactionDictionaries) {
+                                           [transactionsObjects addObject:[SETransaction objectFromDictionary:transactionDictionary]];
+                                       }
+                                       success((NSSet*) transactionsObjects);
+                                   }
+                                   failure:^(SEError* error) {
+                                       if (failure) { failure(error); }
+                                   } full:YES];
 }
 
 #pragma mark - Helper methods
