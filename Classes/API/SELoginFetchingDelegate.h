@@ -1,5 +1,5 @@
 //
-//  SELoginCreationDelegate.h
+//  SELoginFetchingDelegate.h
 //
 //  Copyright (c) 2014 Salt Edge. https://saltedge.com
 //
@@ -23,28 +23,40 @@
 
 #import <Foundation/Foundation.h>
 
+@class SELogin;
+
 /**
- SELoginCreationDelegate is a protocol that is used to notify a delegate about events that are occuring while creating a login. Such events are: login required interactive credentials, login failed to fetch, and login successfully finished fetching.
+ SELoginFetchingDelegate is a protocol that is used to notify a delegate about events that are occuring in the process while some login actions are being performed (create, refresh, reconnect). Such events are: login required interactive credentials, login failed to fetch, login started fetching, login cannot be fetched and login failed to fetch.
  */
-@protocol SELoginCreationDelegate <NSObject>
+@protocol SELoginFetchingDelegate <NSObject>
+
+@optional
+/**
+ This message is sent to the delegate when the login has started the fetching process.
+
+ @param login The login that is being fetched.
+ */
+- (void)loginStartedFetching:(SELogin*)login;
 
 @required
-/**
- This message is sent to the delegate when the login required interactive user input. 
-
- @param login The login which requested interactive credentials input.
- @param names The interactive fields names which are requested.
- */
-- (void)login:(SELogin*)login requestedInteractiveCallbackWithFieldNames:(NSArray*)names;
-@optional
 
 /**
  This message is sent to the delegate when the login failed to fetch for some reason.
 
  @param login The login which failed to fetch.
  @param message The reason why the login failed to fetch.
+
+ @warning login may be nil. Always perform a check to see whether the login object is not nil.
  */
 - (void)login:(SELogin*)login failedToFetchWithMessage:(NSString*)message;
+
+/**
+ This message is sent to the delegate when the login has required interactive user input.
+ Look for the requested fields in login's interactiveFieldsNames property.
+
+ @param login The login which requested interactive credentials input.
+ */
+- (void)loginRequestedInteractiveInput:(SELogin*)login;
 
 /**
  This message is sent to the delegate when the login successfully finishes fetching.
