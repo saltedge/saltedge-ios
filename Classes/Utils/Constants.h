@@ -24,26 +24,52 @@
 #ifndef _SaltEdge_API_Demo_Constants_h
 #define _SaltEdge_API_Demo_Constants_h
 
-/* Routes */
+/* Routes and paths */
 static NSString* const kRootURL                 = @"https://www.saltedge.com";
-static NSString* const kCreateTokenPath         = @"api/v2/tokens/create";
-static NSString* const kReconnectTokenPath      = @"api/v2/tokens/reconnect";
-static NSString* const kRefreshTokenPath        = @"api/v2/tokens/refresh";
+static NSString* const kTokensPath              = @"api/v2/tokens";
 static NSString* const kLoginPath               = @"api/v2/login";
 static NSString* const kAccountsPath            = @"api/v2/accounts";
 static NSString* const kTransactionsPath        = @"api/v2/transactions";
-static NSString* const kPendingTransactionsPath = @"api/v2/transactions/pending";
 static NSString* const kProvidersPath           = @"api/v2/providers";
+static NSString* const kOAuthProvidersPath      = @"api/v2/oauth_providers";
 static NSString* const kCustomersPath           = @"api/v2/customers";
 static NSString* const kLoginInteractive        = @"interactive";
-static NSString* const kLoginReconnect          = @"reconnect";
-static NSString* const kLoginRefresh            = @"refresh";
-static NSString* const kLoginRemove             = @"remove";
+static NSString* const kPendingTransactions     = @"pending";
+
+/* Login actions */
+static NSString* const kLoginActionReconnect = @"reconnect";
+static NSString* const kLoginActionCreate    = @"create";
+static NSString* const kLoginActionRefresh   = @"refresh";
+static NSString* const kLoginActionRemove    = @"remove";
 
 /* Provider input fields types */
 static NSString* const SEProviderFieldTypeText     = @"text";
 static NSString* const SEProviderFieldTypePassword = @"password";
 static NSString* const SEProviderFieldTypeSelect   = @"select";
 static NSString* const SEProviderFieldTypeFile     = @"file";
+
+/* Keys of responses and post bodies */
+static NSString* const kFromIdKey                = @"from_id";
+static NSString* const kDataKey                  = @"data";
+static NSString* const kCredentialsKey           = @"credentials";
+static NSString* const kMetaKey                  = @"meta";
+static NSString* const kNextIdKey                = @"next_id";
+static NSString* const kNextPageKey              = @"next_page";
+static NSString* const kLoginIdKey               = @"login_id";
+static NSString* const kRefreshKey               = @"refresh";
+static NSString* const kRefreshedKey             = @"refreshed";
+static NSString* const kRemovedKey               = @"removed";
+static NSString* const kCountryCodeKey           = @"country_code";
+static NSString* const kProviderCodeKey          = @"provider_code";
+static NSString* const kReturnToKey              = @"return_to";
+static NSString* const kRedirectURLKey           = @"redirect_url";
+static NSString* const kCustomerIdKey            = @"customer_id";
+static NSString* const kAccountIdKey             = @"account_id";
+static NSString* const kFromMadeOnKey            = @"from_made_on";
+static NSString* const kToMadeOnKey              = @"to_made_on";
+static NSString* const kMobileKey                = @"mobile";
+static NSString* const kIdentifierKey            = @"identifier";
+static NSString* const kLoginStageFinish         = @"finish";
+static NSString* const kLoginStageInteractive    = @"interactive";
 
 #endif
