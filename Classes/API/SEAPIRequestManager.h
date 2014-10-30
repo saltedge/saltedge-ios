@@ -25,6 +25,8 @@
 
 @class SEProvider, SELogin, SEError;
 
+@protocol SELoginFetchingDelegate;
+
 typedef void (^SEAPIRequestFailureBlock)(SEError* error);
 
 /**
@@ -57,6 +59,63 @@ typedef void (^SEAPIRequestFailureBlock)(SEError* error);
 - (void)createCustomerWithIdentifier:(NSString*)identifier
                              success:(void (^)(NSDictionary*))success
                              failure:(SEAPIRequestFailureBlock)failure;
+
+/**
+ Creates a login with given parameters.
+
+ @param parameters The parameters of the login that is to be created. See an example above.
+ @param success The callback block if the request succeeds.
+ @param failure The callback block if the request fails.
+ @param delegate The delegate of the login creation process that can respond to certain events.
+
+ @warning parameters cannot be nil.
+
+ @code
+ // parameters example, listing only the required fields
+ {
+    "customer_id": "AtQX6Q8vRyMrPjUVtW7J_O1n06qYQ25bvUJ8CIC80-8",
+    "country_code": "XF",
+    "provider_code": "fakebank_simple_xf",
+    "credentials": {
+        "login": "username",
+        "password": "secret"
+    }
+ }
+ @endcode
+
+ @see SELoginFetchingDelegate
+ @see https://docs.saltedge.com/reference/#logins-create
+ */
+- (void)createLoginWithParameters:(NSDictionary*)parameters
+                          success:(void (^)(SELogin*))success
+                          failure:(SEAPIRequestFailureBlock)failure
+                         delegate:(id<SELoginFetchingDelegate>)delegate;
+
+
+/**
+ Creates a OAuth login with given parameters.
+
+ @param parameters The parameters of the OAuth login that is to be created. See an example above.
+ @param success The callback block if the request succeeds.
+ @param failure The callback block if the request fails.
+ @param delegate The delegate of the login creation process that can respond to certain events.
+
+ @code
+ // parameters example, listing only the required fields
+ {
+    "customer_id": "AtQX6Q8vRyMrPjUVtW7J_O1n06qYQ25bvUJ8CIC80-8",
+    "country_code": "XO",
+    "provider_code": "paypal_xo",
+    "return_to": "your-app-url://"
+ }
+ @endcode
+
+ @see https://docs.saltedge.com/reference/#oauth-create
+ */
+- (void)createOAuthLoginWithParameters:(NSDictionary*)parameters
+                               success:(void (^)(NSDictionary*))success
+                               failure:(SEAPIRequestFailureBlock)failure
+                              delegate:(id<SELoginFetchingDelegate>)delegate;
 
 /**
  Fetches a certain provider.
@@ -128,7 +187,7 @@ typedef void (^SEAPIRequestFailureBlock)(SEError* error);
  @warning accountId cannot not be nil.
 
  @code
- // parameters example
+ // parameters example, all optional
  {
     "from_id": 1839,
     "from_made_on": [NSDate dateWithTimeIntervalSinceReferenceDate:0],
@@ -173,7 +232,7 @@ typedef void (^SEAPIRequestFailureBlock)(SEError* error);
  @warning accountId cannot not be nil.
 
  @code
- // parameters example
+ // parameters example, all optional
  {
     "from_id": 2370,
     "from_made_on": [NSDate date],
@@ -203,6 +262,110 @@ typedef void (^SEAPIRequestFailureBlock)(SEError* error);
                      failure:(SEAPIRequestFailureBlock)failure;
 
 /**
+ Provides an interactive login with a set of credentials.
+
+ @param loginSecret The secret of the login which is currently in interactive state.
+ @param credentials The interactive credentials for the login.
+ @param success The callback block if the request succeeds.
+ @param failure The callback block if the request fails.
+ @param delegate The delegate of the login creation process that can respond to certain events.
+ */
+- (void)provideInteractiveCredentialsForLoginWithSecret:(NSString*)loginSecret
+                                            credentials:(NSDictionary*)credentials
+                                                success:(void(^)(SELogin*))success
+                                                failure:(SEAPIRequestFailureBlock)failure
+                                               delegate:(id<SELoginFetchingDelegate>)delegate;
+
+/**
+ Reconnects a login.
+
+ @param loginSecret The secret of the login which is to be reconnected.
+ @param credentials The credentials of the login. See an example above.
+ @param success The callback block if the request succeeds.
+ @param failure The callback block if the request fails.
+ @param delegate The delegate of the login reconnect process that can respond to certain events.
+
+ @warning credentials cannot be nil.
+
+ @code
+ // credentials example
+ {
+    "login": "username",
+    "password": "secret"
+ }
+ @endcode
+
+ @see https://docs.saltedge.com/reference/#logins-reconnect
+ */
+- (void)reconnectLoginWithSecret:(NSString*)loginSecret
+                     credentials:(NSDictionary*)credentials
+                         success:(void(^)(SELogin*))success
+                         failure:(SEAPIRequestFailureBlock)failure
+                        delegate:(id<SELoginFetchingDelegate>)delegate;
+
+/**
+ Reconnects a OAuth login.
+
+ @param loginSecret The secret of the OAuth login which is to be reconnected.
+ @param parameters The parameters of the reconnect request. See an example above.
+ @param success The callback block if the request succeeds.
+ @param failure The callback block if the request fails.
+ 
+ @code
+ // parameters example
+ {
+    "return_to": "your-app-url://",
+    "return_login_id": false
+ }
+ @endcode
+ 
+ @see https://docs.saltedge.com/reference/#oauth-reconnect
+ */
+- (void)reconnectOAuthLoginWithSecret:(NSString*)loginSecret
+                           parameters:(NSDictionary*)parameters
+                              success:(void(^)(NSDictionary*))success
+                              failure:(SEAPIRequestFailureBlock)failure;
+
+/**
+ Refreshes a login.
+
+ @param loginSecret The secret of the login which is to be refreshed.
+ @param success The callback block if the request succeeds.
+ @param failure The callback block if the request fails.
+ @param delegate The delegate of the login reconnect process that can respond to certain events.
+
+ @warning Only automatic logins can be refreshed.
+
+ @see https://docs.saltedge.com/reference/#logins-refresh
+ */
+- (void)refreshLoginWithSecret:(NSString*)loginSecret
+                       success:(void(^)(NSDictionary*))success
+                       failure:(SEAPIRequestFailureBlock)failure
+                      delegate:(id<SELoginFetchingDelegate>)delegate;
+
+/**
+ Refreshes a OAuth login.
+
+ @param loginSecret The secret of the OAuth login which is to be refreshed.
+ @param parameters The parameters of the reconnect request. See an example above.
+ @param success The callback block if the request succeeds.
+ @param failure The callback block if the request fails.
+
+ @code
+ // parameters example, listing only the required fields
+ {
+    "return_to": "your-app-url://"
+ }
+ @endcode
+
+ @see https://docs.saltedge.com/reference/#oauth-refresh
+ */
+- (void)refreshOAuthLoginWithSecret:(NSString*)loginSecret
+                         parameters:(NSDictionary*)parameters
+                            success:(void(^)(NSDictionary*))success
+                            failure:(SEAPIRequestFailureBlock)failure;
+
+/**
  Removes a login from the Salt Edge system. All its accounts and transactions will be removed as well.
 
  @param loginSecret The secret of the login which is to be removed.
@@ -225,7 +388,7 @@ typedef void (^SEAPIRequestFailureBlock)(SEError* error);
  @warning The parameters should at least contain a key "customer_email" with the corresponding customer email.
 
  @code
- // parameters example
+ // parameters example, listing only the required fields
  {
     "country_code": "XO"
     "provider_code": "paypal_xo",
@@ -252,10 +415,9 @@ typedef void (^SEAPIRequestFailureBlock)(SEError* error);
  @warning login may not be nil.
 
  @code
- // parameters example
+ // parameters example, listing only the required fields
  {
     "return_to": "http://example.com"
-    // optional fields here...
  }
  @endcode
 
@@ -278,10 +440,9 @@ typedef void (^SEAPIRequestFailureBlock)(SEError* error);
  @warning login may not be nil.
 
  @code
- // parameters example
+ // parameters example, listing only the required fields
  {
     "return_to": "http://example.com"
-    // optional fields here...
  }
  @endcode
 
