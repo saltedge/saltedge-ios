@@ -13,6 +13,7 @@ typedef void (^CredentialsCompletionBlock)(NSDictionary*);
 @interface CredentialsVC : UIViewController
 
 @property (nonatomic, strong) NSArray* credentialFields;
+@property (nonatomic, strong) NSString* interactiveHtml;
 @property (nonatomic, strong) CredentialsCompletionBlock completionBlock;
 
 @end

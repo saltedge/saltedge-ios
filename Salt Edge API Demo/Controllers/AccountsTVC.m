@@ -18,15 +18,27 @@
 #import "AppDelegate.h"
 #import "TabBarVC.h"
 #import "SEError.h"
+#import "CreateLoginVC.h"
+#import "SELoginFetchingDelegate.h"
+#import "SEProvider.h"
+
+typedef NS_ENUM(NSUInteger, SELoginActionMethod){
+    SELoginActionMethodAPI = 0,
+    SELoginActionMethodWebView
+};
 
 static NSString* const kLoginRefreshAction   = @"Refresh";
 static NSString* const kLoginReconnectAction = @"Reconnect";
 static NSString* const kLoginRemoveAction    = @"Remove";
 
-@interface AccountsTVC () <UIActionSheetDelegate>
+static NSString* const kLoginActionMethodWebView = @"Web view";
+static NSString* const kLoginActionMethodAPI     = @"API";
+
+@interface AccountsTVC () <UIActionSheetDelegate, UIAlertViewDelegate, SELoginFetchingDelegate>
 
 @property (nonatomic, strong) NSArray* accounts;
 @property (nonatomic, strong) SEProvider* loginsProvider;
+@property (nonatomic, strong) NSString* desiredLoginAction;
 
 @end
 
@@ -65,10 +77,9 @@ static NSString* const kAccountCellReuseIdentifier = @"AccountTableViewCell";
 
 - (void)reloadAccountsTableView
 {
-    [SVProgressHUD showWithStatus:@"Loading..."];
+    [SVProgressHUD showWithStatus:@"Loading accounts..." maskType:SVProgressHUDMaskTypeGradient];
 
     SEAPIRequestManager* manager = [SEAPIRequestManager manager];
-
     [manager fetchProviderWithCode:self.login.providerCode success:^(SEProvider* provider) {
         self.loginsProvider = provider;
 
@@ -89,19 +100,63 @@ static NSString* const kAccountCellReuseIdentifier = @"AccountTableViewCell";
     }];
 }
 
-- (void)refreshLogin
+- (void)showWebViewOrAPIAlert
 {
-    ConnectWebViewVC* connectController = [self connectController];
-    [connectController setLogin:self.login];
-    [connectController setRefresh:YES];
-    [self.navigationController.tabBarController setSelectedIndex:0];
+    [[[UIAlertView alloc] initWithTitle:@"Choose a method for the action" message:nil delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:kLoginActionMethodWebView, kLoginActionMethodAPI, nil] show];
 }
 
-- (void)reconnectLogin
+- (void)refreshCurrentLoginViaAPI
 {
-    ConnectWebViewVC* connectController = [self connectController];
-    [connectController setLogin:self.login];
-    [self.navigationController.tabBarController setSelectedIndex:0];
+    [SVProgressHUD showWithStatus:@"Refreshing..." maskType:SVProgressHUDMaskTypeGradient];
+
+    SEAPIRequestManager* manager = [SEAPIRequestManager manager];
+    if (!self.loginsProvider.isOAuth) {
+        [manager refreshLoginWithSecret:self.login.secret
+                                    success:^(NSDictionary* dictionary) {
+                                        if (![dictionary[kDataKey][kRefreshedKey] boolValue]) {
+                                            [SVProgressHUD showErrorWithStatus:@"Could not refresh login."];
+                                        }
+                                    }
+                                    failure:^(SEError* error) {
+                                        [SVProgressHUD showErrorWithStatus:error.message];
+                                    } delegate:self];
+    } else {
+        [manager refreshOAuthLoginWithSecret:self.login.secret
+                                  parameters:@{ kReturnToKey : [AppDelegate delegate].applicationURLString }
+                                     success:^(NSDictionary* responseObject) {
+                                         [[UIApplication sharedApplication] openURL:[NSURL URLWithString:responseObject[kDataKey][kRedirectURLKey]]];
+                                     }
+                                     failure:^(SEError* error) {
+                                         [SVProgressHUD showErrorWithStatus:error.message];
+                                     }];
+    }
+}
+
+- (void)refreshLoginWithMethod:(SELoginActionMethod)method
+{
+    if (method == SELoginActionMethodWebView) {
+        ConnectWebViewVC* connectController = [self connectController];
+        [connectController setLogin:self.login];
+        [connectController setRefresh:YES];
+        [connectController requestToken];
+        [self.navigationController.tabBarController setSelectedIndex:0];
+    } else {
+        [self refreshCurrentLoginViaAPI];
+    }
+}
+
+- (void)reconnectLoginWithMethod:(SELoginActionMethod)method
+{
+    if (method == SELoginActionMethodWebView) {
+        ConnectWebViewVC* connectController = [self connectController];
+        [connectController setLogin:self.login];
+        [connectController requestToken];
+        [self.navigationController.tabBarController setSelectedIndex:0];
+    } else {
+        CreateLoginVC* createController = [self createController];
+        [createController setLogin:self.login];
+        [self.navigationController.tabBarController setSelectedIndex:1];
+    }
 }
 
 - (void)removeLogin
@@ -109,7 +164,11 @@ static NSString* const kAccountCellReuseIdentifier = @"AccountTableViewCell";
     SEAPIRequestManager* manager = [SEAPIRequestManager manager];
 
     [manager removeLoginWithSecret:self.login.secret success:^(NSDictionary* responseObject) {
-        if ([responseObject[@"data"][@"removed"] boolValue]) {
+        if ([responseObject[kDataKey][kRemovedKey] boolValue]) {
+            NSMutableArray* loginSecrets = [[NSUserDefaults standardUserDefaults] arrayForKey:kLoginSecretsDefaultsKey].mutableCopy;
+            [loginSecrets removeObject:self.login.secret];
+            [[NSUserDefaults standardUserDefaults] setObject:[NSArray arrayWithArray:loginSecrets] forKey:kLoginSecretsDefaultsKey];
+            [[NSUserDefaults standardUserDefaults] synchronize];
             [SVProgressHUD showSuccessWithStatus:@"Removed"];
             if ([self.delegate respondsToSelector:@selector(removedLogin:)]) {
                 [self.delegate removedLogin:self.login];
@@ -125,8 +184,12 @@ static NSString* const kAccountCellReuseIdentifier = @"AccountTableViewCell";
 
 - (ConnectWebViewVC*)connectController
 {
-    AppDelegate* appDelegate = (AppDelegate*) [UIApplication sharedApplication].delegate;
-    return appDelegate.tabBar.connectController;
+    return [AppDelegate delegate].tabBar.connectController;
+}
+
+- (CreateLoginVC*)createController
+{
+    return [AppDelegate delegate].tabBar.createController;
 }
 
 #pragma mark - UITableView Data Source / Delegate
@@ -166,16 +229,54 @@ static NSString* const kAccountCellReuseIdentifier = @"AccountTableViewCell";
 {
     NSString* buttonTitle = [actionSheet buttonTitleAtIndex:buttonIndex];
 
-    if ([buttonTitle isEqualToString:kLoginRefreshAction]) {
-        [self refreshLogin];
-    } else if ([buttonTitle isEqualToString:kLoginReconnectAction]) {
-        [self reconnectLogin];
+    if ([buttonTitle isEqualToString:kLoginRefreshAction] || [buttonTitle isEqualToString:kLoginReconnectAction]) {
+        self.desiredLoginAction = buttonTitle;
+        [self showWebViewOrAPIAlert];
     } else if ([buttonTitle isEqualToString:kLoginRemoveAction]) {
         [self removeLogin];
+        [self.navigationController popViewControllerAnimated:YES];
     }
-    if (![buttonTitle isEqualToString:@"Cancel"]) {
-        [self.navigationController popViewControllerAnimated:NO];
+}
+
+#pragma mark - UIAlertView Delegate
+
+- (void)alertView:(UIAlertView *)alertView willDismissWithButtonIndex:(NSInteger)buttonIndex
+{
+    NSString* buttonTitle = [alertView buttonTitleAtIndex:buttonIndex];
+    if ([buttonTitle isEqualToString:kLoginActionMethodWebView]) {
+        if ([self.desiredLoginAction isEqualToString:kLoginRefreshAction]) {
+            [self refreshLoginWithMethod:SELoginActionMethodWebView];
+        } else {
+            [self reconnectLoginWithMethod:SELoginActionMethodWebView];
+        }
+    } else if ([buttonTitle isEqualToString:kLoginActionMethodAPI]) {
+        if ([self.desiredLoginAction isEqualToString:kLoginRefreshAction]) {
+            [self refreshLoginWithMethod:SELoginActionMethodAPI];
+        } else {
+            [self reconnectLoginWithMethod:SELoginActionMethodAPI];
+        }
     }
+    if (![buttonTitle isEqualToString:@"Cancel"] &&
+        !([buttonTitle isEqualToString:kLoginActionMethodAPI] && [self.desiredLoginAction isEqualToString:kLoginRefreshAction])) {
+        [self.navigationController popViewControllerAnimated:YES];
+    }
+}
+
+#pragma mark - SELogin Fetching Delegate
+
+- (void)login:(SELogin *)login failedToFetchWithMessage:(NSString *)message
+{
+    [SVProgressHUD showErrorWithStatus:message];
+}
+
+- (void)loginRequestedInteractiveInput:(SELogin *)login
+{
+    // not possible, we only refresh logins here in this view controller 
+}
+
+- (void)loginSuccessfullyFinishedFetching:(SELogin *)login
+{
+    [SVProgressHUD showSuccessWithStatus:@"Refreshed"];
 }
 
 @end

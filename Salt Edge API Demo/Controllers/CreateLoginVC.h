@@ -8,6 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
-@interface CreateLoginVC : UIViewController
+@class SELogin;
+@protocol PickerDelegate, SELoginFetchingDelegate;
+
+@interface CreateLoginVC : UIViewController <SELoginFetchingDelegate, PickerDelegate>
+
+- (void)setLogin:(SELogin*)login;
 
 @end

@@ -10,8 +10,6 @@
 
 typedef void (^PickerCompletionBlock)(id);
 
-@class PickerTableViewController;
-
 @protocol PickerDelegate <NSObject>
 
 - (void)presentPickerWithOptions:(NSArray*)options withCompletionBlock:(PickerCompletionBlock)completionBlock;

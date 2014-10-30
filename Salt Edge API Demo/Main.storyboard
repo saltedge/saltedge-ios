@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6245" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="2Gh-h5-RUD">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6250" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="2Gh-h5-RUD">
     <dependencies>
-        <deployment defaultVersion="1536" identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
     </dependencies>
     <scenes>
         <!--LoginsTVC-->
@@ -128,6 +128,36 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Gej-xx-wgt" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="3709" y="-67"/>
+        </scene>
+        <!--Create LoginVC-->
+        <scene sceneID="O0d-cF-ot5">
+            <objects>
+                <viewController storyboardIdentifier="CreateLoginVC" useStoryboardIdentifierAsRestorationIdentifier="YES" id="2QB-Ui-XHk" customClass="CreateLoginVC" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="GGb-GH-gwQ">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="TGR-x4-cHd" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4091" y="-67"/>
+        </scene>
+        <!--CredentialsVC-->
+        <scene sceneID="OIq-q1-8Ch">
+            <objects>
+                <viewController storyboardIdentifier="CredentialsVC" useStoryboardIdentifierAsRestorationIdentifier="YES" id="xLs-Oe-662" customClass="CredentialsVC" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Bfr-N9-BFw">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="0cf-2s-a1c" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4469" y="-67"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="v3r-H6-CLw">

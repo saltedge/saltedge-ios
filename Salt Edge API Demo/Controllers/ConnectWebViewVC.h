@@ -14,5 +14,6 @@
 
 - (void)setLogin:(SELogin*)login;
 - (void)setRefresh:(BOOL)refresh;
+- (void)requestToken;
 
 @end

@@ -7,46 +7,46 @@
 //
 
 #import "CreateLoginVC.h"
-#import "Helpers.h"
-#import "Constants.h"
-#import <AFHTTPRequestOperationManager.h>
-#import <SVProgressHUD.h>
+#import "SELoginFetchingDelegate.h"
+#import "SELogin.h"
+#import "AppDelegate.h"
+#import "SEAPIRequestManager.h"
+#import <SVProgressHUD/SVProgressHUD.h>
+#import "SEError.h"
+#import "SEProvider.h"
 #import "PickerTVC.h"
+#import "SEProviderField.h"
+#import "Helpers.h"
+#import "SEProviderFieldOption.h"
+#import "Constants.h"
+#import "PickerDelegate.h"
+#import "OptionSelectButton.h"
 #import "UIView+Framing.h"
 #import "UIControl+SELoginInputFieldsAdditions.h"
-#import "LoginsTVC.h"
-#import "OptionSelectButton.h"
-#import "PickerDelegate.h"
+#import "TabBarVC.h"
 #import "CredentialsVC.h"
-#import "SEAPIRequestManager.h"
-#import "SEProvider.h"
-#import "SEProviderField.h"
-#import "SELogin.h"
-#import "SELoginCreationDelegate.h"
-#import "AppDelegate.h"
+#import "LoginsTVC.h"
 
-#pragma GCC diagnostic ignored "-Wundeclared-selector"
+@interface CreateLoginVC() <SELoginFetchingDelegate>
 
-static CGFloat keyboardOffset = 0.0;
-static CGFloat keyboardHeight = 152.0; // bad
-static CGFloat viewYOrigin    = 0.0;
-
-typedef void (^CompletionBlock)(void);
-
-@interface CreateLoginVC () <PickerDelegate, SELoginCreationDelegate>
-
-@property (nonatomic, strong) NSSet* providers;
+@property (nonatomic, strong) SEProvider* provider;
 @property (nonatomic, strong) UILabel* instructionsLabel;
 @property (nonatomic, strong) NSMutableDictionary* inputControlsMappings;
 @property (nonatomic, strong) NSMutableArray* inputControlsOrder;
-@property (nonatomic, strong) UITextField* editingTextField;
-@property (nonatomic, strong) SEProvider* selectedProvider;
-@property (nonatomic) BOOL animatingTextFieldOffset;
-@property (nonatomic) BOOL sentInteractiveCredentials;
+@property (nonatomic, strong) SELogin* login;
 
 @end
 
 @implementation CreateLoginVC
+
+#pragma mark -
+#pragma mark - Public API
+
+- (void)setLogin:(SELogin *)login
+{
+    _login = login;
+    [self fetchProviderFieldsWithProviderCode:login.providerCode];
+}
 
 #pragma mark -
 #pragma mark - Private API
@@ -56,37 +56,79 @@ typedef void (^CompletionBlock)(void);
 {
     [super viewDidLoad];
     [self setup];
-    [SVProgressHUD showWithStatus:@"Loading..."];
-    [self requestProvidersListWithCompletionBlock:^{
-        [SVProgressHUD dismiss];
-        [self showProviderPicker];
-        [self setupChooseAnotherProviderButton];
-        [self.view addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(endEditing)]];
-    }];
-}
-
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    self.navigationController.navigationBar.translucent = NO;
-    viewYOrigin = self.view.yOrigin;
 }
 
 #pragma mark - Setup
 
 - (void)setup
 {
-    self.title = @"API Create";
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
+    self.title = @"Create";
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Providers" style:UIBarButtonItemStylePlain target:self action:@selector(showProviders)];
+}
+
+#pragma mark - Helper methods
+
+- (void)fetchProviders
+{
+    if ([AppDelegate delegate].providers.count == 0) {
+        SEAPIRequestManager* manager = [SEAPIRequestManager manager];
+        [SVProgressHUD showWithStatus:@"Loading providers..." maskType:SVProgressHUDMaskTypeGradient];
+        [manager fetchFullProvidersListWithSuccess:^(NSSet* providers) {
+            [AppDelegate delegate].providers = providers;
+            [self showProviders];
+            [SVProgressHUD dismiss];
+        } failure:^(SEError* error) {
+            [SVProgressHUD showErrorWithStatus:error.message];
+        }];
+    }
+}
+
+- (void)showProviders
+{
+    if ([AppDelegate delegate].providers.count == 0) {
+        [self fetchProviders];
+        return;
+    }
+    NSArray* providers = [[[[AppDelegate delegate].providers.allObjects filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"mode != %@", @"file"]] valueForKeyPath:@"name"] sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)];
+    UINavigationController* picker = [PickerTVC pickerWithItems:providers completionBlock:^(id pickedProviderName) {
+        self.provider = [[[AppDelegate delegate].providers filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"name == %@", pickedProviderName]] anyObject];
+        [self fetchProviderFieldsWithProviderCode:self.provider.code];
+    }];
+    [self presentViewController:picker animated:YES completion:nil];
+}
+
+- (void)fetchProviderFieldsWithProviderCode:(NSString*)code
+{
+    SEAPIRequestManager* manager = [SEAPIRequestManager manager];
+    [SVProgressHUD showWithStatus:@"Loading provider..."];
+    [manager fetchProviderWithCode:code
+                           success:^(SEProvider* provider) {
+                               self.provider = provider;
+                               self.inputControlsMappings = nil;
+                               self.inputControlsOrder = nil;
+                               [self showInputFields];
+                               [SVProgressHUD dismiss];
+                           }
+                           failure:^(SEError* error) {
+                               [SVProgressHUD showErrorWithStatus:error.message];
+                           }];
+}
+
+- (void)showInputFields
+{
+    [[self.view subviews] makeObjectsPerformSelector:@selector(removeFromSuperview)];
+    [self setupInputViews];
 }
 
 - (void)setupInputViews
 {
-    NSArray* sortedRequiredFields = [self.selectedProvider.requiredFields sortedArrayUsingComparator:^NSComparisonResult (SEProviderField* first, SEProviderField* second) {
-        return [first.position integerValue] > [second.position integerValue];
-    }];
-    [self setupProviderInstructionWithText:self.selectedProvider.instruction];
-    [self setupRequiredFieldsWithArray:sortedRequiredFields];
+    [self setupProviderInstructionWithText:self.provider.instruction];
+    if (!self.provider.isOAuth) {
+        NSArray* sortedRequiredFields = [self.provider.requiredFields sortedArrayUsingComparator:^NSComparisonResult (SEProviderField* first, SEProviderField* second) {
+            return [first.position integerValue] > [second.position integerValue];
+        }];
+        [self setupRequiredFieldsWithArray:sortedRequiredFields];
+    }
     [self setupCreateButton];
 }
 
@@ -119,26 +161,14 @@ typedef void (^CompletionBlock)(void);
 
 - (void)setupCreateButton
 {
-    UIButton* createLoginButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [createLoginButton setTitle:@"Create login" forState:UIControlStateNormal];
-    [createLoginButton addTarget:self action:@selector(createLoginButtonPressed) forControlEvents:UIControlEventTouchUpInside];
-    [createLoginButton sizeToFit];
-    NSNumber* maxPosition = [self.inputControlsMappings.allKeys valueForKeyPath:@"@max.position.intValue"];
-    NSPredicate* maxPositionPredicate = [NSPredicate predicateWithFormat:@"position == %@",maxPosition];
-    SEProviderField* lastField = [[self.inputControlsMappings.allKeys filteredArrayUsingPredicate:maxPositionPredicate] lastObject];
-    UIView* lastInputControl = self.inputControlsMappings[lastField];
-    createLoginButton.center = CGPointMake(self.view.width / 2, lastInputControl.center.y + lastInputControl.height / 2 + createLoginButton.height / 2 + 10.0f);
-    [self.view addSubview:createLoginButton];
-}
-
-- (void)setupChooseAnotherProviderButton
-{
-    UIButton* chooseAnotherProviderButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [chooseAnotherProviderButton setTitle:@"Choose another provider" forState:UIControlStateNormal];
-    [chooseAnotherProviderButton addTarget:self action:@selector(chooseAnotherProviderPressed) forControlEvents:UIControlEventTouchUpInside];
-    [chooseAnotherProviderButton sizeToFit];
-    chooseAnotherProviderButton.center = CGPointMake(self.view.width / 2, self.view.height - self.tabBarController.tabBar.height - chooseAnotherProviderButton.height / 2 - 10.0f);
-    [self.view addSubview:chooseAnotherProviderButton];
+    UIButton* createButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    NSString* buttonTitle = self.login ? @"Reconnect login" : @"Create login";
+    [createButton setTitle:buttonTitle forState:UIControlStateNormal];
+    [createButton addTarget:self action:@selector(createLoginButtonPressed) forControlEvents:UIControlEventTouchUpInside];
+    [createButton sizeToFit];
+    UIView* lastInputControl = [self.inputControlsOrder lastObject];
+    createButton.center = CGPointMake(self.view.width / 2, lastInputControl.center.y + createButton.height / 2 + 30.0f);
+    [self.view addSubview:createButton];
 }
 
 - (UIControl*)createInputControlFromObject:(SEProviderField*)field
@@ -153,39 +183,6 @@ typedef void (^CompletionBlock)(void);
     return inputControl;
 }
 
-#pragma mark - UITextField Delegate
-
-- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
-{
-    self.editingTextField = textField;
-    if (textField.bottomEdge > self.view.height - self.tabBarController.tabBar.height - keyboardHeight - textField.height) {
-        [self offsetViewOnYAxisBy:-textField.height];
-        keyboardOffset += textField.height;
-    }
-    return YES;
-}
-
-- (BOOL)textFieldShouldEndEditing:(UITextField *)textField
-{
-    if (self.view.yOrigin != viewYOrigin) {
-        [self offsetViewOnYAxisBy:keyboardOffset];
-        keyboardOffset = 0.0;
-    }
-    return YES;
-}
-
-- (BOOL)textFieldShouldReturn:(UITextField *)textField
-{
-    if ([self.inputControlsOrder containsObject:textField] && textField != [self.inputControlsOrder lastObject]) {
-        UITextField* next = [self.inputControlsOrder objectAtIndex:[self.inputControlsOrder indexOfObject:textField] + 1];
-        [textField resignFirstResponder];
-        [next becomeFirstResponder];
-    } else {
-        [textField resignFirstResponder];
-    }
-    return YES;
-}
-
 #pragma mark - Actions
 
 - (void)createLoginButtonPressed
@@ -196,59 +193,24 @@ typedef void (^CompletionBlock)(void);
             return;
         }
     }
-    [self createLogin];
-}
-
-- (void)chooseAnotherProviderPressed
-{
-    [self showProviderPicker];
-}
-
-#pragma mark - Utility methods
-
-- (void)requestProvidersListWithCompletionBlock:(CompletionBlock)completionBlock
-{
-    SEAPIRequestManager* manager = [SEAPIRequestManager manager];
-    [manager fetchFullProvidersListWithSuccess:^(NSURLSessionDataTask* task, NSSet* providersList) {
-        self.providers = providersList;
-        completionBlock();
-    } failure:^(NSURLSessionDataTask* task, NSError* error) {
-        [SVProgressHUD showErrorWithStatus:error.localizedDescription];
-    }];
-}
-
-- (void)userSelectedProvider:(NSString*)selectedProviderName
-{
-    [SVProgressHUD showWithStatus:@"Loading..."];
-    [self.view.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
-    self.inputControlsOrder = @[].mutableCopy;
-    self.instructionsLabel = nil;
-    self.inputControlsMappings = @{}.mutableCopy;
-    for (UIGestureRecognizer* recognizer in self.view.gestureRecognizers) {
-        [self.view removeGestureRecognizer:recognizer];
+    if (!self.login) {
+        [self createLogin];
+    } else {
+        [self reconnectLogin];
     }
-
-    [self setupChooseAnotherProviderButton];
-    [self.view addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(endEditing)]];
-
-    NSPredicate* providerPredicate = [NSPredicate predicateWithFormat:@"name == %@", selectedProviderName];
-    SEProvider* selectedProvider = [[self.providers filteredSetUsingPredicate:providerPredicate] allObjects][0];
-
-    SEAPIRequestManager* manager = [SEAPIRequestManager manager];
-    [manager fetchProviderWithCode:selectedProvider.code success:^(NSURLSessionDataTask* task, SEProvider* fetchedProvider) {
-        self.selectedProvider = fetchedProvider;
-        [self setupInputViews];
-        [SVProgressHUD dismiss];
-    } failure:^(NSURLSessionDataTask* task, NSError* error) {
-        NSLog(@"Error: %@", error);
-        [SVProgressHUD showErrorWithStatus:error.localizedDescription];
-    }];
 }
 
+#pragma mark - Picker delegate
 
-- (void)createLogin
+- (void)presentPickerWithOptions:(NSArray *)options withCompletionBlock:(PickerCompletionBlock)completionBlock
 {
-    [SVProgressHUD showWithStatus:@"Loading..." maskType:SVProgressHUDMaskTypeGradient];
+    [self presentViewController:[PickerTVC pickerWithItems:options completionBlock:completionBlock] animated:YES completion:nil];
+}
+
+#pragma mark - Helper methods
+
+- (NSDictionary*)credentials
+{
     NSMutableDictionary* credentialsDictionary = @{}.mutableCopy;
     [self.inputControlsMappings enumerateKeysAndObjectsUsingBlock:^(SEProviderField* field, UIControl* control, BOOL* stop) {
         id controlValue = [control se_inputValue];
@@ -258,148 +220,138 @@ typedef void (^CompletionBlock)(void);
             [NSException raise:@"NilValue" format:@"%@ has nil value", control];
         }
     }];
+    return [NSDictionary dictionaryWithDictionary:credentialsDictionary];
+}
 
-    NSDictionary *parameters = @{ @"customer_email" : CUSTOMER_EMAIL,
-                                  @"country_code" : self.selectedProvider.countryCode,
-                                  @"provider_code" : self.selectedProvider.code,
-                                  @"credentials" : credentialsDictionary
-                                  };
+- (void)createLogin
+{
+    NSMutableDictionary* parameters = @{ kCountryCodeKey : self.provider.countryCode,
+                                         kProviderCodeKey : self.provider.code,
+                                         kCustomerIdKey : [AppDelegate delegate].customerId,
+                                         }.mutableCopy;
 
+    [SVProgressHUD showWithStatus:@"Creating login..." maskType:SVProgressHUDMaskTypeGradient];
     SEAPIRequestManager* manager = [SEAPIRequestManager manager];
-    [manager createLoginWithParameters:parameters success:^(NSURLSessionDataTask* task, SELogin* createdLogin) {
-        [SVProgressHUD dismiss];
-        [SVProgressHUD showWithStatus:@"Fetching..." maskType:SVProgressHUDMaskTypeGradient];
-    } failure:^(NSURLSessionDataTask* task, NSError* error) {
-        [SVProgressHUD showErrorWithStatus:error.localizedDescription];
-    } delegate:self];
-}
 
-- (void)showInteractiveCredentialsEntryForLoginWithId:(NSNumber*)_id interactiveFieldsNames:(NSArray*)interactiveFieldsNames
-{
-    if (!self.sentInteractiveCredentials) {
-        self.sentInteractiveCredentials = YES;
-        NSMutableArray* requestedInteractiveFields = @[].mutableCopy;
-        for (SEProviderField* interactiveField in self.selectedProvider.interactiveFields) {
-            if ([interactiveFieldsNames containsObject:interactiveField.name]) {
-                [requestedInteractiveFields addObject:interactiveField];
-            }
-        }
-
-        NSAssert(requestedInteractiveFields != nil, @"Login is interactive but has no interactive fields?");
-        
-        CredentialsVC* interactive = [self.storyboard instantiateViewControllerWithIdentifier:@"CredentialsVC"];
-        interactive.credentialFields = requestedInteractiveFields;
-        interactive.completionBlock = ^(NSDictionary* interactiveCredentials) {
-            [self dismissViewControllerAnimated:YES completion:nil];
-            [SVProgressHUD showWithStatus:@"Loading..." maskType:SVProgressHUDMaskTypeGradient];
-
-            SEAPIRequestManager* manager = [SEAPIRequestManager manager];
-            [manager postInteractiveCredentials:interactiveCredentials forLoginId:_id success:^(NSURLSessionDataTask* task, SELogin* login) {
-                NSLog(@"Success");
-                [SVProgressHUD dismiss];
-            } failure:^(NSURLSessionDataTask* task, NSError* error) {
-                [SVProgressHUD showErrorWithStatus:error.localizedDescription];
-            }];
-        };
-        UINavigationController* navController = [[UINavigationController alloc] initWithRootViewController:interactive];
-        [SVProgressHUD dismiss];
-        [self presentViewController:navController animated:YES completion:nil];
+    if (!self.provider.isOAuth) {
+        parameters[kCredentialsKey] = [self credentials];;
+        [manager createLoginWithParameters:parameters
+                                   success:^(SELogin* login) {
+                                       [SVProgressHUD showWithStatus:@"Fetching login..." maskType:SVProgressHUDMaskTypeGradient];
+                                   }
+                                   failure:^(SEError* error) {
+                                       [SVProgressHUD showErrorWithStatus:error.message];
+                                   } delegate:self];
+    } else {
+        parameters[kReturnToKey] = [[AppDelegate delegate] applicationURLString];
+        [manager createOAuthLoginWithParameters:parameters
+                                        success:^(NSDictionary* responseObject) {
+                                            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:responseObject[kDataKey][kRedirectURLKey]]];
+                                        }
+                                        failure:^(SEError* error) {
+                                            [SVProgressHUD showErrorWithStatus:error.message];
+                                        } delegate:self];
     }
 }
 
-- (void)showProviderPicker
+- (void)reconnectLogin
 {
-    NSArray* providers = [[[self.providers valueForKeyPath:@"name"] allObjects] sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)];
-    UINavigationController* providersPicker = [PickerTVC pickerWithItems:providers completionBlock:^(NSString* selectedProvider) {
-        [self userSelectedProvider:selectedProvider];
-        [self dismissViewControllerAnimated:YES completion:nil];
-    }];
-    [self presentViewController:providersPicker animated:YES completion:nil];
-}
+    NSDictionary* credentialsDictionary = [self credentials];
 
-- (void)endEditing
-{
-    [self.view endEditing:YES];
-}
-
-- (void)switchToLoginsViewController
-{
-    [self.tabBarController setSelectedIndex:2];
-}
-
-- (void)offsetViewOnYAxisBy:(CGFloat)offset
-{
-    if (!self.animatingTextFieldOffset) {
-        self.animatingTextFieldOffset = YES;
-        [UIView animateWithDuration:0.3f animations:^{
-            self.view.yOrigin += offset;
-        } completion:^(BOOL finished) {
-            self.animatingTextFieldOffset = NO;
-        }];
+    [SVProgressHUD showWithStatus:@"Reconnecting login..." maskType:SVProgressHUDMaskTypeGradient];
+    SEAPIRequestManager* manager = [SEAPIRequestManager manager];
+    if (!self.provider.isOAuth) {
+        [manager reconnectLoginWithSecret:self.login.secret
+                              credentials:credentialsDictionary
+                                  success:nil
+                                  failure:^(SEError* error) {
+                                      [SVProgressHUD showErrorWithStatus:error.message];
+                                  } delegate:self];
+    } else {
+        [manager reconnectOAuthLoginWithSecret:self.login.secret
+                                    parameters:@{ kReturnToKey : [AppDelegate delegate].applicationURLString }
+                                       success:^(NSDictionary* responseObject) {
+                                           [[UIApplication sharedApplication] openURL:[NSURL URLWithString:responseObject[kDataKey][kRedirectURLKey]]];
+                                       }
+                                       failure:^(SEError* error) {
+                                           [SVProgressHUD showErrorWithStatus:error.message];
+                                       }];
     }
 }
 
-#pragma mark - NSNotificationCenter callbacks
+#pragma mark - Lazy getters
 
-- (void)keyboardWillShow:(NSNotification*)aNotification
+- (NSMutableArray*)inputControlsOrder
 {
-    CGPoint finalOrigin = [[aNotification.userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue].origin;
-    keyboardHeight = self.view.frame.size.height - finalOrigin.y;
-}
-
-#pragma mark - Getters
-
-- (NSSet*)providers
-{
-    if (!_providers) {
-        _providers = [NSSet set];
+    if (!_inputControlsOrder) {
+        _inputControlsOrder = [NSMutableArray array];
     }
-    return _providers;
+    return _inputControlsOrder;
 }
 
 - (NSMutableDictionary*)inputControlsMappings
 {
     if (!_inputControlsMappings) {
-        _inputControlsMappings = @{}.mutableCopy;
+        _inputControlsMappings = [NSMutableDictionary dictionary];
     }
     return _inputControlsMappings;
 }
 
-- (NSMutableArray*)inputControlsOrder
-{
-    if (!_inputControlsOrder) {
-        _inputControlsOrder = @[].mutableCopy;
-    }
-    return _inputControlsOrder;
-}
+#pragma mark - SELoginCreation Delgeate
 
-#pragma mark - Picker Delegate
-
-- (void)presentPickerWithOptions:(NSArray *)options withCompletionBlock:(PickerCompletionBlock)completionBlock
-{
-    UINavigationController* providersPicker = [PickerTVC pickerWithItems:options completionBlock:^(id selectedOption) {
-        if (completionBlock) { completionBlock(selectedOption); }
-        [self dismissViewControllerAnimated:YES completion:nil];
-    }];
-    [self presentViewController:providersPicker animated:YES completion:nil];
-}
-
-#pragma mark - SELoginCreation Delegate
-
-- (void)login:(SELogin *)login requestedInteractiveCallbackWithFieldNames:(NSArray *)names
-{
-    [self showInteractiveCredentialsEntryForLoginWithId:login.id interactiveFieldsNames:names];
-}
-
-- (void)login:(SELogin *)login failedToFetchWithMessage:(NSString *)message
+- (void)login:(SELogin*)login failedToFetchWithMessage:(NSString *)message
 {
     [SVProgressHUD showErrorWithStatus:message];
 }
 
+- (void)loginRequestedInteractiveInput:(SELogin*)login
+{
+    CredentialsVC* credentialsVC = [self.storyboard instantiateViewControllerWithIdentifier:@"CredentialsVC"];
+    NSPredicate* predicate = [NSPredicate predicateWithBlock:^BOOL(SEProviderField* field, NSDictionary* bindings) {
+        return [login.interactiveFieldsNames containsObject:field.name];
+    }];
+    credentialsVC.credentialFields = [self.provider.interactiveFields filteredArrayUsingPredicate:predicate];
+    credentialsVC.interactiveHtml = login.interactiveHtml;
+    credentialsVC.completionBlock = ^(NSDictionary* credentials) {
+        [SVProgressHUD showWithStatus:@"Sending credentials..." maskType:SVProgressHUDMaskTypeGradient];
+        SEAPIRequestManager* manager = [SEAPIRequestManager manager];
+        [manager provideInteractiveCredentialsForLoginWithSecret:login.secret
+                                                     credentials:credentials
+                                                         success:^(SELogin* login) {
+                                                             [self dismissViewControllerAnimated:YES completion:^{
+                                                                 [SVProgressHUD showWithStatus:@"Fetching login..." maskType:SVProgressHUDMaskTypeGradient];
+                                                             }];
+                                                         }
+                                                         failure:^(SEError* error) {
+                                                             [SVProgressHUD showErrorWithStatus:error.message];
+                                                         }
+                                                        delegate: self];
+    };
+    UINavigationController* navController = [[UINavigationController alloc] initWithRootViewController:credentialsVC];
+    [SVProgressHUD dismiss];
+    [self presentViewController:navController animated:YES completion:nil];
+}
+
 - (void)loginSuccessfullyFinishedFetching:(SELogin *)login
 {
+    _login = nil;
+    NSMutableSet* loginSecrets = [NSSet setWithArray:[[NSUserDefaults standardUserDefaults] arrayForKey:kLoginSecretsDefaultsKey]].mutableCopy;
+    if (!loginSecrets) {
+        loginSecrets = [NSMutableSet set];
+    }
+    [loginSecrets addObject:login.secret];
+    [[NSUserDefaults standardUserDefaults] setObject:[loginSecrets allObjects] forKey:kLoginSecretsDefaultsKey];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    LoginsTVC* loginsController = [self.tabBarController.viewControllers[2] viewControllers][0];
+    [loginsController reloadLoginsTableViewController];
+    [[[AppDelegate delegate] tabBar] setSelectedIndex:2];
     [SVProgressHUD dismiss];
-    [self switchToLoginsViewController];
+}
+
+- (void)OAuthLoginCannotBeFetched
+{
+    [SVProgressHUD showErrorWithStatus:@"OAuth login cannot be fetched"];
 }
 
 @end
+

@@ -8,7 +8,6 @@
 
 #import "Helpers.h"
 #import "Constants.h"
-#import <AFHTTPRequestOperationManager.h>
 #import "OptionSelectButton.h"
 #import "SEProviderField.h"
 

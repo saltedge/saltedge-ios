@@ -7,7 +7,6 @@
 //
 
 #import "CredentialsVC.h"
-#import "PickerDelegate.h"
 #import "PickerTVC.h"
 #import "Constants.h"
 #import "Helpers.h"
@@ -15,11 +14,13 @@
 #import "UIView+Framing.h"
 #import "UIControl+SELoginInputFieldsAdditions.h"
 #import "SEProviderField.h"
+#import "PickerDelegate.h"
 
-@interface CredentialsVC () <PickerDelegate>
+@interface CredentialsVC () <PickerDelegate, UIWebViewDelegate>
 
 @property (nonatomic, strong) NSMutableDictionary* inputControlsMappings;
 @property (nonatomic, strong) NSMutableArray* inputControlsOrder;
+@property (nonatomic, strong) UIWebView* webView;
 
 @end
 
@@ -33,13 +34,13 @@
 {
     [super viewDidLoad];
     self.title = @"Credentials";
-    [self setupInputControls];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(donePressed)];
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    [self setupInputControls];
     self.navigationController.navigationBar.translucent = NO;
 }
 
@@ -47,9 +48,21 @@
 
 - (void)setupInputControls
 {
+    if (![self.interactiveHtml isEqual:[NSNull null]]) {
+        self.webView = [[UIWebView alloc] initWithFrame:CGRectMake(0.0, 15.0, self.view.width, 350.0f)];
+        self.webView.delegate = self;
+        [self.webView loadHTMLString:self.interactiveHtml baseURL:nil];
+        [self.view addSubview:self.webView];
+    } else {
+        [self addInputControls];
+    }
+}
+
+- (void)addInputControls
+{
     for (SEProviderField* field in self.credentialFields) {
         UIControl* control = [self createInputControlFromObject:field];
-        control.origin = CGPointMake(10.0, 10 + 45 * ([field.position integerValue] - 1));
+        control.origin = CGPointMake(10.0, self.webView.bottomEdge + 10 + 45 * self.inputControlsOrder.count);
         [self.view addSubview:control];
         self.inputControlsMappings[field] = control;
         [self.inputControlsOrder addObject:control];
@@ -119,6 +132,27 @@
         [self dismissViewControllerAnimated:YES completion:nil];
     }];
     [self presentViewController:providersPicker animated:YES completion:nil];
+}
+
+#pragma mark - UIWebView delegate
+
+- (void)webViewDidFinishLoad:(UIWebView *)aWebView
+{
+    CGRect frame = aWebView.frame;
+    frame.size.height = 1.0f;
+    frame.size.width  = 1.0f;
+    aWebView.frame = frame;
+    CGSize fittingSize = [aWebView sizeThatFits:CGSizeZero];
+    frame.size = fittingSize;
+    if (fittingSize.height > 300.0f) {
+        fittingSize.height = 300.0f;
+    }
+    if (fittingSize.width > 320.0f) {
+        fittingSize.width = 320.0f;
+    }
+    aWebView.frame = frame;
+    aWebView.center = CGPointMake(aWebView.superview.width / 2, aWebView.center.y);
+    [self addInputControls];
 }
 
 @end

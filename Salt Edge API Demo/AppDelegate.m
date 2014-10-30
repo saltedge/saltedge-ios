@@ -12,6 +12,9 @@
 #import <SVProgressHUD.h>
 #import "SERequestHandler.h"
 #import "SEError.h"
+#import "SEAPIRequestManager+SEOAuthLoginHandlingAdditions.h"
+#import "CreateLoginVC.h"
+#import "Constants.h"
 
 #pragma GCC diagnostic ignored "-Wundeclared-selector"
 
@@ -22,6 +25,16 @@
 @end
 
 @implementation AppDelegate
+
++ (instancetype)delegate
+{
+    return (AppDelegate*) [UIApplication sharedApplication].delegate;
+}
+
+- (NSString*)applicationURLString
+{
+    return @"saltedge-api-demo://home.local"; // the URL has to have a host, otherwise won't be a valid URL on the backend
+}
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
@@ -39,24 +52,33 @@
         self.tabBar = [[TabBarVC alloc] init];
         self.window.rootViewController = self.tabBar;
         [self.window makeKeyAndVisible];
+        [SVProgressHUD dismiss];
     };
 
     __block NSString* customerId = [[NSUserDefaults standardUserDefaults] stringForKey:kCustomerIdDefaultsKey];
     if (!customerId) {
+        [SVProgressHUD showWithStatus:@"Creating customer..."];
         SEAPIRequestManager* manager = [SEAPIRequestManager manager];
         [manager createCustomerWithIdentifier:customerIdentifier success:^(NSDictionary* responseObject) {
-            customerId = responseObject[@"data"][@"customer_id"];
+            customerId = responseObject[kDataKey][kCustomerIdKey];
             [[NSUserDefaults standardUserDefaults] setObject:customerId forKey:kCustomerIdDefaultsKey];
             [[NSUserDefaults standardUserDefaults] synchronize];
+            self.customerId = customerId;
             setWindowRootViewController();
         } failure:^(SEError* error) {
-            NSLog(@"%@", error);
+            [SVProgressHUD showErrorWithStatus:error.message];
         }];
     } else {
+        self.customerId = customerId;
         setWindowRootViewController();
     }
 
     return YES;
+}
+
+- (CreateLoginVC*)createController
+{
+    return [self.tabBar.viewControllers[1] viewControllers][0];
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application
@@ -84,6 +106,12 @@
 - (void)applicationWillTerminate:(UIApplication *)application
 {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+}
+
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
+{
+    [SEAPIRequestManager handleOpenURL:url sourceApplication:sourceApplication loginFetchingDelegate:[self createController]];
+    return YES;
 }
 
 @end
