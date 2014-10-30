@@ -106,7 +106,7 @@ typedef void (^SEAPIRequestFailureBlock)(SEError* error);
     "customer_id": "AtQX6Q8vRyMrPjUVtW7J_O1n06qYQ25bvUJ8CIC80-8",
     "country_code": "XO",
     "provider_code": "paypal_xo",
-    "return_to": "your-app-url://"
+    "return_to": "your-app-url://home.local"
  }
  @endcode
 
@@ -314,7 +314,7 @@ typedef void (^SEAPIRequestFailureBlock)(SEError* error);
  @code
  // parameters example
  {
-    "return_to": "your-app-url://",
+    "return_to": "your-app-url://home.local",
     "return_login_id": false
  }
  @endcode
@@ -354,7 +354,7 @@ typedef void (^SEAPIRequestFailureBlock)(SEError* error);
  @code
  // parameters example, listing only the required fields
  {
-    "return_to": "your-app-url://"
+    "return_to": "your-app-url://home.local"
  }
  @endcode
 
