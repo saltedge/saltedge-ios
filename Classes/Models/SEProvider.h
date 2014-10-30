@@ -54,4 +54,11 @@
  */
 - (BOOL)isEqualToProvider:(SEProvider*)provider;
 
+/**
+ Tests whether the caller is an OAuth provider.
+
+ @return YES if the provider is an OAuth provider, otherwise NO.
+ */
+- (BOOL)isOAuth;
+
 @end
