@@ -30,8 +30,8 @@
  */
 @interface SEError : SEBaseModel
 
-@property (nonatomic, strong) NSString* errorClass;
-@property (nonatomic, strong) NSString* message;
+@property (nonatomic, strong) NSString*     errorClass;
+@property (nonatomic, strong) NSString*     message;
 @property (nonatomic, strong) NSDictionary* request;
 
 @end
