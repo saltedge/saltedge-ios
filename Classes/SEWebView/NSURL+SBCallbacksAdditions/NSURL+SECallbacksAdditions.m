@@ -1,5 +1,5 @@
 //
-//  NSURL+SBCallbacksAdditions.h
+//  NSURL+SECallbacksAdditions.m
 //
 //  Copyright (c) 2014 Salt Edge. https://saltedge.com
 //
@@ -21,39 +21,22 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 
-#import <Foundation/Foundation.h>
+#import "NSURL+SECallbacksAdditions.h"
 
-/**
- The callback scheme of the Salt Edge Connect protocol.
- */
-static NSString* const SBCallbackScheme = @"saltbridge";
+@implementation NSURL (SECallbacksAdditions)
 
-/**
- The callback host of the Salt Edge Connect protocol.
- */
-static NSString* const SBCallbackHost   = @"connect";
+- (BOOL)se_isCallbackURL
+{
+    return [self.scheme isEqualToString:SECallbackScheme] && [self.host isEqualToString:SECallbackHost];
+}
 
-/**
- This category provides a few utility methods in order to aid SEWebView deal with callbacks from the Salt Edge Connect page.
- */
-
-@interface NSURL (SBCallbacksAdditions)
-
-/**
- Determines whether a NSURL object is a Salt Edge Connect callback URL.
-
- @return YES if the NSURL object has the scheme equal to SBCallbackScheme and the host equal to SBCallbackHost, otherwise returns NO.
-
- @see SBCallbackScheme, SBCallbackHost
- */
-- (BOOL)sb_isCallbackURL;
-/**
- Provided the NSURL object is a Salt Edge Connect callback URL, this method will return the payload within the callback, if any.
-
- @return A dictionary containing the callback parameters. The dictionary will have the "login_id" and "state" keys with corresponding values.
-
- @see webView:receivedCallbackWithResponse:
- */
-- (NSDictionary*)sb_callbackParametersWithError:(NSError**)error;
+- (NSDictionary*)se_callbackParametersWithError:(NSError**)error
+{
+    if (!self.se_isCallbackURL) { return nil; }
+    NSString* jsonString = [self.path substringFromIndex:1];
+    if (!jsonString.length) { return nil; }
+    NSData* jsonStringData = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
+    return [NSJSONSerialization JSONObjectWithData:jsonStringData options:0 error:error];
+}
 
 @end

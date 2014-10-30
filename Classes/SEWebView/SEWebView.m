@@ -22,7 +22,7 @@
 //  THE SOFTWARE.
 
 #import "SEWebView.h"
-#import "NSURL+SBCallbacksAdditions/NSURL+SBCallbacksAdditions.h"
+#import "NSURL+SECallbacksAdditions.h"
 #import "SEWebViewDelegate.h"
 
 @interface SEWebView(/* Private */) <UIWebViewDelegate>
@@ -48,9 +48,9 @@
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
 {
     NSURL* url = request.URL;
-    if (url.sb_isCallbackURL) {
+    if (url.se_isCallbackURL) {
         NSError* error = nil;
-        NSDictionary* callbackParameters = [url sb_callbackParametersWithError:&error];
+        NSDictionary* callbackParameters = [url se_callbackParametersWithError:&error];
         if (!error) {
             if (callbackParameters[SELoginDataKey][SELoginSecretKey] && callbackParameters[SELoginDataKey][SELoginStateKey]) {
                 if ([self.stateDelegate respondsToSelector:@selector(webView:receivedCallbackWithResponse:)]) {
