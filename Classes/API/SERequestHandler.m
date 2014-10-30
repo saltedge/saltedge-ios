@@ -27,21 +27,32 @@
 static NSString* const kRequestMethodPOST   = @"POST";
 static NSString* const kRequestMethodGET    = @"GET";
 static NSString* const kRequestMethodDELETE = @"DELETE";
+static NSString* const kRequestMethodPUT    = @"PUT";
 
 static NSString* const kErrorClassKey = @"error_class";
 static NSString* const kMessageKey    = @"message";
 static NSString* const kRequestKey    = @"request";
+static NSString* const kParametersKey = @"parameters";
+
+static NSString* const kEmptyURLErrorClass   = @"SEEmptyURLError";
+static NSString* const kEmptyURLErrorMessage = @"Cannot send a request to an empty URL.";
+
+static NSString* const kBadRequestParametersErrorClass   = @"SEBadRequestParametersError";
+static NSString* const kBadRequestParametersErrorMessage = @"Could not handle parameters assignment in request.";
 
 typedef NS_ENUM(NSInteger, SERequestMethod) {
-    SERequestMethodPOST,
+    SERequestMethodDELETE,
     SERequestMethodGET,
-    SERequestMethodDELETE
+    SERequestMethodPOST,
+    SERequestMethodPUT
 };
 
-@interface SERequestHandler (/* Private */)
+@interface SERequestHandler (/* Private */) <NSURLConnectionDataDelegate>
 
-@property (nonatomic, copy) SERequestHandlerFailureBlock successBlock;
-@property (nonatomic, copy) SERequestHandlerFailureBlock failureBlock;
+@property (nonatomic, strong) NSMutableData* responseData;
+@property (nonatomic, copy)   SERequestHandlerFailureBlock successBlock;
+@property (nonatomic, copy)   SERequestHandlerFailureBlock failureBlock;
+@property (nonatomic)         NSInteger responseStatusCode;
 
 @end
 
@@ -50,13 +61,13 @@ typedef NS_ENUM(NSInteger, SERequestMethod) {
 #pragma mark -
 #pragma mark - Public API
 
-+ (void)sendPOSTRequestWithURL:(NSString*)url
-                    parameters:(NSDictionary*)parameters
-                       headers:(NSDictionary*)headers
-                       success:(SERequestHandlerSuccessBlock)success
-                       failure:(SERequestHandlerFailureBlock)failure
++ (void)sendDELETERequestWithURL:(NSString*)url
+                      parameters:(NSDictionary*)parameters
+                         headers:(NSDictionary*)headers
+                         success:(SERequestHandlerSuccessBlock)success
+                         failure:(SERequestHandlerFailureBlock)failure
 {
-    [[self handler] sendRequest:SERequestMethodPOST withURL:url parameters:parameters headers:headers success:success failure:failure];
+    [[self handler] sendRequest:SERequestMethodDELETE withURL:url parameters:parameters headers:headers success:success failure:failure];
 }
 
 + (void)sendGETRequestWithURL:(NSString*)url
@@ -68,13 +79,22 @@ typedef NS_ENUM(NSInteger, SERequestMethod) {
     [[self handler] sendRequest:SERequestMethodGET withURL:url parameters:parameters headers:headers success:success failure:failure];
 }
 
-+ (void)sendDELETERequestWithURL:(NSString*)url
-                      parameters:(NSDictionary*)parameters
-                         headers:(NSDictionary*)headers
-                         success:(SERequestHandlerSuccessBlock)success
-                         failure:(SERequestHandlerFailureBlock)failure
++ (void)sendPOSTRequestWithURL:(NSString*)url
+                    parameters:(NSDictionary*)parameters
+                       headers:(NSDictionary*)headers
+                       success:(SERequestHandlerSuccessBlock)success
+                       failure:(SERequestHandlerFailureBlock)failure
 {
-    [[self handler] sendRequest:SERequestMethodDELETE withURL:url parameters:parameters headers:headers success:success failure:failure];
+    [[self handler] sendRequest:SERequestMethodPOST withURL:url parameters:parameters headers:headers success:success failure:failure];
+}
+
++ (void)sendPUTRequestWithURL:(NSString *)url
+                   parameters:(NSDictionary *)parameters
+                      headers:(NSDictionary *)headers
+                      success:(SERequestHandlerSuccessBlock)success
+                      failure:(SERequestHandlerFailureBlock)failure
+{
+    [[self handler] sendRequest:SERequestMethodPUT withURL:url parameters:parameters headers:headers success:success failure:failure];
 }
 
 #pragma mark -
@@ -83,16 +103,6 @@ typedef NS_ENUM(NSInteger, SERequestMethod) {
 + (SERequestHandler*)handler
 {
     return [[SERequestHandler alloc] init];
-}
-
-+ (NSOperationQueue*)requestOperationQueue
-{
-    static NSOperationQueue* operationQueue;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        operationQueue = [[NSOperationQueue alloc] init];
-    });
-    return operationQueue;
 }
 
 - (void)sendRequest:(SERequestMethod)method
@@ -104,9 +114,11 @@ typedef NS_ENUM(NSInteger, SERequestMethod) {
 {
     if (url.length == 0) {
         if (failure) {
-            failure(@{ kErrorClassKey: @"EmptyURLError",
-                       kMessageKey: @"Cannot send a request to empty URL.",
-                       kRequestKey: @{ @"parameters" : parameters ? parameters : [NSNull null] }
+            failure(@{ kErrorClassKey : kEmptyURLErrorClass,
+                       kMessageKey : kEmptyURLErrorMessage,
+                       kRequestKey : @{
+                               kParametersKey : parameters ? parameters : [NSNull null]
+                               }
                        });
         }
         return;
@@ -124,61 +136,40 @@ typedef NS_ENUM(NSInteger, SERequestMethod) {
 
     if (parameters) {
         if (![self handleParameters:parameters assignmentInRequest:request]) {
+            if (failure) {
+                failure(@{ kErrorClassKey : kBadRequestParametersErrorClass,
+                           kMessageKey : kBadRequestParametersErrorMessage,
+                           kRequestKey : @{
+                                   kParametersKey : parameters
+                                   }
+                           });
+            }
             return;
         }
     }
 
-    [NSURLConnection sendAsynchronousRequest:request queue:[[self class] requestOperationQueue] completionHandler:^(NSURLResponse* response, NSData* data, NSError* connectionError) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            NSInteger statusCode = [(NSHTTPURLResponse*)response statusCode];
-            if (connectionError || !(statusCode >= 200 && statusCode < 300)) {
-                if (failure) {
-                    NSError* error;
-                    NSDictionary* errorDictionary = [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
-                    if ((error || !errorDictionary) && connectionError) {
-                        failure(@{ kErrorClassKey: connectionError.domain,
-                                   kMessageKey: connectionError.localizedDescription,
-                                   kRequestKey: request
-                                   });
-                    } else {
-                        failure(errorDictionary);
-                    }
-                }
-            } else {
-                if (success) {
-                    NSError* error;
-                    NSDictionary* responseObject = [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
-                    if (error && failure) {
-                        failure(@{ kErrorClassKey: error.domain,
-                                   kMessageKey: error.localizedDescription,
-                                   kRequestKey: request
-                                   });
-                    } else {
-                        success(responseObject);
-                    }
-                }
-            }
-        });
-    }];
+    [NSURLConnection connectionWithRequest:request delegate:self];
 }
 
 - (NSString*)stringForMethod:(SERequestMethod)method
 {
     switch (method) {
-        case SERequestMethodPOST: {
-            return kRequestMethodPOST;
+        case SERequestMethodDELETE: {
+            return kRequestMethodDELETE;
         }
         case SERequestMethodGET: {
             return kRequestMethodGET;
         }
-        case SERequestMethodDELETE: {
-            return kRequestMethodDELETE;
+        case SERequestMethodPOST: {
+            return kRequestMethodPOST;
+        }
+        case SERequestMethodPUT: {
+            return kRequestMethodPUT;
         }
     }
 }
 
-- (BOOL)handleParameters:(NSDictionary*)parameters
-     assignmentInRequest:(NSMutableURLRequest*)request
+- (BOOL)handleParameters:(NSDictionary*)parameters assignmentInRequest:(NSMutableURLRequest*)request
 {
     if ([[self HTTPMethodsWithoutBody] containsObject:[request.HTTPMethod uppercaseString]]) {
         NSString* query = [self urlQueryFormatForParameters:parameters];
@@ -188,10 +179,9 @@ typedef NS_ENUM(NSInteger, SERequestMethod) {
         NSData* data = [NSJSONSerialization dataWithJSONObject:parameters options:0 error:&error];
         if (error) {
             if (self.failureBlock) {
-                self.failureBlock(@{ kErrorClassKey: error.domain,
-                                     kMessageKey: error.localizedDescription,
-                                     kRequestKey: parameters
-                                     });
+                self.failureBlock(@{ kErrorClassKey : error.domain,
+                                     kMessageKey : error.localizedDescription,
+                                     kRequestKey : parameters });
             }
             return NO;
         }
@@ -212,6 +202,54 @@ typedef NS_ENUM(NSInteger, SERequestMethod) {
 - (NSArray*)HTTPMethodsWithoutBody
 {
     return @[kRequestMethodGET, kRequestMethodDELETE];
+}
+
+- (BOOL)connection:(NSURLConnection *)connection canAuthenticateAgainstProtectionSpace:(NSURLProtectionSpace *)protectionSpace
+{
+    return [protectionSpace.authenticationMethod isEqualToString:NSURLAuthenticationMethodServerTrust];
+}
+
+- (void)connection:(NSURLConnection*)connection didReceiveResponse:(NSURLResponse*)response
+{
+    self.responseData = [[NSMutableData alloc] init];
+    self.responseStatusCode = [(NSHTTPURLResponse*)response statusCode];
+}
+
+- (void)connection:(NSURLConnection*)connection didReceiveData:(NSData*)data
+{
+    [self.responseData appendData:data];
+}
+
+- (void)connectionDidFinishLoading:(NSURLConnection*)connection
+{
+    NSError* error;
+    NSDictionary* data = [NSJSONSerialization JSONObjectWithData:self.responseData options:0 error:&error];
+    if (error) {
+        self.failureBlock(@{ kErrorClassKey : error.domain,
+                             kMessageKey : error.localizedDescription,
+                             kRequestKey : connection.currentRequest });
+    } else {
+        if ((self.responseStatusCode >= 200 && self.responseStatusCode < 300)) {
+            self.successBlock(data);
+        } else {
+            self.failureBlock(data);
+        }
+    }
+}
+
+- (void)connection:(NSURLConnection*)connection didFailWithError:(NSError*)error
+{
+    if (self.failureBlock) {
+        self.failureBlock(@{ kErrorClassKey : error.domain,
+                             kMessageKey : error.localizedDescription,
+                             kRequestKey : connection.currentRequest
+                             });
+    }
+}
+
+- (NSCachedURLResponse*)connection:(NSURLConnection *)connection willCacheResponse:(NSCachedURLResponse *)cachedResponse
+{
+    return nil;
 }
 
 @end

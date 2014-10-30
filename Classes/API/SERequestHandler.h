@@ -25,16 +25,16 @@
 
 @class SEError;
 
-typedef void (^SERequestHandlerSuccessBlock)(NSDictionary* responseDictionary);
-typedef void (^SERequestHandlerFailureBlock)(NSDictionary* errorDictionary);
+typedef void (^SERequestHandlerSuccessBlock)(NSDictionary* responseObject);
+typedef void (^SERequestHandlerFailureBlock)(NSDictionary* errorObject);
 
 @interface SERequestHandler : NSObject
 
-+ (void)sendPOSTRequestWithURL:(NSString*)url
-                    parameters:(NSDictionary*)parameters
-                       headers:(NSDictionary*)headers
-                       success:(SERequestHandlerSuccessBlock)success
-                       failure:(SERequestHandlerFailureBlock)failure;
++ (void)sendDELETERequestWithURL:(NSString*)url
+                      parameters:(NSDictionary*)parameters
+                         headers:(NSDictionary*)headers
+                         success:(SERequestHandlerSuccessBlock)success
+                         failure:(SERequestHandlerFailureBlock)failure;
 
 + (void)sendGETRequestWithURL:(NSString*)url
                    parameters:(NSDictionary*)parameters
@@ -42,10 +42,16 @@ typedef void (^SERequestHandlerFailureBlock)(NSDictionary* errorDictionary);
                       success:(SERequestHandlerSuccessBlock)success
                       failure:(SERequestHandlerFailureBlock)failure;
 
-+ (void)sendDELETERequestWithURL:(NSString*)url
-                      parameters:(NSDictionary*)parameters
-                         headers:(NSDictionary*)headers
-                         success:(SERequestHandlerSuccessBlock)success
-                         failure:(SERequestHandlerFailureBlock)failure;
++ (void)sendPOSTRequestWithURL:(NSString*)url
+                    parameters:(NSDictionary*)parameters
+                       headers:(NSDictionary*)headers
+                       success:(SERequestHandlerSuccessBlock)success
+                       failure:(SERequestHandlerFailureBlock)failure;
+
++ (void)sendPUTRequestWithURL:(NSString*)url
+                   parameters:(NSDictionary*)parameters
+                      headers:(NSDictionary*)headers
+                      success:(SERequestHandlerSuccessBlock)success
+                      failure:(SERequestHandlerFailureBlock)failure;
 
 @end
