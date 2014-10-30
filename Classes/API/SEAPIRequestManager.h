@@ -310,7 +310,7 @@ typedef void (^SEAPIRequestFailureBlock)(SEError* error);
  @param parameters The parameters of the reconnect request. See an example above.
  @param success The callback block if the request succeeds.
  @param failure The callback block if the request fails.
- 
+
  @code
  // parameters example
  {
@@ -318,7 +318,7 @@ typedef void (^SEAPIRequestFailureBlock)(SEError* error);
     "return_login_id": false
  }
  @endcode
- 
+
  @see https://docs.saltedge.com/reference/#oauth-reconnect
  */
 - (void)reconnectOAuthLoginWithSecret:(NSString*)loginSecret

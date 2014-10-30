@@ -6,8 +6,10 @@
 //  Copyright (c) 2014 Salt Edge. All rights reserved.
 //
 
-#ifndef Salt_Edge_API_Demo_SEAPIRequestManager_private_h
-#define Salt_Edge_API_Demo_SEAPIRequestManager_private_h
+@interface SEAPIRequestManager()
 
+@property (nonatomic, weak) id<SELoginFetchingDelegate> loginFetchingDelegate;
 
-#endif
+- (void)pollLoginWithSecret:(NSString*)loginSecret;
+
+@end
