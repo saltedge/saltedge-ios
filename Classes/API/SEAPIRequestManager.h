@@ -385,7 +385,7 @@ typedef void (^SEAPIRequestFailureBlock)(SEError* error);
  @param success The callback block if the request succeeds.
  @param failure The callback block if the request fails.
 
- @warning The parameters should at least contain a key "customer_email" with the corresponding customer email.
+ @warning parameters cannot be nil. Required fields are: "country_code", "provider_code", "customer_id", "return_to"
 
  @code
  // parameters example, listing only the required fields
@@ -411,7 +411,7 @@ typedef void (^SEAPIRequestFailureBlock)(SEError* error);
  @param success The callback block if the request succeeds.
  @param failure The callback block if the request fails.
 
- @warning The parameters should at least contain a key "customer_email" with the corresponding customer email.
+ @warning parameters cannot be nil. "return_to" is the only required field.
  @warning login may not be nil.
 
  @code
@@ -436,7 +436,7 @@ typedef void (^SEAPIRequestFailureBlock)(SEError* error);
  @param success The callback block if the request succeeds.
  @param failure The callback block if the request fails.
 
- @warning The parameters should at least contain a key "customer_email" with the corresponding customer email.
+ @warning parameters cannot be nil. "return_to" is the only required field.
  @warning login may not be nil.
 
  @code
