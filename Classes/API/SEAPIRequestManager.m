@@ -22,6 +22,7 @@
 //  THE SOFTWARE.
 
 #import "SEAPIRequestManager.h"
+#import "SEAPIRequestManager_private.h"
 #import "Constants.h"
 #import "SEProvider.h"
 #import "SELogin.h"
@@ -30,39 +31,25 @@
 #import "DateUtils.h"
 #import "SERequestHandler.h"
 #import "SEError.h"
+#import "SELoginFetchingDelegate.h"
 
 /* HTTP Headers */
-
 static NSString* const kAppSecretHeaderKey       = @"App-secret";
 static NSString* const kClientIdHeaderKey        = @"Client-id";
 static NSString* const kLoginSecretHeaderKey     = @"Login-secret";
 static NSString* const kContentTypeHeaderKey     = @"Content-type";
 static NSString* const kJSONContentTypeValue     = @"application/json";
 
-/* Keys of responses and post bodies */
-static NSString* const kFromIdKey                = @"from_id";
-static NSString* const kDataKey                  = @"data";
-static NSString* const kMetaKey                  = @"meta";
-static NSString* const kNextIdKey                = @"next_id";
-static NSString* const kNextPageKey              = @"next_page";
-static NSString* const kLoginIdKey               = @"login_id";
-static NSString* const kRefreshKey               = @"refresh";
-static NSString* const kCountryCode              = @"country_code";
-static NSString* const kProviderCodeKey          = @"provider_code";
-static NSString* const kReturnToKey              = @"return_to";
-static NSString* const kCustomerIdKey            = @"customer_id";
-static NSString* const kAccountIdKey             = @"account_id";
-static NSString* const kFromMadeOnKey            = @"from_made_on";
-static NSString* const kToMadeOnKey              = @"to_made_on";
-static NSString* const kMobileKey                = @"mobile";
-static NSString* const kIdentifierKey            = @"identifier";
-
 /* HTTP Session config */
 static NSDictionary* sessionHeaders;
+
+/* Login polling */
+static CGFloat const kLoginPollDelayTime = 5.0f;
 
 @interface SEAPIRequestManager(/* Private */)
 
 @property (nonatomic, strong) NSString* baseURL;
+@property (nonatomic, strong) SELogin* createdLogin;
 
 @end
 
@@ -110,10 +97,62 @@ static NSDictionary* sessionHeaders;
                                              success(responseObject);
                                          }
                                      }
-                                     failure:^(NSDictionary* errorDictionary) {
-                                         if (!failure) { return; }
-                                         SEError* error = [SEError objectFromDictionary:errorDictionary];
-                                         failure(error);
+                                     failure:^(NSDictionary* errorObject) {
+                                         [self failureBlockWithBlock:failure errorObject:errorObject];
+                                     }];
+}
+
+- (void)createLoginWithParameters:(NSDictionary *)parameters
+                          success:(void (^)(SELogin *))success
+                          failure:(SEAPIRequestFailureBlock)failure
+                         delegate:(id<SELoginFetchingDelegate>)delegate
+{
+    NSAssert(parameters[kCountryCodeKey] != nil, @"Country code cannot be nil.");
+    NSAssert(parameters[kProviderCodeKey] != nil, @"Provider code cannot be nil.");
+    NSAssert(parameters[kCustomerIdKey] != nil, @"Customer ID cannot be nil.");
+    NSAssert(parameters[kCredentialsKey] != nil, @"Credentials cannot be nil.");
+
+    [SERequestHandler sendPOSTRequestWithURL:[self baseURLStringByAppendingPathComponent:kLoginPath]
+                                  parameters:@{ kDataKey : parameters }
+                                     headers:sessionHeaders
+                                     success:^(NSDictionary* responseDictionary) {
+                                         SELogin* createdLogin = [SELogin objectFromDictionary:responseDictionary[kDataKey]];
+                                         self.loginFetchingDelegate = delegate;
+                                         self.createdLogin = createdLogin;
+                                         if (success) {
+                                             success(createdLogin);
+                                         }
+                                         if ([self isLoginFetchingDelegateSuitableForDelegation]) {
+                                             [self pollLoginWithSecret:createdLogin.secret];
+                                         }
+                                     }
+                                     failure:^(NSDictionary* errorObject) {
+                                         [self failureBlockWithBlock:failure errorObject:errorObject];
+                                     }];
+}
+
+- (void)createOAuthLoginWithParameters:(NSDictionary *)parameters
+                               success:(void (^)(NSDictionary *))success
+                               failure:(SEAPIRequestFailureBlock)failure
+                              delegate:(id<SELoginFetchingDelegate>)delegate
+{
+    NSAssert(parameters[kCountryCodeKey] != nil, @"Country code cannot be nil.");
+    NSAssert(parameters[kProviderCodeKey] != nil, @"Provider code cannot be nil.");
+    NSAssert(parameters[kCustomerIdKey] != nil, @"Customer ID cannot be nil.");
+    NSAssert(parameters[kReturnToKey] != nil, @"Return to URL cannot be nil.");
+
+    NSString* OAuthCreatePath = [[self baseURLStringByAppendingPathComponent:kOAuthProvidersPath] stringByAppendingPathComponent:kLoginActionCreate];
+
+    [SERequestHandler sendPOSTRequestWithURL:OAuthCreatePath
+                                  parameters:@{ kDataKey : parameters }
+                                     headers:sessionHeaders
+                                     success:^(NSDictionary* responseObject) {
+                                         if (success) {
+                                             success(responseObject);
+                                         }
+                                     }
+                                     failure:^(NSDictionary* errorObject) {
+                                         [self failureBlockWithBlock:failure errorObject:errorObject];
                                      }];
 }
 
@@ -136,10 +175,8 @@ static NSDictionary* sessionHeaders;
                                             success(provider);
                                         }
                                     }
-                                    failure:^(NSDictionary* errorDictionary) {
-                                        if (!failure) { return; }
-                                        SEError* error = [SEError objectFromDictionary:errorDictionary];
-                                        failure(error);
+                                    failure:^(NSDictionary* errorObject) {
+                                        [self failureBlockWithBlock:failure errorObject:errorObject];
                                     }];
 }
 
@@ -182,10 +219,8 @@ static NSDictionary* sessionHeaders;
                                         }
                                         success((NSSet*) accountsObjects);
                                     }
-                                    failure:^(NSDictionary* errorDictionary) {
-                                        if (!failure) { return; }
-                                        SEError* error = [SEError objectFromDictionary:errorDictionary];
-                                        failure(error);
+                                    failure:^(NSDictionary* errorObject) {
+                                        [self failureBlockWithBlock:failure errorObject:errorObject];
                                     }];
 }
 
@@ -233,7 +268,9 @@ static NSDictionary* sessionHeaders;
                                          success:(void (^)(NSSet *))success
                                          failure:(SEAPIRequestFailureBlock)failure
 {
-    [self requestTransactionsListWithPath:kPendingTransactionsPath
+    NSString* pendingTransactionsPath = [[self baseURLStringByAppendingPathComponent:kTransactionsPath] stringByAppendingPathComponent:kPendingTransactions];
+
+    [self requestTransactionsListWithPath:pendingTransactionsPath
                                 accountId:accountId
                               loginSecret:loginSecret
                                parameters:parameters
@@ -255,11 +292,140 @@ static NSDictionary* sessionHeaders;
                                         SELogin* fetchedLogin = [SELogin objectFromDictionary:responseObject[kDataKey]];
                                         success(fetchedLogin);
                                     }
-                                    failure:^(NSDictionary* errorDictionary) {
-                                        if (!failure) { return; }
-                                        SEError* error = [SEError objectFromDictionary:errorDictionary];
-                                        failure(error);
+                                    failure:^(NSDictionary* errorObject) {
+                                        [self failureBlockWithBlock:failure errorObject:errorObject];
                                     }];
+}
+
+- (void)provideInteractiveCredentialsForLoginWithSecret:(NSString *)loginSecret
+                                            credentials:(NSDictionary *)credentials
+                                                success:(void (^)(SELogin *))success
+                                                failure:(SEAPIRequestFailureBlock)failure
+                                               delegate:(id<SELoginFetchingDelegate>)delegate
+{
+    NSAssert(loginSecret != nil, @"Login secret cannot be nil.");
+    NSAssert(credentials != nil, @"Credentials cannot be nil.");
+
+    NSString* interactivePath = [[self baseURLStringByAppendingPathComponent:kLoginPath] stringByAppendingPathComponent:kLoginInteractive];
+
+    [SERequestHandler sendPUTRequestWithURL:interactivePath
+                                 parameters:@{ kDataKey : @{ kCredentialsKey : credentials } }
+                                    headers:[self sessionHeadersWithLoginSecret:loginSecret]
+                                    success:^(NSDictionary* responseObject) {
+                                        SELogin* fetchedLogin = [SELogin objectFromDictionary:responseObject[kDataKey]];
+                                        if (success) {
+                                            success(fetchedLogin);
+                                        }
+                                        self.loginFetchingDelegate = delegate;
+                                        if ([self isLoginFetchingDelegateSuitableForDelegation]) {
+                                            [self pollLoginWithSecret:fetchedLogin.secret];
+                                        }
+                                    }
+                                    failure:^(NSDictionary* errorObject) {
+                                        [self failureBlockWithBlock:failure errorObject:errorObject];
+                                    }];
+}
+
+- (void)reconnectLoginWithSecret:(NSString *)loginSecret
+                     credentials:(NSDictionary *)credentials
+                         success:(void (^)(SELogin *))success
+                         failure:(SEAPIRequestFailureBlock)failure
+                        delegate:(id<SELoginFetchingDelegate>)delegate
+{
+    NSAssert(loginSecret != nil, @"Login secret cannot be nil.");
+    NSAssert(credentials != nil, @"Credentials cannot be nil.");
+
+    NSString* reconnectPath = [[self baseURLStringByAppendingPathComponent:kLoginPath] stringByAppendingPathComponent:kLoginActionReconnect];
+
+    [SERequestHandler sendPUTRequestWithURL:reconnectPath
+                                 parameters:@{ kDataKey : @{ kCredentialsKey : credentials } }
+                                    headers:[self sessionHeadersWithLoginSecret:loginSecret]
+                                    success:^(NSDictionary* responseObject) {
+                                        SELogin* reconnectedLogin = [SELogin objectFromDictionary:responseObject[kDataKey]];
+                                        if (success) {
+                                            success(reconnectedLogin);
+                                        }
+                                        self.loginFetchingDelegate = delegate;
+                                        if ([self isLoginFetchingDelegateSuitableForDelegation]) {
+                                            [self pollLoginWithSecret:reconnectedLogin.secret];
+                                        }
+                                    }
+                                    failure:^(NSDictionary* errorObject) {
+                                        [self failureBlockWithBlock:failure errorObject:errorObject];
+                                    }];
+}
+
+- (void)reconnectOAuthLoginWithSecret:(NSString *)loginSecret
+                           parameters:(NSDictionary *)parameters
+                              success:(void (^)(NSDictionary *))success
+                              failure:(SEAPIRequestFailureBlock)failure
+{
+    NSAssert(loginSecret != nil, @"Login secret cannot be nil.");
+    NSAssert(parameters[kReturnToKey] != nil, @"Return to URL cannot be nil.");
+
+    NSString* reconnectPath = [[self baseURLStringByAppendingPathComponent:kOAuthProvidersPath] stringByAppendingPathComponent:kLoginActionReconnect];
+
+    [SERequestHandler sendPOSTRequestWithURL:reconnectPath
+                                  parameters:@{ kDataKey : parameters }
+                                     headers:[self sessionHeadersWithLoginSecret:loginSecret]
+                                     success:^(NSDictionary* responseObject) {
+                                         if (success) {
+                                             success(responseObject);
+                                         }
+                                     }
+                                     failure:^(NSDictionary* errorObject) {
+                                         [self failureBlockWithBlock:failure errorObject:errorObject];
+                                     }];
+}
+
+- (void)refreshLoginWithSecret:(NSString *)loginSecret
+                       success:(void (^)(NSDictionary*))success
+                       failure:(SEAPIRequestFailureBlock)failure
+                      delegate:(id<SELoginFetchingDelegate>)delegate
+{
+    NSAssert(loginSecret != nil, @"Login secret cannot be nil.");
+
+    NSString* refreshPath = [[self baseURLStringByAppendingPathComponent:kLoginPath] stringByAppendingPathComponent:kLoginActionRefresh];
+
+    [SERequestHandler sendPUTRequestWithURL:refreshPath
+                                 parameters:nil
+                                    headers:[self sessionHeadersWithLoginSecret:loginSecret]
+                                    success:^(NSDictionary* responseObject) {
+                                        if (success) {
+                                            success(responseObject);
+                                        }
+                                        if (![responseObject[kDataKey][kRefreshedKey] boolValue]) { return; }
+                                        self.loginFetchingDelegate = delegate;
+                                        if ([self isLoginFetchingDelegateSuitableForDelegation]) {
+                                            [self pollLoginWithSecret:loginSecret];
+                                        }
+                                    }
+                                    failure:^(NSDictionary* errorObject) {
+                                        [self failureBlockWithBlock:failure errorObject:errorObject];
+                                    }];
+}
+
+- (void)refreshOAuthLoginWithSecret:(NSString *)loginSecret
+                         parameters:(NSDictionary *)parameters
+                            success:(void (^)(NSDictionary *))success
+                            failure:(SEAPIRequestFailureBlock)failure
+{
+    NSAssert(loginSecret != nil, @"Login secret cannot be nil.");
+    NSAssert(parameters[kReturnToKey] != nil, @"Return to URL cannot be nil.");
+
+    NSString* refreshPath = [[self baseURLStringByAppendingPathComponent:kOAuthProvidersPath] stringByAppendingPathComponent:kLoginActionRefresh];
+
+    [SERequestHandler sendPOSTRequestWithURL:refreshPath
+                                  parameters:@{ kDataKey : parameters }
+                                     headers:[self sessionHeadersWithLoginSecret:loginSecret]
+                                     success:^(NSDictionary* responseObject) {
+                                         if (success) {
+                                             success(responseObject);
+                                         }
+                                     }
+                                     failure:^(NSDictionary* errorObject) {
+                                         [self failureBlockWithBlock:failure errorObject:errorObject];
+                                     }];
 }
 
 - (void)removeLoginWithSecret:(NSString *)loginSecret
@@ -268,34 +434,31 @@ static NSDictionary* sessionHeaders;
 {
     NSAssert(loginSecret != nil, @"Login secret cannot be nil.");
 
-    NSString* removeURL = [[self baseURLStringByAppendingPathComponent:kLoginPath] stringByAppendingPathComponent:kLoginRemove];
-    [SERequestHandler sendPOSTRequestWithURL:removeURL
-                                  parameters:nil
-                                     headers:[self sessionHeadersWithLoginSecret:loginSecret]
-                                     success:^(NSDictionary* responseObject) {
-                                         if (success) {
-                                             success(responseObject);
-                                         }
-                                     }
-                                     failure:^(NSDictionary* errorDictionary) {
-                                         if (!failure) { return; }
-                                         SEError* error = [SEError objectFromDictionary:errorDictionary];
-                                         failure(error);
-                                     }];
+    [SERequestHandler sendDELETERequestWithURL:[self baseURLStringByAppendingPathComponent:kLoginPath]
+                                    parameters:nil
+                                       headers:[self sessionHeadersWithLoginSecret:loginSecret]
+                                       success:^(NSDictionary* responseObject) {
+                                           if (success) {
+                                               success(responseObject);
+                                           }
+                                       }
+                                       failure:^(NSDictionary* errorObject) {
+                                           [self failureBlockWithBlock:failure errorObject:errorObject];
+                                       }];
 }
 
 - (void)requestCreateTokenWithParameters:(NSDictionary *)parameters
                                  success:(void (^)(NSDictionary *))success
                                  failure:(SEAPIRequestFailureBlock)failure
 {
-    NSAssert(parameters[kCountryCode] != nil, @"Country code cannot be nil.");
+    NSAssert(parameters[kCountryCodeKey] != nil, @"Country code cannot be nil.");
     NSAssert(parameters[kProviderCodeKey] != nil, @"Provider code cannot be nil.");
     NSAssert(parameters[kReturnToKey] != nil, @"Return to cannot be nil.");
     NSAssert(parameters[kCustomerIdKey] != nil, @"Customer ID cannot be nil.");
 
     NSDictionary* dataParameters = @{ kDataKey: parameters };
 
-    [self requestTokenWithPath:kCreateTokenPath
+    [self requestTokenWithAction:kLoginActionCreate
                        headers:sessionHeaders
                     parameters:dataParameters
                        success:success
@@ -310,7 +473,7 @@ static NSDictionary* sessionHeaders;
     NSAssert(loginSecret != nil, @"Login secret cannot be nil.");
     NSAssert(parameters[kReturnToKey] != nil, @"Return to cannot be nil.");
 
-    [self requestTokenWithPath:kReconnectTokenPath
+    [self requestTokenWithAction:kLoginActionReconnect
                        headers:[self sessionHeadersWithLoginSecret:loginSecret]
                     parameters:parameters
                        success:success
@@ -325,7 +488,7 @@ static NSDictionary* sessionHeaders;
     NSAssert(loginSecret != nil, @"Login secret cannot be nil.");
     NSAssert(parameters[kReturnToKey] != nil, @"Return to cannot be nil.");
 
-    [self requestTokenWithPath:kRefreshTokenPath
+    [self requestTokenWithAction:kLoginActionReconnect
                        headers:[self sessionHeadersWithLoginSecret:loginSecret]
                     parameters:parameters
                        success:success
@@ -343,13 +506,15 @@ static NSDictionary* sessionHeaders;
     return self;
 }
 
-- (void)requestTokenWithPath:(NSString*)path
+- (void)requestTokenWithAction:(NSString*)path
                      headers:(NSDictionary*)headers
                   parameters:(NSDictionary*)parameters
                      success:(void (^)(NSDictionary *))success
                      failure:(SEAPIRequestFailureBlock)failure
 {
-    [SERequestHandler sendPOSTRequestWithURL:[self baseURLStringByAppendingPathComponent:path]
+    NSString* tokenPath = [[self baseURLStringByAppendingPathComponent:kTokensPath] stringByAppendingPathComponent:path];
+
+    [SERequestHandler sendPOSTRequestWithURL:tokenPath
                                   parameters:parameters
                                      headers:headers
                                      success:^(NSDictionary* responseObject) {
@@ -357,10 +522,8 @@ static NSDictionary* sessionHeaders;
                                              success(responseObject);
                                          }
                                      }
-                                     failure:^(NSDictionary* errorDictionary) {
-                                         if (!failure) { return; }
-                                         SEError* error = [SEError objectFromDictionary:errorDictionary];
-                                         failure(error);
+                                     failure:^(NSDictionary* errorObject) {
+                                         [self failureBlockWithBlock:failure errorObject:errorObject];
                                      }];
 }
 
@@ -386,10 +549,8 @@ static NSDictionary* sessionHeaders;
                                         } else {
                                             success((NSArray*) container);
                                         }
-                                    } failure:^(NSDictionary* errorDictionary) {
-                                        if (!failure) { return; }
-                                        SEError* error = [SEError objectFromDictionary:errorDictionary];
-                                        failure(error);
+                                    } failure:^(NSDictionary* errorObject) {
+                                        [self failureBlockWithBlock:failure errorObject:errorObject];
                                     }];
 }
 
@@ -431,7 +592,51 @@ static NSDictionary* sessionHeaders;
                                    } full:YES];
 }
 
+- (void)pollLoginWithSecret:(NSString*)loginSecret
+{
+    typedef void (^PollLoginBlock)();
+    static PollLoginBlock pollBlock;
+    pollBlock = ^() {
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(kLoginPollDelayTime * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [self pollLoginWithSecret:loginSecret];
+        });
+    };
+
+    static BOOL notifiedAboutStart = NO;
+
+    [self fetchLoginWithSecret:loginSecret
+                       success:^(SELogin* fetchedLogin) {
+                           if (!notifiedAboutStart && [self.loginFetchingDelegate respondsToSelector:@selector(loginStartedFetching:)]) {
+                               [self.loginFetchingDelegate loginStartedFetching:fetchedLogin];
+                               notifiedAboutStart = YES;
+                           }
+                           if ([fetchedLogin.stage isEqualToString:kLoginStageInteractive]) {
+                               [self.loginFetchingDelegate loginRequestedInteractiveInput:fetchedLogin];
+                           } else if ([fetchedLogin.stage isEqualToString:kLoginStageFinish]) {
+                               if ([fetchedLogin.lastFailMessage isEqual:[NSNull null]] || [fetchedLogin.lastFailMessage isEqualToString:@""]) {
+                                   notifiedAboutStart = NO;
+                                   [self.loginFetchingDelegate loginSuccessfullyFinishedFetching:fetchedLogin];
+                               } else {
+                                   notifiedAboutStart = NO;
+                                   [self.loginFetchingDelegate login:fetchedLogin failedToFetchWithMessage:fetchedLogin.lastFailMessage];
+                               }
+                           } else {
+                               pollBlock();
+                           }
+                       }
+                       failure:^(SEError* failure) {
+                           notifiedAboutStart = NO;
+                           [self.loginFetchingDelegate login:self.createdLogin failedToFetchWithMessage:failure.message];
+                           self.createdLogin = nil;
+                       }];
+}
+
 #pragma mark - Helper methods
+
+- (BOOL)isLoginFetchingDelegateSuitableForDelegation
+{
+    return [self.loginFetchingDelegate conformsToProtocol:@protocol(SELoginFetchingDelegate)];
+}
 
 - (NSString*)baseURLStringByAppendingPathComponent:(NSString*)path
 {
@@ -441,6 +646,13 @@ static NSDictionary* sessionHeaders;
 - (NSDictionary*)sessionHeadersWithLoginSecret:(NSString*)loginSecret
 {
     return [[self class] sessionHeadersWithLoginSecret:loginSecret];
+}
+
+- (void)failureBlockWithBlock:(SEAPIRequestFailureBlock)failureBlock errorObject:(NSDictionary*)errorObject
+{
+    if (!failureBlock) { return; }
+    SEError* error = [SEError objectFromDictionary:errorObject];
+    failureBlock(error);
 }
 
 + (NSDictionary*)sessionHeadersWithLoginSecret:(NSString*)loginSecret

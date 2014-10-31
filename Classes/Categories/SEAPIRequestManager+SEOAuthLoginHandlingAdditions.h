@@ -1,5 +1,5 @@
 //
-//  NSURL+SBCallbacksAdditions.m
+//  SEAPIRequestManager+SEOAuthLoginHandlingAdditions.h
 //
 //  Copyright (c) 2014 Salt Edge. https://saltedge.com
 //
@@ -21,22 +21,22 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 
-#import "NSURL+SBCallbacksAdditions.h"
+#import "SEAPIRequestManager.h"
 
-@implementation NSURL (SBCallbacksAdditions)
+@protocol SELoginFetchingDelegate;
 
-- (BOOL)sb_isCallbackURL
-{
-    return [self.scheme isEqualToString:SBCallbackScheme] && [self.host isEqualToString:SBCallbackHost];
-}
+/**
+ SEOAuthLoginHandlingAdditions is a category with a very limited responsibility - handling OAuth providers redirects to your app and processing the fetching operation afterwards.
+ */
+@interface SEAPIRequestManager (SEOAuthLoginHandlingAdditions)
 
-- (NSDictionary*)sb_callbackParametersWithError:(NSError**)error
-{
-    if (!self.sb_isCallbackURL) { return nil; }
-    NSString* jsonString = [self.path substringFromIndex:1];
-    if (!jsonString.length) { return nil; }
-    NSData* jsonStringData = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
-    return [NSJSONSerialization JSONObjectWithData:jsonStringData options:0 error:error];
-}
+/**
+ Handles a openURL call from your application delegate class when connecting an OAuth provider.
+
+ @param url The URL that was passed in the application:openURL:sourceApplication:annotation: method of your app delegate class.
+ @param sourceApplication The source application string that was passed in the application:openURL:sourceApplication:annotation: method of your app delegate class.
+ @param delegate The delegate of the login creation process that can respond to certain events. 
+ */
++ (void)handleOpenURL:(NSURL*)url sourceApplication:(NSString*)sourceApplication loginFetchingDelegate:(id<SELoginFetchingDelegate>)delegate;
 
 @end

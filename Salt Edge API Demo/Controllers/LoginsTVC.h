@@ -11,4 +11,6 @@
 
 @interface LoginsTVC : UITableViewController <LoginsTVCDelegate>
 
+- (void)reloadLoginsTableViewController;
+
 @end

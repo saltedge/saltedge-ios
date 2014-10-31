@@ -28,4 +28,13 @@
     XCTAssertFalse([firstProvider isEqualToProvider:thirdProvider], @"Two providers shouldn't be equal when their codes aren't equal");
 }
 
+- (void)testIsOAuth
+{
+    SEProvider* provider = [[SEProvider alloc] init];
+    provider.mode = @"oauth";
+    XCTAssertTrue(provider.isOAuth, @"Provider with mode \"oauth\" should return TRUE on invocation of `isOAuth`");
+    provider.mode = @"wer";
+    XCTAssertFalse(provider.isOAuth, @"Provider with mode other than \"oauth\" should return FALSE on invocation of `isOAuth`");
+}
+
 @end

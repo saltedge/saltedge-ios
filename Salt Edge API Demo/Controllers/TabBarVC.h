@@ -8,10 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
-@class ConnectWebViewVC;
+@class ConnectWebViewVC, CreateLoginVC;
 
 @interface TabBarVC : UITabBarController
 
 - (ConnectWebViewVC*)connectController;
+- (CreateLoginVC*)createController;
 
 @end

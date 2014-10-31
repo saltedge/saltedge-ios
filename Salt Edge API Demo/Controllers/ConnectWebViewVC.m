@@ -17,16 +17,16 @@
 #import "SEError.h"
 #import "PickerTVC.h"
 #import "SEProvider.h"
+#import "Constants.h"
+#import "LoginsTVC.h"
 
 static NSString* const kCustomerEmailKey = @"customer_email";
-static NSString* const kDataKey          = @"data";
 static NSString* const kConnectURLKey    = @"connect_url";
 
 @interface ConnectWebViewVC () <SEWebViewDelegate>
 
 @property (nonatomic, strong) SEWebView* connectWebView;
 @property (nonatomic, strong) UIActivityIndicatorView* activityIndicator;
-@property (nonatomic, strong) NSSet* providers;
 @property (nonatomic, strong) SEProvider* provider;
 @property (nonatomic, strong) SELogin* login;
 @property (nonatomic)         BOOL refresh;
@@ -36,6 +36,19 @@ static NSString* const kConnectURLKey    = @"connect_url";
 @implementation ConnectWebViewVC
 
 #pragma mark -
+#pragma mark - Public API
+
+- (void)setLogin:(SELogin *)login
+{
+    _login = login;
+}
+
+- (void)setRefresh:(BOOL)refresh
+{
+    _refresh = refresh;
+}
+
+#pragma mark -
 #pragma mark - Private API
 #pragma mark - View Controllers lifecycle
 
@@ -43,7 +56,6 @@ static NSString* const kConnectURLKey    = @"connect_url";
 {
     [super viewDidLoad];
     [self setup];
-    [self fetchProviders];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -92,11 +104,11 @@ static NSString* const kConnectURLKey    = @"connect_url";
 
 - (void)fetchProviders
 {
-    if (self.providers.count == 0) {
+    if ([AppDelegate delegate].providers.count == 0) {
         SEAPIRequestManager* manager = [SEAPIRequestManager manager];
-        [SVProgressHUD showWithStatus:@"Loading..." maskType:SVProgressHUDMaskTypeGradient];
+        [SVProgressHUD showWithStatus:@"Loading providers..." maskType:SVProgressHUDMaskTypeGradient];
         [manager fetchFullProvidersListWithSuccess:^(NSSet* providers) {
-            self.providers = providers;
+            [AppDelegate delegate].providers = providers;
             [self showProviders];
             [SVProgressHUD dismiss];
         } failure:^(SEError* error) {
@@ -107,10 +119,14 @@ static NSString* const kConnectURLKey    = @"connect_url";
 
 - (void)showProviders
 {
-    NSArray* providers = [[[self.providers.allObjects filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"mode != %@", @"file"]] valueForKeyPath:@"name"] sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)];
+    if ([AppDelegate delegate].providers.count == 0) {
+        [self fetchProviders];
+        return;
+    }
+    NSArray* providers = [[[[AppDelegate delegate].providers.allObjects filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"mode != %@", @"file"]] valueForKeyPath:@"name"] sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)];
     UINavigationController* picker = [PickerTVC pickerWithItems:providers completionBlock:^(id pickedProviderName) {
         NSPredicate* namePredicate = [NSPredicate predicateWithFormat:@"name = %@", pickedProviderName];
-        self.provider = [self.providers.allObjects filteredArrayUsingPredicate:namePredicate][0];
+        self.provider = [[AppDelegate delegate].providers.allObjects filteredArrayUsingPredicate:namePredicate][0];
         [self requestToken];
     }];
     [self presentViewController:picker animated:YES completion:nil];
@@ -119,9 +135,9 @@ static NSString* const kConnectURLKey    = @"connect_url";
 - (void)requestToken
 {
     SEAPIRequestManager* manager = [SEAPIRequestManager manager];
-    [SVProgressHUD showWithStatus:@"Loading..." maskType:SVProgressHUDMaskTypeGradient];
+    [SVProgressHUD showWithStatus:@"Requesting token..." maskType:SVProgressHUDMaskTypeGradient];
     if (!self.login) {
-        NSString* customerId = [[NSUserDefaults standardUserDefaults] stringForKey:kCustomerIdDefaultsKey];
+        NSString* customerId = [AppDelegate delegate].customerId;
         [manager requestCreateTokenWithParameters:@{ @"country_code" : self.provider.countryCode, @"provider_code" : self.provider.code, @"return_to" : @"http://httpbin.org", @"customer_id" : customerId } success:^(NSDictionary* responseObject) {
             [self loadConnectPageWithURLString:responseObject[kDataKey][kConnectURLKey]];
         } failure:^(SEError* error) {
@@ -175,7 +191,9 @@ static NSString* const kConnectURLKey    = @"connect_url";
 
 - (void)switchToLoginsViewController
 {
-    [self.tabBarController setSelectedIndex:1];
+    LoginsTVC* loginsController = [self.tabBarController.viewControllers[2] viewControllers][0];
+    [loginsController reloadLoginsTableViewController];
+    [self.tabBarController setSelectedIndex:2];
 }
 
 #pragma mark - SEWebView Delegate
@@ -196,7 +214,9 @@ static NSString* const kConnectURLKey    = @"connect_url";
         [loginSecrets addObject:loginSecret];
         [[NSUserDefaults standardUserDefaults] setObject:[loginSecrets allObjects] forKey:kLoginSecretsDefaultsKey];
         [[NSUserDefaults standardUserDefaults] synchronize];
-        [SVProgressHUD showWithStatus:@"Loading..." maskType:SVProgressHUDMaskTypeGradient];
+        if (self.login && !self.login.interactive.boolValue) {
+            [SVProgressHUD showWithStatus:@"Loading..." maskType:SVProgressHUDMaskTypeGradient];
+        }
     } else if ([loginState isEqualToString:SELoginStateError]) {
         [SVProgressHUD showErrorWithStatus:@"Error"];
     }
@@ -215,19 +235,6 @@ static NSString* const kConnectURLKey    = @"connect_url";
         [SVProgressHUD dismiss];
         [self hideActivityIndicator];
     }
-}
-
-#pragma mark -
-#pragma mark - Public API
-
-- (void)setLogin:(SELogin *)login
-{
-    _login = login;
-}
-
-- (void)setRefresh:(BOOL)refresh
-{
-    _refresh = refresh;
 }
 
 @end

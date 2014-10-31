@@ -46,7 +46,7 @@ static NSString* const kTransactionCellReuseIdentifier = @"TransactionTableViewC
 
 - (void)reloadTransactionsTableView
 {
-    [SVProgressHUD showWithStatus:@"Loading"];
+    [SVProgressHUD showWithStatus:@"Loading transactions..." maskType:SVProgressHUDMaskTypeGradient];
     SEAPIRequestManager* manager = [SEAPIRequestManager manager];
     [manager fetchFullTransactionsListForAccountId:self.accountId loginSecret:self.loginSecret success:^(NSSet* transactions) {
         self.transactions = [transactions allObjects];

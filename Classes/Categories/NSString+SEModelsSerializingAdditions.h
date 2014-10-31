@@ -24,7 +24,7 @@
 #import <Foundation/Foundation.h>
 
 /**
- SEmodelsSearilizingAdditions is a simple category which defines a few methods on NSString to help with object serialization (since the returned JSON objects do not have CamelCase keys).
+ SEModelsSearilizingAdditions is a simple category which defines a few methods on NSString to help with object serialization (since the returned JSON objects do not have CamelCase keys).
  */
 
 @interface NSString (SEModelsSerializingAdditions)

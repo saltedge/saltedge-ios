@@ -24,6 +24,8 @@
 #import "SEProvider.h"
 #import "SEProviderField.h"
 
+static NSString* const kOAuthMode = @"oauth";
+
 @implementation SEProvider
 
 + (instancetype)objectFromDictionary:(NSDictionary *)dictionary
@@ -60,6 +62,11 @@
 - (BOOL)isEqualToProvider:(SEProvider*)provider
 {
     return [self.code isEqualToString:provider.code];
+}
+
+- (BOOL)isOAuth
+{
+    return [self.mode isEqualToString:kOAuthMode];
 }
 
 - (NSUInteger)hash

@@ -17,5 +17,10 @@ static NSString* const kCustomerIdDefaultsKey   = @"CustomerIdKey";
 
 @property (strong, nonatomic) UIWindow *window;
 @property (strong, readonly)  TabBarVC* tabBar;
+@property (strong, nonatomic) NSSet* providers;
+@property (strong, nonatomic) NSString* customerId;
+
++ (instancetype)delegate;
+- (NSString*)applicationURLString;
 
 @end

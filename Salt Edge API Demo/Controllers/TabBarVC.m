@@ -23,6 +23,7 @@
 {
     if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
         self.viewControllers = @[[self controllerWithIdentifier:@"ConnectWebViewVC" title:@"Connect"],
+                                 [self controllerWithIdentifier:@"CreateLoginVC" title:@"Create"],
                                  [self controllerWithIdentifier:@"LoginsTVC" title:@"Logins"]
                                  ];
     }
@@ -56,6 +57,11 @@
 - (ConnectWebViewVC*)connectController
 {
     return [self.viewControllers[0] viewControllers][0];
+}
+
+- (CreateLoginVC*)createController
+{
+    return [self.viewControllers[1] viewControllers][0];
 }
 
 @end

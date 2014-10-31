@@ -1,5 +1,5 @@
 //
-//  SEError.h
+//  NSURL+SEQueryArgmuentsAdditions.m
 //
 //  Copyright (c) 2014 Salt Edge. https://saltedge.com
 //
@@ -21,17 +21,21 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 
-#import "SEBaseModel.h"
+#import "NSURL+SEQueryArgmuentsAdditions.h"
 
-/**
- SEError represents an error object returned from Salt Edge API responses.
+@implementation NSURL (SEQueryArgmuentsAdditions)
 
- @see https://docs.saltedge.com/reference/#errors
- */
-@interface SEError : SEBaseModel
-
-@property (nonatomic, strong) NSString*     errorClass;
-@property (nonatomic, strong) NSString*     message;
-@property (nonatomic, strong) NSDictionary* request;
+- (NSDictionary*)se_queryParameters
+{
+    NSMutableDictionary* arguments = [NSMutableDictionary dictionary];
+    NSString* query = self.query;
+    for (NSString* argument in [query componentsSeparatedByString:@"&"]) {
+        NSArray* argumentComponents = [argument componentsSeparatedByString:@"="];
+        if (argumentComponents.count != 2) { continue; }
+        if ([argumentComponents[0] length] == 0 || [argumentComponents[1] length] == 0) { continue; }
+        arguments[argumentComponents[0]] = argumentComponents[1];
+    }
+    return [NSDictionary dictionaryWithDictionary:arguments];
+}
 
 @end

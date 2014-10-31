@@ -39,6 +39,7 @@
 @property (nonatomic, strong) NSString* providerName;
 @property (nonatomic, strong) NSNumber* automaticFetch;
 @property (nonatomic, strong) NSNumber* interactive;
+@property (nonatomic, strong) NSString* interactiveHtml;
 @property (nonatomic, strong) NSArray*  interactiveFieldsNames;
 @property (nonatomic, strong) NSString* customerEmail;
 @property (nonatomic, strong) NSDate*   createdAt;

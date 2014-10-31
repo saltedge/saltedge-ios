@@ -1,5 +1,5 @@
 //
-//  SEError.h
+//  NSURL+SECallbacksAdditions.h
 //
 //  Copyright (c) 2014 Salt Edge. https://saltedge.com
 //
@@ -21,17 +21,39 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 
-#import "SEBaseModel.h"
+#import <Foundation/Foundation.h>
 
 /**
- SEError represents an error object returned from Salt Edge API responses.
-
- @see https://docs.saltedge.com/reference/#errors
+ The callback scheme of the Salt Edge Connect protocol.
  */
-@interface SEError : SEBaseModel
+static NSString* const SECallbackScheme = @"saltbridge";
 
-@property (nonatomic, strong) NSString*     errorClass;
-@property (nonatomic, strong) NSString*     message;
-@property (nonatomic, strong) NSDictionary* request;
+/**
+ The callback host of the Salt Edge Connect protocol.
+ */
+static NSString* const SECallbackHost   = @"connect";
+
+/**
+ This category provides a few utility methods in order to aid SEWebView deal with callbacks from the Salt Edge Connect page.
+ */
+
+@interface NSURL (SECallbacksAdditions)
+
+/**
+ Determines whether a NSURL object is a Salt Edge Connect callback URL.
+
+ @return YES if the NSURL object has the scheme equal to SECallbackScheme and the host equal to SECallbackHost, otherwise returns NO.
+
+ @see SECallbackScheme, SECallbackHost
+ */
+- (BOOL)se_isCallbackURL;
+/**
+ Provided the NSURL object is a Salt Edge Connect callback URL, this method will return the payload within the callback, if any.
+
+ @return A dictionary containing the callback parameters. The dictionary will have the "login_id" and "state" keys with corresponding values.
+
+ @see webView:receivedCallbackWithResponse:
+ */
+- (NSDictionary*)se_callbackParametersWithError:(NSError**)error;
 
 @end

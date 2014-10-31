@@ -17,9 +17,14 @@
 		0A3F870519A1F05E00B7E5E2 /* SEProviderField.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A3F86EF19A1F05E00B7E5E2 /* SEProviderField.m */; };
 		0A3F870619A1F05E00B7E5E2 /* SEProviderFieldOption.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A3F86F119A1F05E00B7E5E2 /* SEProviderFieldOption.m */; };
 		0A3F870719A1F05E00B7E5E2 /* SETransaction.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A3F86F319A1F05E00B7E5E2 /* SETransaction.m */; };
-		0A3F870819A1F05E00B7E5E2 /* NSURL+SBCallbacksAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A3F86F719A1F05E00B7E5E2 /* NSURL+SBCallbacksAdditions.m */; };
-		0A3F870919A1F05E00B7E5E2 /* SEWebView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A3F86F919A1F05E00B7E5E2 /* SEWebView.m */; };
 		0A3F870A19A1F05E00B7E5E2 /* DateUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A3F86FE19A1F05E00B7E5E2 /* DateUtils.m */; };
+		0A4DBC591A024C2900DC27C3 /* NSURL+SEQueryArgmuentsAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A4DBC581A024C2900DC27C3 /* NSURL+SEQueryArgmuentsAdditions.m */; };
+		0A4DBC5B1A024F5D00DC27C3 /* NSURL+SEQueryArgmuentsAdditionsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A4DBC5A1A024F5D00DC27C3 /* NSURL+SEQueryArgmuentsAdditionsTests.m */; };
+		0A65689819F91CDF004A1EB1 /* CreateLoginVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A65689519F91CDF004A1EB1 /* CreateLoginVC.m */; };
+		0A65689919F91CDF004A1EB1 /* CredentialsVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A65689719F91CDF004A1EB1 /* CredentialsVC.m */; };
+		0A65689D19F91D9C004A1EB1 /* Helpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A65689C19F91D9C004A1EB1 /* Helpers.m */; };
+		0A6568A019F91DD0004A1EB1 /* UIControl+SELoginInputFieldsAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A65689F19F91DD0004A1EB1 /* UIControl+SELoginInputFieldsAdditions.m */; };
+		0A6568A419F91E20004A1EB1 /* OptionSelectButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A6568A319F91E20004A1EB1 /* OptionSelectButton.m */; };
 		0A939E9F19DA9F0E005BD28C /* TransactionTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A939E9D19DA9F0E005BD28C /* TransactionTableViewCell.m */; };
 		0A939EA019DA9F0E005BD28C /* TransactionTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0A939E9E19DA9F0E005BD28C /* TransactionTableViewCell.xib */; };
 		0AAB6CE519827AAA009DCDD5 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AAB6CE419827AAA009DCDD5 /* Foundation.framework */; };
@@ -45,8 +50,11 @@
 		0AAB6D7019827D9B009DCDD5 /* SELoginTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AAB6D6F19827D9B009DCDD5 /* SELoginTests.m */; };
 		0AAB6D7219827E45009DCDD5 /* SEAccountTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AAB6D7119827E45009DCDD5 /* SEAccountTests.m */; };
 		0AAB6D7419827ECE009DCDD5 /* SETransactionTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AAB6D7319827ECE009DCDD5 /* SETransactionTests.m */; };
+		0AB068DA1A010E7E00596A3B /* SEAPIRequestManager+SEOAuthLoginHandlingAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AB068D91A010E7E00596A3B /* SEAPIRequestManager+SEOAuthLoginHandlingAdditions.m */; };
 		0AD2C2E019E7EEF1003D2FD0 /* SEError.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AD2C2DF19E7EEF1003D2FD0 /* SEError.m */; };
-		0AF898811986632F00F1A270 /* NSURL+SBCallbacksAdditionsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AF898801986632F00F1A270 /* NSURL+SBCallbacksAdditionsTests.m */; };
+		0AE487131A02AC8B00F5CEBF /* NSURL+SECallbacksAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AE4870F1A02AC8B00F5CEBF /* NSURL+SECallbacksAdditions.m */; };
+		0AE487141A02AC8B00F5CEBF /* SEWebView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AE487111A02AC8B00F5CEBF /* SEWebView.m */; };
+		0AF898811986632F00F1A270 /* NSURL+SECallbacksAdditionsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AF898801986632F00F1A270 /* NSURL+SECallbacksAdditionsTests.m */; };
 		0AF898841986633E00F1A270 /* ConnectWebViewVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AF898831986633E00F1A270 /* ConnectWebViewVC.m */; };
 		0AF898901986740200F1A270 /* TabBarVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AF8988F1986740200F1A270 /* TabBarVC.m */; };
 		0AF898931986748C00F1A270 /* circle@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0AF898921986748C00F1A270 /* circle@2x.png */; };
@@ -67,6 +75,7 @@
 /* Begin PBXFileReference section */
 		0A1BEB7419EBD0E5000C0D64 /* PickerTVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PickerTVC.h; sourceTree = "<group>"; };
 		0A1BEB7519EBD0E5000C0D64 /* PickerTVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PickerTVC.m; sourceTree = "<group>"; };
+		0A2A656119F7CC3D00BC5378 /* SELoginFetchingDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SELoginFetchingDelegate.h; sourceTree = "<group>"; };
 		0A3F86DF19A1F05E00B7E5E2 /* SEAPIRequestManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SEAPIRequestManager.h; sourceTree = "<group>"; };
 		0A3F86E019A1F05E00B7E5E2 /* SEAPIRequestManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SEAPIRequestManager.m; sourceTree = "<group>"; };
 		0A3F86E319A1F05E00B7E5E2 /* NSString+SEModelsSerializingAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+SEModelsSerializingAdditions.h"; sourceTree = "<group>"; };
@@ -85,15 +94,24 @@
 		0A3F86F119A1F05E00B7E5E2 /* SEProviderFieldOption.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SEProviderFieldOption.m; sourceTree = "<group>"; };
 		0A3F86F219A1F05E00B7E5E2 /* SETransaction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SETransaction.h; sourceTree = "<group>"; };
 		0A3F86F319A1F05E00B7E5E2 /* SETransaction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SETransaction.m; sourceTree = "<group>"; };
-		0A3F86F619A1F05E00B7E5E2 /* NSURL+SBCallbacksAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSURL+SBCallbacksAdditions.h"; sourceTree = "<group>"; };
-		0A3F86F719A1F05E00B7E5E2 /* NSURL+SBCallbacksAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSURL+SBCallbacksAdditions.m"; sourceTree = "<group>"; };
-		0A3F86F819A1F05E00B7E5E2 /* SEWebView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SEWebView.h; sourceTree = "<group>"; };
-		0A3F86F919A1F05E00B7E5E2 /* SEWebView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SEWebView.m; sourceTree = "<group>"; };
-		0A3F86FA19A1F05E00B7E5E2 /* SEWebViewDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SEWebViewDelegate.h; sourceTree = "<group>"; };
 		0A3F86FC19A1F05E00B7E5E2 /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
 		0A3F86FD19A1F05E00B7E5E2 /* DateUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DateUtils.h; sourceTree = "<group>"; };
 		0A3F86FE19A1F05E00B7E5E2 /* DateUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DateUtils.m; sourceTree = "<group>"; };
 		0A3F875019A249C300B7E5E2 /* LoginsTVCDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LoginsTVCDelegate.h; sourceTree = "<group>"; };
+		0A4DBC571A024C2900DC27C3 /* NSURL+SEQueryArgmuentsAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSURL+SEQueryArgmuentsAdditions.h"; sourceTree = "<group>"; };
+		0A4DBC581A024C2900DC27C3 /* NSURL+SEQueryArgmuentsAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSURL+SEQueryArgmuentsAdditions.m"; sourceTree = "<group>"; };
+		0A4DBC5A1A024F5D00DC27C3 /* NSURL+SEQueryArgmuentsAdditionsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSURL+SEQueryArgmuentsAdditionsTests.m"; sourceTree = "<group>"; };
+		0A65689419F91CDF004A1EB1 /* CreateLoginVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CreateLoginVC.h; sourceTree = "<group>"; };
+		0A65689519F91CDF004A1EB1 /* CreateLoginVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CreateLoginVC.m; sourceTree = "<group>"; };
+		0A65689619F91CDF004A1EB1 /* CredentialsVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CredentialsVC.h; sourceTree = "<group>"; };
+		0A65689719F91CDF004A1EB1 /* CredentialsVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CredentialsVC.m; sourceTree = "<group>"; };
+		0A65689B19F91D9C004A1EB1 /* Helpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Helpers.h; sourceTree = "<group>"; };
+		0A65689C19F91D9C004A1EB1 /* Helpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Helpers.m; sourceTree = "<group>"; };
+		0A65689E19F91DD0004A1EB1 /* UIControl+SELoginInputFieldsAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIControl+SELoginInputFieldsAdditions.h"; sourceTree = "<group>"; };
+		0A65689F19F91DD0004A1EB1 /* UIControl+SELoginInputFieldsAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIControl+SELoginInputFieldsAdditions.m"; sourceTree = "<group>"; };
+		0A6568A219F91E20004A1EB1 /* OptionSelectButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OptionSelectButton.h; sourceTree = "<group>"; };
+		0A6568A319F91E20004A1EB1 /* OptionSelectButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OptionSelectButton.m; sourceTree = "<group>"; };
+		0A6568A519F91E5C004A1EB1 /* PickerDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PickerDelegate.h; sourceTree = "<group>"; };
 		0A939E9C19DA9F0E005BD28C /* TransactionTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransactionTableViewCell.h; sourceTree = "<group>"; };
 		0A939E9D19DA9F0E005BD28C /* TransactionTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransactionTableViewCell.m; sourceTree = "<group>"; };
 		0A939E9E19DA9F0E005BD28C /* TransactionTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TransactionTableViewCell.xib; sourceTree = "<group>"; };
@@ -128,9 +146,17 @@
 		0AAB6D6F19827D9B009DCDD5 /* SELoginTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SELoginTests.m; sourceTree = "<group>"; };
 		0AAB6D7119827E45009DCDD5 /* SEAccountTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SEAccountTests.m; sourceTree = "<group>"; };
 		0AAB6D7319827ECE009DCDD5 /* SETransactionTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SETransactionTests.m; sourceTree = "<group>"; };
+		0AB068D81A010E7E00596A3B /* SEAPIRequestManager+SEOAuthLoginHandlingAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "SEAPIRequestManager+SEOAuthLoginHandlingAdditions.h"; sourceTree = "<group>"; };
+		0AB068D91A010E7E00596A3B /* SEAPIRequestManager+SEOAuthLoginHandlingAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "SEAPIRequestManager+SEOAuthLoginHandlingAdditions.m"; sourceTree = "<group>"; };
+		0AB068DB1A01106C00596A3B /* SEAPIRequestManager_private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SEAPIRequestManager_private.h; sourceTree = "<group>"; };
 		0AD2C2DE19E7EEF1003D2FD0 /* SEError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SEError.h; sourceTree = "<group>"; };
 		0AD2C2DF19E7EEF1003D2FD0 /* SEError.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SEError.m; sourceTree = "<group>"; };
-		0AF898801986632F00F1A270 /* NSURL+SBCallbacksAdditionsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSURL+SBCallbacksAdditionsTests.m"; sourceTree = "<group>"; };
+		0AE4870E1A02AC8B00F5CEBF /* NSURL+SECallbacksAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSURL+SECallbacksAdditions.h"; sourceTree = "<group>"; };
+		0AE4870F1A02AC8B00F5CEBF /* NSURL+SECallbacksAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSURL+SECallbacksAdditions.m"; sourceTree = "<group>"; };
+		0AE487101A02AC8B00F5CEBF /* SEWebView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SEWebView.h; sourceTree = "<group>"; };
+		0AE487111A02AC8B00F5CEBF /* SEWebView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SEWebView.m; sourceTree = "<group>"; };
+		0AE487121A02AC8B00F5CEBF /* SEWebViewDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SEWebViewDelegate.h; sourceTree = "<group>"; };
+		0AF898801986632F00F1A270 /* NSURL+SECallbacksAdditionsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSURL+SECallbacksAdditionsTests.m"; sourceTree = "<group>"; };
 		0AF898821986633E00F1A270 /* ConnectWebViewVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConnectWebViewVC.h; sourceTree = "<group>"; };
 		0AF898831986633E00F1A270 /* ConnectWebViewVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConnectWebViewVC.m; sourceTree = "<group>"; };
 		0AF8988E1986740200F1A270 /* TabBarVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TabBarVC.h; sourceTree = "<group>"; };
@@ -174,7 +200,7 @@
 				0A3F86DE19A1F05E00B7E5E2 /* API */,
 				0A3F86E219A1F05E00B7E5E2 /* Categories */,
 				0A3F86E519A1F05E00B7E5E2 /* Models */,
-				0A3F86F419A1F05E00B7E5E2 /* SBWebView */,
+				0AE4870C1A02AC8B00F5CEBF /* SEWebView */,
 				0A3F86FB19A1F05E00B7E5E2 /* Utils */,
 			);
 			path = Classes;
@@ -187,6 +213,8 @@
 				5897167C19E6ACB3001E2AA9 /* SERequestHandler.m */,
 				0A3F86DF19A1F05E00B7E5E2 /* SEAPIRequestManager.h */,
 				0A3F86E019A1F05E00B7E5E2 /* SEAPIRequestManager.m */,
+				0AB068DB1A01106C00596A3B /* SEAPIRequestManager_private.h */,
+				0A2A656119F7CC3D00BC5378 /* SELoginFetchingDelegate.h */,
 			);
 			path = API;
 			sourceTree = "<group>";
@@ -196,6 +224,10 @@
 			children = (
 				0A3F86E319A1F05E00B7E5E2 /* NSString+SEModelsSerializingAdditions.h */,
 				0A3F86E419A1F05E00B7E5E2 /* NSString+SEModelsSerializingAdditions.m */,
+				0A4DBC571A024C2900DC27C3 /* NSURL+SEQueryArgmuentsAdditions.h */,
+				0A4DBC581A024C2900DC27C3 /* NSURL+SEQueryArgmuentsAdditions.m */,
+				0AB068D81A010E7E00596A3B /* SEAPIRequestManager+SEOAuthLoginHandlingAdditions.h */,
+				0AB068D91A010E7E00596A3B /* SEAPIRequestManager+SEOAuthLoginHandlingAdditions.m */,
 			);
 			path = Categories;
 			sourceTree = "<group>";
@@ -223,26 +255,6 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
-		0A3F86F419A1F05E00B7E5E2 /* SBWebView */ = {
-			isa = PBXGroup;
-			children = (
-				0A3F86F519A1F05E00B7E5E2 /* NSURL+SBCallbacksAdditions */,
-				0A3F86F819A1F05E00B7E5E2 /* SEWebView.h */,
-				0A3F86F919A1F05E00B7E5E2 /* SEWebView.m */,
-				0A3F86FA19A1F05E00B7E5E2 /* SEWebViewDelegate.h */,
-			);
-			path = SBWebView;
-			sourceTree = "<group>";
-		};
-		0A3F86F519A1F05E00B7E5E2 /* NSURL+SBCallbacksAdditions */ = {
-			isa = PBXGroup;
-			children = (
-				0A3F86F619A1F05E00B7E5E2 /* NSURL+SBCallbacksAdditions.h */,
-				0A3F86F719A1F05E00B7E5E2 /* NSURL+SBCallbacksAdditions.m */,
-			);
-			path = "NSURL+SBCallbacksAdditions";
-			sourceTree = "<group>";
-		};
 		0A3F86FB19A1F05E00B7E5E2 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
@@ -251,6 +263,24 @@
 				0A3F86FE19A1F05E00B7E5E2 /* DateUtils.m */,
 			);
 			path = Utils;
+			sourceTree = "<group>";
+		};
+		0A65689A19F91D9C004A1EB1 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				0A65689B19F91D9C004A1EB1 /* Helpers.h */,
+				0A65689C19F91D9C004A1EB1 /* Helpers.m */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
+		0A6568A119F91E20004A1EB1 /* Controls */ = {
+			isa = PBXGroup;
+			children = (
+				0A6568A219F91E20004A1EB1 /* OptionSelectButton.h */,
+				0A6568A319F91E20004A1EB1 /* OptionSelectButton.m */,
+			);
+			path = Controls;
 			sourceTree = "<group>";
 		};
 		0A939E9B19DA9EF0005BD28C /* Table View Cells */ = {
@@ -302,8 +332,10 @@
 				0AF898911986748600F1A270 /* Assets */,
 				0AAB6D1919827ACD009DCDD5 /* Categories */,
 				0AAB6D1E19827ACD009DCDD5 /* Controllers */,
+				0A6568A119F91E20004A1EB1 /* Controls */,
 				0AAB6D2E19827ACD009DCDD5 /* Protocols */,
 				0A939E9B19DA9EF0005BD28C /* Table View Cells */,
+				0A65689A19F91D9C004A1EB1 /* Utils */,
 				0AAB6D6219827AEA009DCDD5 /* Main.storyboard */,
 				0AAB6CFC19827AAA009DCDD5 /* Images.xcassets */,
 				0AAB6CEB19827AAA009DCDD5 /* Supporting Files */,
@@ -328,7 +360,8 @@
 			isa = PBXGroup;
 			children = (
 				0AAB6D6719827B0C009DCDD5 /* DateUtilsTests.m */,
-				0AF898801986632F00F1A270 /* NSURL+SBCallbacksAdditionsTests.m */,
+				0AF898801986632F00F1A270 /* NSURL+SECallbacksAdditionsTests.m */,
+				0A4DBC5A1A024F5D00DC27C3 /* NSURL+SEQueryArgmuentsAdditionsTests.m */,
 				0AAB6D6819827B0C009DCDD5 /* NSString+SEModelsSerializingAdditions.m */,
 				0AAB6D6919827B0C009DCDD5 /* SEBaseModelTests.m */,
 				0AAB6D6A19827B0C009DCDD5 /* SEProviderTests.m */,
@@ -354,6 +387,8 @@
 			children = (
 				0AAB6D1C19827ACD009DCDD5 /* UIView+Framing.h */,
 				0AAB6D1D19827ACD009DCDD5 /* UIView+Framing.m */,
+				0A65689E19F91DD0004A1EB1 /* UIControl+SELoginInputFieldsAdditions.h */,
+				0A65689F19F91DD0004A1EB1 /* UIControl+SELoginInputFieldsAdditions.m */,
 			);
 			path = Categories;
 			sourceTree = "<group>";
@@ -363,6 +398,10 @@
 			children = (
 				0AAB6D1F19827ACD009DCDD5 /* AccountsTVC.h */,
 				0AAB6D2019827ACD009DCDD5 /* AccountsTVC.m */,
+				0A65689419F91CDF004A1EB1 /* CreateLoginVC.h */,
+				0A65689519F91CDF004A1EB1 /* CreateLoginVC.m */,
+				0A65689619F91CDF004A1EB1 /* CredentialsVC.h */,
+				0A65689719F91CDF004A1EB1 /* CredentialsVC.m */,
 				0AF898821986633E00F1A270 /* ConnectWebViewVC.h */,
 				0AF898831986633E00F1A270 /* ConnectWebViewVC.m */,
 				0AAB6D2519827ACD009DCDD5 /* LoginsTVC.h */,
@@ -381,8 +420,29 @@
 			isa = PBXGroup;
 			children = (
 				0A3F875019A249C300B7E5E2 /* LoginsTVCDelegate.h */,
+				0A6568A519F91E5C004A1EB1 /* PickerDelegate.h */,
 			);
 			path = Protocols;
+			sourceTree = "<group>";
+		};
+		0AE4870C1A02AC8B00F5CEBF /* SEWebView */ = {
+			isa = PBXGroup;
+			children = (
+				0AE4870D1A02AC8B00F5CEBF /* NSURL+SBCallbacksAdditions */,
+				0AE487101A02AC8B00F5CEBF /* SEWebView.h */,
+				0AE487111A02AC8B00F5CEBF /* SEWebView.m */,
+				0AE487121A02AC8B00F5CEBF /* SEWebViewDelegate.h */,
+			);
+			path = SEWebView;
+			sourceTree = "<group>";
+		};
+		0AE4870D1A02AC8B00F5CEBF /* NSURL+SBCallbacksAdditions */ = {
+			isa = PBXGroup;
+			children = (
+				0AE4870E1A02AC8B00F5CEBF /* NSURL+SECallbacksAdditions.h */,
+				0AE4870F1A02AC8B00F5CEBF /* NSURL+SECallbacksAdditions.m */,
+			);
+			path = "NSURL+SBCallbacksAdditions";
 			sourceTree = "<group>";
 		};
 		0AF898911986748600F1A270 /* Assets */ = {
@@ -538,10 +598,12 @@
 			files = (
 				0A3F870719A1F05E00B7E5E2 /* SETransaction.m in Sources */,
 				0AAB6D6619827AFB009DCDD5 /* AppDelegate.m in Sources */,
+				0A6568A419F91E20004A1EB1 /* OptionSelectButton.m in Sources */,
+				0AE487131A02AC8B00F5CEBF /* NSURL+SECallbacksAdditions.m in Sources */,
 				0A1BEB7619EBD0E5000C0D64 /* PickerTVC.m in Sources */,
 				0A3F870019A1F05E00B7E5E2 /* NSString+SEModelsSerializingAdditions.m in Sources */,
-				0A3F870919A1F05E00B7E5E2 /* SEWebView.m in Sources */,
 				0A939E9F19DA9F0E005BD28C /* TransactionTableViewCell.m in Sources */,
+				0A4DBC591A024C2900DC27C3 /* NSURL+SEQueryArgmuentsAdditions.m in Sources */,
 				0A3F870419A1F05E00B7E5E2 /* SEProvider.m in Sources */,
 				0AAB6D4F19827ACD009DCDD5 /* UIView+Framing.m in Sources */,
 				0AAB6D5519827ACD009DCDD5 /* TransactionsTVC.m in Sources */,
@@ -551,14 +613,19 @@
 				0A3F870519A1F05E00B7E5E2 /* SEProviderField.m in Sources */,
 				0AD2C2E019E7EEF1003D2FD0 /* SEError.m in Sources */,
 				0AAB6D5019827ACD009DCDD5 /* AccountsTVC.m in Sources */,
+				0AE487141A02AC8B00F5CEBF /* SEWebView.m in Sources */,
+				0A65689D19F91D9C004A1EB1 /* Helpers.m in Sources */,
 				0A3F86FF19A1F05E00B7E5E2 /* SEAPIRequestManager.m in Sources */,
 				0A3F870619A1F05E00B7E5E2 /* SEProviderFieldOption.m in Sources */,
+				0AB068DA1A010E7E00596A3B /* SEAPIRequestManager+SEOAuthLoginHandlingAdditions.m in Sources */,
 				0A3F870319A1F05E00B7E5E2 /* SELogin.m in Sources */,
 				0A3F870219A1F05E00B7E5E2 /* SEBaseModel.m in Sources */,
 				0A3F870A19A1F05E00B7E5E2 /* DateUtils.m in Sources */,
-				0A3F870819A1F05E00B7E5E2 /* NSURL+SBCallbacksAdditions.m in Sources */,
 				0AAB6D5319827ACD009DCDD5 /* LoginsTVC.m in Sources */,
+				0A6568A019F91DD0004A1EB1 /* UIControl+SELoginInputFieldsAdditions.m in Sources */,
 				0A3F870119A1F05E00B7E5E2 /* SEAccount.m in Sources */,
+				0A65689919F91CDF004A1EB1 /* CredentialsVC.m in Sources */,
+				0A65689819F91CDF004A1EB1 /* CreateLoginVC.m in Sources */,
 				0AF898841986633E00F1A270 /* ConnectWebViewVC.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -569,11 +636,12 @@
 			files = (
 				0AAB6D7419827ECE009DCDD5 /* SETransactionTests.m in Sources */,
 				0AAB6D7019827D9B009DCDD5 /* SELoginTests.m in Sources */,
+				0A4DBC5B1A024F5D00DC27C3 /* NSURL+SEQueryArgmuentsAdditionsTests.m in Sources */,
 				0AAB6D6D19827B0C009DCDD5 /* SEBaseModelTests.m in Sources */,
 				0AAB6D6E19827B0C009DCDD5 /* SEProviderTests.m in Sources */,
 				0AAB6D7219827E45009DCDD5 /* SEAccountTests.m in Sources */,
 				0AAB6D6B19827B0C009DCDD5 /* DateUtilsTests.m in Sources */,
-				0AF898811986632F00F1A270 /* NSURL+SBCallbacksAdditionsTests.m in Sources */,
+				0AF898811986632F00F1A270 /* NSURL+SECallbacksAdditionsTests.m in Sources */,
 				0AAB6D6C19827B0C009DCDD5 /* NSString+SEModelsSerializingAdditions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

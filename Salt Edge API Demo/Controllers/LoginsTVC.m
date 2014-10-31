@@ -41,7 +41,9 @@ static NSString* const kLoginTableViewCellReuseIdentifier = @"LoginTableViewCell
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    [self reloadLoginsTableViewController];
+    if (!self.logins) {
+        [self reloadLoginsTableViewController];
+    }
 }
 
 #pragma mark - Setup
@@ -56,6 +58,7 @@ static NSString* const kLoginTableViewCellReuseIdentifier = @"LoginTableViewCell
 
 - (void)setupNoDataLabel
 {
+    if (self.noDataLabel) { return; }
     self.noDataLabel = [[UILabel alloc] initWithFrame:CGRectZero];
     self.noDataLabel.text = @"No data to show";
     [self.noDataLabel sizeToFit];
@@ -75,16 +78,19 @@ static NSString* const kLoginTableViewCellReuseIdentifier = @"LoginTableViewCell
         [self removeNoDataLabel];
         self.isLoadingLogins = YES;
         SEAPIRequestManager* manager = [SEAPIRequestManager manager];
-
+        [SVProgressHUD showWithStatus:@"Loading..." maskType:SVProgressHUDMaskTypeGradient];
         for (NSString* loginSecret in loginSecrets) {
             [manager fetchLoginWithSecret:loginSecret success:^(SELogin* login) {
                 NSMutableArray* mutableLogins = self.logins.mutableCopy;
                 [mutableLogins addObject:login];
                 self.logins = [NSArray arrayWithArray:mutableLogins];
                 [self.tableView reloadData];
-                self.isLoadingLogins = NO;
-                [SVProgressHUD dismiss];
+                if ([loginSecrets indexOfObject:loginSecret] == loginSecrets.count - 1) {
+                    [SVProgressHUD dismiss];
+                    self.isLoadingLogins = NO;
+                }
             } failure:^(SEError* error) {
+                [SVProgressHUD showErrorWithStatus:error.message];
                 self.isLoadingLogins = NO;
             }];
         }
@@ -144,6 +150,9 @@ static NSString* const kLoginTableViewCellReuseIdentifier = @"LoginTableViewCell
         NSMutableArray* mutableLoginsCopy = self.logins.mutableCopy;
         [mutableLoginsCopy removeObject:login];
         self.logins = [NSArray arrayWithArray:mutableLoginsCopy];
+        if (self.logins.count == 0) {
+            [self setupNoDataLabel];
+        }
         [self.tableView reloadData];
     }
 }

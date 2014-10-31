@@ -1,5 +1,5 @@
 //
-//  SEError.h
+//  NSURL+SEQueryArgmuentsAdditions.h
 //
 //  Copyright (c) 2014 Salt Edge. https://saltedge.com
 //
@@ -21,17 +21,18 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 
-#import "SEBaseModel.h"
+#import <Foundation/Foundation.h>
 
 /**
- SEError represents an error object returned from Salt Edge API responses.
-
- @see https://docs.saltedge.com/reference/#errors
+ SEQueryArgmuentsAdditions is a category on the NSURL class which has adds a method for extracting a query's parameters from an NSURL query (if such parameters exist).
  */
-@interface SEError : SEBaseModel
+@interface NSURL (SEQueryArgmuentsAdditions)
 
-@property (nonatomic, strong) NSString*     errorClass;
-@property (nonatomic, strong) NSString*     message;
-@property (nonatomic, strong) NSDictionary* request;
+/**
+ Extract the query arguments from the caller and serialize them into a NSDictionary instance.
+
+ @return An NSDictionary object containing all valid parameters inside caller's query property.
+ */
+- (NSDictionary*)se_queryParameters;
 
 @end
