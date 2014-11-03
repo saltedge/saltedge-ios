@@ -32,7 +32,7 @@ Copy the `Classes` folder into your project.
 ## Connecting logins using the sample app
 
 1. Install dependencies by running `$ pod install`
-2. Replace the `clientId`, `appSecret` and `customerIdentifier` constants in [AppDelegate.m:28-30](https://github.com/saltedge/saltedge-ios/blob/master/Salt%20Edge%20API%20Demo/AppDelegate.m#L28-L30) with your Client ID and corresponding App secret
+2. Replace the `clientId`, `appSecret` and `customerIdentifier` constants in [AppDelegate.m:41-43](https://github.com/saltedge/saltedge-ios/blob/master/Salt%20Edge%20API%20Demo/AppDelegate.m#L41-L43) with your Client ID and corresponding App secret
 3. Run the app
 
 *Note*: You can find your Client ID and App secret at your [profile](https://www.saltedge.com/clients/profile/settings) page.
@@ -104,7 +104,7 @@ Load the Salt Edge Connect URL into the web view and you're good to go:
 
 ## SEAPIRequestManager
 
-A class designed with convenience methods for interacting with and querying the Salt Edge API. Contains methods for fetching entities (logins, transactions, accounts, et al.), also for requesting login tokens for connecting, reconnecting and refreshing logins via a `SEWebView`.
+A class designed with convenience methods for interacting with and querying the Salt Edge API. Contains methods for fetching entities (logins, transactions, accounts, et al.), for requesting login tokens for connecting, reconnecting and refreshing logins via a `SEWebView`, and also for connecting logins via the REST API.
 
 ### Usage
 
@@ -166,7 +166,11 @@ Documentation is available for all of the components. Use quick documentation (A
 ## Running the demo
 
 To run the demo app contained in here, you have to provide the demo with your client ID, app secret, and a customer identifier.
-Set up the `clientId`, `appSecret` and `customerIdentifier` constants to your Client ID and corresponding App secret in [AppDelegate.m:28-30](https://github.com/saltedge/saltedge-ios/blob/master/Salt%20Edge%20API%20Demo/AppDelegate.m#L28-L30).
+Set up the `clientId`, `appSecret` and `customerIdentifier` constants to your Client ID and corresponding App secret in [AppDelegate.m:41-43](https://github.com/saltedge/saltedge-ios/blob/master/Salt%20Edge%20API%20Demo/AppDelegate.m#L41-L43).
+
+## Versioning
+
+The current version of the SDK is [2.2.0](https://github.com/saltedge/saltedge-ios/releases/tag/v2.2.0), and is in compliance with the Salt Edge API's [current version](https://docs.saltedge.com/#version_management). Any backward-incompatible changes in the API will result in changes to the SDK.
 
 ## License
 
