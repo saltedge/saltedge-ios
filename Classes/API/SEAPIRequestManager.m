@@ -268,7 +268,7 @@ static CGFloat const kLoginPollDelayTime = 5.0f;
                                          success:(void (^)(NSSet *))success
                                          failure:(SEAPIRequestFailureBlock)failure
 {
-    NSString* pendingTransactionsPath = [[self baseURLStringByAppendingPathComponent:kTransactionsPath] stringByAppendingPathComponent:kPendingTransactions];
+    NSString* pendingTransactionsPath = [kTransactionsPath stringByAppendingPathComponent:kPendingTransactions];
 
     [self requestTransactionsListWithPath:pendingTransactionsPath
                                 accountId:accountId
