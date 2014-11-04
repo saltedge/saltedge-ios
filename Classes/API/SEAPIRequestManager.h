@@ -57,7 +57,7 @@ typedef void (^SEAPIRequestFailureBlock)(SEError* error);
  @warning identifier cannot be nil.
  */
 - (void)createCustomerWithIdentifier:(NSString*)identifier
-                             success:(void (^)(NSDictionary *result))success
+                             success:(void (^)(NSDictionary *responseObject))success
                              failure:(SEAPIRequestFailureBlock)failure;
 
 /**
@@ -113,7 +113,7 @@ typedef void (^SEAPIRequestFailureBlock)(SEError* error);
  @see https://docs.saltedge.com/reference/#oauth-create
  */
 - (void)createOAuthLoginWithParameters:(NSDictionary*)parameters
-                               success:(void (^)(NSDictionary *result))success
+                               success:(void (^)(NSDictionary *responseObject))success
                                failure:(SEAPIRequestFailureBlock)failure
                               delegate:(id<SELoginFetchingDelegate>)delegate;
 

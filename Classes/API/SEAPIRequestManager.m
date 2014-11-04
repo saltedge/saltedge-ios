@@ -82,7 +82,7 @@ static CGFloat const kLoginPollDelayTime = 5.0f;
 #pragma mark - Instance Methods
 
 - (void)createCustomerWithIdentifier:(NSString *)identifier
-                             success:(void (^)(NSDictionary *result))success
+                             success:(void (^)(NSDictionary *responseObject))success
                              failure:(SEAPIRequestFailureBlock)failure
 {
     NSAssert(identifier != nil, @"Customer identifier cannot be nil.");
@@ -132,7 +132,7 @@ static CGFloat const kLoginPollDelayTime = 5.0f;
 }
 
 - (void)createOAuthLoginWithParameters:(NSDictionary *)parameters
-                               success:(void (^)(NSDictionary *result))success
+                               success:(void (^)(NSDictionary *responseObject))success
                                failure:(SEAPIRequestFailureBlock)failure
                               delegate:(id<SELoginFetchingDelegate>)delegate
 {
@@ -357,7 +357,7 @@ static CGFloat const kLoginPollDelayTime = 5.0f;
 
 - (void)reconnectOAuthLoginWithSecret:(NSString *)loginSecret
                            parameters:(NSDictionary *)parameters
-                              success:(void (^)(NSDictionary *result))success
+                              success:(void (^)(NSDictionary *responseObject))success
                               failure:(SEAPIRequestFailureBlock)failure
 {
     NSAssert(loginSecret != nil, @"Login secret cannot be nil.");
@@ -407,7 +407,7 @@ static CGFloat const kLoginPollDelayTime = 5.0f;
 
 - (void)refreshOAuthLoginWithSecret:(NSString *)loginSecret
                          parameters:(NSDictionary *)parameters
-                            success:(void (^)(NSDictionary *result))success
+                            success:(void (^)(NSDictionary *responseObject))success
                             failure:(SEAPIRequestFailureBlock)failure
 {
     NSAssert(loginSecret != nil, @"Login secret cannot be nil.");
@@ -429,7 +429,7 @@ static CGFloat const kLoginPollDelayTime = 5.0f;
 }
 
 - (void)removeLoginWithSecret:(NSString *)loginSecret
-                      success:(void (^)(NSDictionary *result))success
+                      success:(void (^)(NSDictionary *responseObject))success
                       failure:(SEAPIRequestFailureBlock)failure
 {
     NSAssert(loginSecret != nil, @"Login secret cannot be nil.");
@@ -448,7 +448,7 @@ static CGFloat const kLoginPollDelayTime = 5.0f;
 }
 
 - (void)requestCreateTokenWithParameters:(NSDictionary *)parameters
-                                 success:(void (^)(NSDictionary *result))success
+                                 success:(void (^)(NSDictionary *responseObject))success
                                  failure:(SEAPIRequestFailureBlock)failure
 {
     NSAssert(parameters[kCountryCodeKey] != nil, @"Country code cannot be nil.");
@@ -467,7 +467,7 @@ static CGFloat const kLoginPollDelayTime = 5.0f;
 
 - (void)requestReconnectTokenForLoginSecret:(NSString *)loginSecret
                                  parameters:(NSDictionary *)parameters
-                                    success:(void (^)(NSDictionary *result))success
+                                    success:(void (^)(NSDictionary *responseObject))success
                                     failure:(SEAPIRequestFailureBlock)failure
 {
     NSAssert(loginSecret != nil, @"Login secret cannot be nil.");
@@ -482,7 +482,7 @@ static CGFloat const kLoginPollDelayTime = 5.0f;
 
 - (void)requestRefreshTokenForLoginSecret:(NSString *)loginSecret
                                parameters:(NSDictionary *)parameters
-                                  success:(void (^)(NSDictionary *result))success
+                                  success:(void (^)(NSDictionary *responseObject))success
                                   failure:(SEAPIRequestFailureBlock)failure
 {
     NSAssert(loginSecret != nil, @"Login secret cannot be nil.");
@@ -509,7 +509,7 @@ static CGFloat const kLoginPollDelayTime = 5.0f;
 - (void)requestTokenWithAction:(NSString*)path
                      headers:(NSDictionary*)headers
                   parameters:(NSDictionary*)parameters
-                     success:(void (^)(NSDictionary *result))success
+                     success:(void (^)(NSDictionary *responseObject))success
                      failure:(SEAPIRequestFailureBlock)failure
 {
     NSString* tokenPath = [[self baseURLStringByAppendingPathComponent:kTokensPath] stringByAppendingPathComponent:path];
