@@ -81,8 +81,8 @@ static CGFloat const kLoginPollDelayTime = 5.0f;
 
 #pragma mark - Instance Methods
 
-- (void)createCustomerWithIdentifier:(NSString *)identifier
-                             success:(void (^)(NSDictionary *))success
+- (void)createCustomerWithIdentifier:(NSString*)identifier
+                             success:(void (^)(NSDictionary* responseObject))success
                              failure:(SEAPIRequestFailureBlock)failure
 {
     NSAssert(identifier != nil, @"Customer identifier cannot be nil.");
@@ -102,8 +102,8 @@ static CGFloat const kLoginPollDelayTime = 5.0f;
                                      }];
 }
 
-- (void)createLoginWithParameters:(NSDictionary *)parameters
-                          success:(void (^)(SELogin *))success
+- (void)createLoginWithParameters:(NSDictionary*)parameters
+                          success:(void (^)(SELogin* login))success
                           failure:(SEAPIRequestFailureBlock)failure
                          delegate:(id<SELoginFetchingDelegate>)delegate
 {
@@ -131,8 +131,8 @@ static CGFloat const kLoginPollDelayTime = 5.0f;
                                      }];
 }
 
-- (void)createOAuthLoginWithParameters:(NSDictionary *)parameters
-                               success:(void (^)(NSDictionary *))success
+- (void)createOAuthLoginWithParameters:(NSDictionary*)parameters
+                               success:(void (^)(NSDictionary* responseObject))success
                                failure:(SEAPIRequestFailureBlock)failure
                               delegate:(id<SELoginFetchingDelegate>)delegate
 {
@@ -156,8 +156,8 @@ static CGFloat const kLoginPollDelayTime = 5.0f;
                                      }];
 }
 
-- (void)fetchProviderWithCode:(NSString *)code
-                      success:(void (^)(SEProvider *))success
+- (void)fetchProviderWithCode:(NSString*)code
+                      success:(void (^)(SEProvider* provider))success
                       failure:(SEAPIRequestFailureBlock)failure
 {
     NSAssert(code != nil, @"Provider code cannot be nil.");
@@ -180,7 +180,7 @@ static CGFloat const kLoginPollDelayTime = 5.0f;
                                     }];
 }
 
-- (void)fetchFullProvidersListWithSuccess:(void (^)(NSSet *))success
+- (void)fetchFullProvidersListWithSuccess:(void (^)(NSSet* providers))success
                                   failure:(SEAPIRequestFailureBlock)failure
 {
     [self requestPaginatedResourceWithPath:kProvidersPath
@@ -202,7 +202,7 @@ static CGFloat const kLoginPollDelayTime = 5.0f;
 }
 
 - (void)fetchFullAccountsListForLoginSecret:(NSString*)loginSecret
-                                success:(void (^)(NSSet *))success
+                                success:(void (^)(NSSet* accounts))success
                                 failure:(SEAPIRequestFailureBlock)failure
 {
     NSAssert(loginSecret != nil, @"Login secret cannot be nil.");
@@ -224,9 +224,9 @@ static CGFloat const kLoginPollDelayTime = 5.0f;
                                     }];
 }
 
-- (void)fetchFullTransactionsListForAccountId:(NSNumber *)accountId
-                                  loginSecret:(NSString *)loginSecret
-                                      success:(void (^)(NSSet *))success
+- (void)fetchFullTransactionsListForAccountId:(NSNumber*)accountId
+                                  loginSecret:(NSString*)loginSecret
+                                      success:(void (^)(NSSet* transactions))success
                                       failure:(SEAPIRequestFailureBlock)failure
 {
     [self fetchTransactionsListForAccountId:accountId
@@ -236,10 +236,10 @@ static CGFloat const kLoginPollDelayTime = 5.0f;
                                     failure:failure];
 }
 
-- (void)fetchTransactionsListForAccountId:(NSNumber *)accountId
-                              loginSecret:(NSString *)loginSecret
-                               parameters:(NSDictionary *)parameters
-                                  success:(void (^)(NSSet *))success
+- (void)fetchTransactionsListForAccountId:(NSNumber*)accountId
+                              loginSecret:(NSString*)loginSecret
+                               parameters:(NSDictionary*)parameters
+                                  success:(void (^)(NSSet* transactions))success
                                   failure:(SEAPIRequestFailureBlock)failure
 {
     [self requestTransactionsListWithPath:kTransactionsPath
@@ -250,9 +250,9 @@ static CGFloat const kLoginPollDelayTime = 5.0f;
                                   failure:failure];
 }
 
-- (void)fetchFullPendingTransactionsListForAccountId:(NSNumber *)accountId
-                                         loginSecret:(NSString *)loginSecret
-                                             success:(void (^)(NSSet *))success
+- (void)fetchFullPendingTransactionsListForAccountId:(NSNumber*)accountId
+                                         loginSecret:(NSString*)loginSecret
+                                             success:(void (^)(NSSet* pendingTransactions))success
                                              failure:(SEAPIRequestFailureBlock)failure
 {
     [self fetchPendingTransactionsListForAccountId:accountId
@@ -262,13 +262,13 @@ static CGFloat const kLoginPollDelayTime = 5.0f;
                                            failure:failure];
 }
 
-- (void)fetchPendingTransactionsListForAccountId:(NSNumber *)accountId
-                                     loginSecret:(NSString *)loginSecret
-                                      parameters:(NSDictionary *)parameters
-                                         success:(void (^)(NSSet *))success
+- (void)fetchPendingTransactionsListForAccountId:(NSNumber*)accountId
+                                     loginSecret:(NSString*)loginSecret
+                                      parameters:(NSDictionary*)parameters
+                                         success:(void (^)(NSSet* pendingTransactions))success
                                          failure:(SEAPIRequestFailureBlock)failure
 {
-    NSString* pendingTransactionsPath = [[self baseURLStringByAppendingPathComponent:kTransactionsPath] stringByAppendingPathComponent:kPendingTransactions];
+    NSString* pendingTransactionsPath = [kTransactionsPath stringByAppendingPathComponent:kPendingTransactions];
 
     [self requestTransactionsListWithPath:pendingTransactionsPath
                                 accountId:accountId
@@ -279,7 +279,7 @@ static CGFloat const kLoginPollDelayTime = 5.0f;
 }
 
 - (void)fetchLoginWithSecret:(NSString*)loginSecret
-                     success:(void(^)(SELogin*))success
+                     success:(void (^)(SELogin* login))success
                      failure:(SEAPIRequestFailureBlock)failure
 {
     NSAssert(loginSecret != nil, @"Login secret cannot be nil.");
@@ -297,9 +297,9 @@ static CGFloat const kLoginPollDelayTime = 5.0f;
                                     }];
 }
 
-- (void)provideInteractiveCredentialsForLoginWithSecret:(NSString *)loginSecret
-                                            credentials:(NSDictionary *)credentials
-                                                success:(void (^)(SELogin *))success
+- (void)provideInteractiveCredentialsForLoginWithSecret:(NSString*)loginSecret
+                                            credentials:(NSDictionary*)credentials
+                                                success:(void (^)(SELogin* login))success
                                                 failure:(SEAPIRequestFailureBlock)failure
                                                delegate:(id<SELoginFetchingDelegate>)delegate
 {
@@ -326,9 +326,9 @@ static CGFloat const kLoginPollDelayTime = 5.0f;
                                     }];
 }
 
-- (void)reconnectLoginWithSecret:(NSString *)loginSecret
-                     credentials:(NSDictionary *)credentials
-                         success:(void (^)(SELogin *))success
+- (void)reconnectLoginWithSecret:(NSString*)loginSecret
+                     credentials:(NSDictionary*)credentials
+                         success:(void (^)(SELogin* login))success
                          failure:(SEAPIRequestFailureBlock)failure
                         delegate:(id<SELoginFetchingDelegate>)delegate
 {
@@ -355,9 +355,9 @@ static CGFloat const kLoginPollDelayTime = 5.0f;
                                     }];
 }
 
-- (void)reconnectOAuthLoginWithSecret:(NSString *)loginSecret
-                           parameters:(NSDictionary *)parameters
-                              success:(void (^)(NSDictionary *))success
+- (void)reconnectOAuthLoginWithSecret:(NSString*)loginSecret
+                           parameters:(NSDictionary*)parameters
+                              success:(void (^)(NSDictionary* responseObject))success
                               failure:(SEAPIRequestFailureBlock)failure
 {
     NSAssert(loginSecret != nil, @"Login secret cannot be nil.");
@@ -378,8 +378,8 @@ static CGFloat const kLoginPollDelayTime = 5.0f;
                                      }];
 }
 
-- (void)refreshLoginWithSecret:(NSString *)loginSecret
-                       success:(void (^)(NSDictionary*))success
+- (void)refreshLoginWithSecret:(NSString*)loginSecret
+                       success:(void (^)(NSDictionary* responseObject))success
                        failure:(SEAPIRequestFailureBlock)failure
                       delegate:(id<SELoginFetchingDelegate>)delegate
 {
@@ -405,9 +405,9 @@ static CGFloat const kLoginPollDelayTime = 5.0f;
                                     }];
 }
 
-- (void)refreshOAuthLoginWithSecret:(NSString *)loginSecret
-                         parameters:(NSDictionary *)parameters
-                            success:(void (^)(NSDictionary *))success
+- (void)refreshOAuthLoginWithSecret:(NSString*)loginSecret
+                         parameters:(NSDictionary*)parameters
+                            success:(void (^)(NSDictionary* responseObject))success
                             failure:(SEAPIRequestFailureBlock)failure
 {
     NSAssert(loginSecret != nil, @"Login secret cannot be nil.");
@@ -428,8 +428,8 @@ static CGFloat const kLoginPollDelayTime = 5.0f;
                                      }];
 }
 
-- (void)removeLoginWithSecret:(NSString *)loginSecret
-                      success:(void (^)(NSDictionary *))success
+- (void)removeLoginWithSecret:(NSString*)loginSecret
+                      success:(void (^)(NSDictionary* responseObject))success
                       failure:(SEAPIRequestFailureBlock)failure
 {
     NSAssert(loginSecret != nil, @"Login secret cannot be nil.");
@@ -447,8 +447,8 @@ static CGFloat const kLoginPollDelayTime = 5.0f;
                                        }];
 }
 
-- (void)requestCreateTokenWithParameters:(NSDictionary *)parameters
-                                 success:(void (^)(NSDictionary *))success
+- (void)requestCreateTokenWithParameters:(NSDictionary*)parameters
+                                 success:(void (^)(NSDictionary* responseObject))success
                                  failure:(SEAPIRequestFailureBlock)failure
 {
     NSAssert(parameters[kCountryCodeKey] != nil, @"Country code cannot be nil.");
@@ -465,9 +465,9 @@ static CGFloat const kLoginPollDelayTime = 5.0f;
                        failure:failure];
 }
 
-- (void)requestReconnectTokenForLoginSecret:(NSString *)loginSecret
-                                 parameters:(NSDictionary *)parameters
-                                    success:(void (^)(NSDictionary *))success
+- (void)requestReconnectTokenForLoginSecret:(NSString*)loginSecret
+                                 parameters:(NSDictionary*)parameters
+                                    success:(void (^)(NSDictionary* responseObject))success
                                     failure:(SEAPIRequestFailureBlock)failure
 {
     NSAssert(loginSecret != nil, @"Login secret cannot be nil.");
@@ -480,9 +480,9 @@ static CGFloat const kLoginPollDelayTime = 5.0f;
                        failure:failure];
 }
 
-- (void)requestRefreshTokenForLoginSecret:(NSString *)loginSecret
-                               parameters:(NSDictionary *)parameters
-                                  success:(void (^)(NSDictionary *))success
+- (void)requestRefreshTokenForLoginSecret:(NSString*)loginSecret
+                               parameters:(NSDictionary*)parameters
+                                  success:(void (^)(NSDictionary* responseObject))success
                                   failure:(SEAPIRequestFailureBlock)failure
 {
     NSAssert(loginSecret != nil, @"Login secret cannot be nil.");
@@ -509,7 +509,7 @@ static CGFloat const kLoginPollDelayTime = 5.0f;
 - (void)requestTokenWithAction:(NSString*)path
                      headers:(NSDictionary*)headers
                   parameters:(NSDictionary*)parameters
-                     success:(void (^)(NSDictionary *))success
+                     success:(void (^)(NSDictionary* responseObject))success
                      failure:(SEAPIRequestFailureBlock)failure
 {
     NSString* tokenPath = [[self baseURLStringByAppendingPathComponent:kTokensPath] stringByAppendingPathComponent:path];
@@ -531,7 +531,7 @@ static CGFloat const kLoginPollDelayTime = 5.0f;
                                container:(NSMutableArray*)container
                                  headers:(NSDictionary*)headers
                               parameters:(NSDictionary*)parameters
-                                 success:(void (^)(NSArray*))success
+                                 success:(void (^)(NSArray* resources))success
                                  failure:(SEAPIRequestFailureBlock)failure
                                     full:(BOOL)full
 {
@@ -558,7 +558,7 @@ static CGFloat const kLoginPollDelayTime = 5.0f;
                               accountId:(NSNumber*)accountId
                             loginSecret:(NSString*)loginSecret
                              parameters:(NSDictionary*)parameters
-                                success:(void (^)(NSSet *))success
+                                success:(void (^)(NSSet* transactions))success
                                 failure:(SEAPIRequestFailureBlock)failure
 {
     NSAssert(accountId != nil, @"Account id cannot be nil.");

@@ -42,6 +42,14 @@
     return self;
 }
 
+- (instancetype)initWithCoder:(NSCoder *)coder
+{
+    if (self = [super initWithCoder:coder]) {
+        self.delegate = self;
+    }
+    return self;
+}
+
 #pragma mark - Private API
 #pragma mark - UIWebView Delegate
 
