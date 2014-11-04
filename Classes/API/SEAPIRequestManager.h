@@ -57,7 +57,7 @@ typedef void (^SEAPIRequestFailureBlock)(SEError* error);
  @warning identifier cannot be nil.
  */
 - (void)createCustomerWithIdentifier:(NSString*)identifier
-                             success:(void (^)(NSDictionary*))success
+                             success:(void (^)(NSDictionary *result))success
                              failure:(SEAPIRequestFailureBlock)failure;
 
 /**
@@ -87,7 +87,7 @@ typedef void (^SEAPIRequestFailureBlock)(SEError* error);
  @see https://docs.saltedge.com/reference/#logins-create
  */
 - (void)createLoginWithParameters:(NSDictionary*)parameters
-                          success:(void (^)(SELogin*))success
+                          success:(void (^)(SELogin*login))success
                           failure:(SEAPIRequestFailureBlock)failure
                          delegate:(id<SELoginFetchingDelegate>)delegate;
 
@@ -113,7 +113,7 @@ typedef void (^SEAPIRequestFailureBlock)(SEError* error);
  @see https://docs.saltedge.com/reference/#oauth-create
  */
 - (void)createOAuthLoginWithParameters:(NSDictionary*)parameters
-                               success:(void (^)(NSDictionary*))success
+                               success:(void (^)(NSDictionary *result))success
                                failure:(SEAPIRequestFailureBlock)failure
                               delegate:(id<SELoginFetchingDelegate>)delegate;
 
@@ -129,7 +129,7 @@ typedef void (^SEAPIRequestFailureBlock)(SEError* error);
  @see https://docs.saltedge.com/reference/#providers-show
  */
 - (void)fetchProviderWithCode:(NSString*)code
-                      success:(void (^)(SEProvider*))success
+                      success:(void (^)(SEProvider*provider))success
                       failure:(SEAPIRequestFailureBlock)failure;
 
 /**
@@ -140,7 +140,7 @@ typedef void (^SEAPIRequestFailureBlock)(SEError* error);
 
  @see https://docs.saltedge.com/reference/#providers-list
  */
-- (void)fetchFullProvidersListWithSuccess:(void (^)(NSSet *))success
+- (void)fetchFullProvidersListWithSuccess:(void (^)(NSSet *result))success
                                   failure:(SEAPIRequestFailureBlock)failure;
 
 /**
@@ -155,7 +155,7 @@ typedef void (^SEAPIRequestFailureBlock)(SEError* error);
  @see https://docs.saltedge.com/reference/#accounts-list
  */
 - (void)fetchFullAccountsListForLoginSecret:(NSString*)loginSecret
-                                    success:(void(^)(NSSet*))success
+                                    success:(void (^)(NSSet*result))success
                                     failure:(SEAPIRequestFailureBlock)failure;
 
 /**
@@ -172,7 +172,7 @@ typedef void (^SEAPIRequestFailureBlock)(SEError* error);
  */
 - (void)fetchFullTransactionsListForAccountId:(NSNumber*)accountId
                                   loginSecret:(NSString*)loginSecret
-                                      success:(void(^)(NSSet*))success
+                                      success:(void (^)(NSSet*result))success
                                       failure:(SEAPIRequestFailureBlock)failure;
 
 /**
@@ -200,7 +200,7 @@ typedef void (^SEAPIRequestFailureBlock)(SEError* error);
 - (void)fetchTransactionsListForAccountId:(NSNumber*)accountId
                               loginSecret:(NSString*)loginSecret
                                parameters:(NSDictionary*)parameters
-                                  success:(void(^)(NSSet*))success
+                                  success:(void (^)(NSSet*result))success
                                   failure:(SEAPIRequestFailureBlock)failure;
 
 /**
@@ -217,7 +217,7 @@ typedef void (^SEAPIRequestFailureBlock)(SEError* error);
  */
 - (void)fetchFullPendingTransactionsListForAccountId:(NSNumber*)accountId
                                          loginSecret:(NSString*)loginSecret
-                                             success:(void(^)(NSSet*))success
+                                             success:(void (^)(NSSet*result))success
                                              failure:(SEAPIRequestFailureBlock)failure;
 
 /**
@@ -245,7 +245,7 @@ typedef void (^SEAPIRequestFailureBlock)(SEError* error);
 - (void)fetchPendingTransactionsListForAccountId:(NSNumber*)accountId
                                      loginSecret:(NSString*)loginSecret
                                       parameters:(NSDictionary*)parameters
-                                         success:(void(^)(NSSet*))success
+                                         success:(void (^)(NSSet*result))success
                                          failure:(SEAPIRequestFailureBlock)failure;
 
 /**
@@ -258,7 +258,7 @@ typedef void (^SEAPIRequestFailureBlock)(SEError* error);
  @warning loginSecret cannot be nil.
  */
 - (void)fetchLoginWithSecret:(NSString*)loginSecret
-                     success:(void(^)(SELogin*))success
+                     success:(void (^)(SELogin*login))success
                      failure:(SEAPIRequestFailureBlock)failure;
 
 /**
@@ -272,7 +272,7 @@ typedef void (^SEAPIRequestFailureBlock)(SEError* error);
  */
 - (void)provideInteractiveCredentialsForLoginWithSecret:(NSString*)loginSecret
                                             credentials:(NSDictionary*)credentials
-                                                success:(void(^)(SELogin*))success
+                                                success:(void (^)(SELogin*login))success
                                                 failure:(SEAPIRequestFailureBlock)failure
                                                delegate:(id<SELoginFetchingDelegate>)delegate;
 
@@ -299,7 +299,7 @@ typedef void (^SEAPIRequestFailureBlock)(SEError* error);
  */
 - (void)reconnectLoginWithSecret:(NSString*)loginSecret
                      credentials:(NSDictionary*)credentials
-                         success:(void(^)(SELogin*))success
+                         success:(void (^)(SELogin*login))success
                          failure:(SEAPIRequestFailureBlock)failure
                         delegate:(id<SELoginFetchingDelegate>)delegate;
 
@@ -323,7 +323,7 @@ typedef void (^SEAPIRequestFailureBlock)(SEError* error);
  */
 - (void)reconnectOAuthLoginWithSecret:(NSString*)loginSecret
                            parameters:(NSDictionary*)parameters
-                              success:(void(^)(NSDictionary*))success
+                              success:(void (^)(NSDictionary*responseObject))success
                               failure:(SEAPIRequestFailureBlock)failure;
 
 /**
@@ -339,7 +339,7 @@ typedef void (^SEAPIRequestFailureBlock)(SEError* error);
  @see https://docs.saltedge.com/reference/#logins-refresh
  */
 - (void)refreshLoginWithSecret:(NSString*)loginSecret
-                       success:(void(^)(NSDictionary*))success
+                       success:(void (^)(NSDictionary*responseObject))success
                        failure:(SEAPIRequestFailureBlock)failure
                       delegate:(id<SELoginFetchingDelegate>)delegate;
 
@@ -362,7 +362,7 @@ typedef void (^SEAPIRequestFailureBlock)(SEError* error);
  */
 - (void)refreshOAuthLoginWithSecret:(NSString*)loginSecret
                          parameters:(NSDictionary*)parameters
-                            success:(void(^)(NSDictionary*))success
+                            success:(void (^)(NSDictionary*responseObject))success
                             failure:(SEAPIRequestFailureBlock)failure;
 
 /**
@@ -375,7 +375,7 @@ typedef void (^SEAPIRequestFailureBlock)(SEError* error);
  @warning loginSecret cannot be nil.
  */
 - (void)removeLoginWithSecret:(NSString*)loginSecret
-                      success:(void(^)(NSDictionary*))success
+                      success:(void (^)(NSDictionary*responseObject))success
                       failure:(SEAPIRequestFailureBlock)failure;
 
 /**
@@ -400,7 +400,7 @@ typedef void (^SEAPIRequestFailureBlock)(SEError* error);
  @see https://docs.saltedge.com/reference/#tokens-create
  */
 - (void)requestCreateTokenWithParameters:(NSDictionary*)parameters
-                                 success:(void (^)(NSDictionary*))success
+                                 success:(void (^)(NSDictionary*responseObject))success
                                  failure:(SEAPIRequestFailureBlock)failure;
 
 /**
@@ -425,7 +425,7 @@ typedef void (^SEAPIRequestFailureBlock)(SEError* error);
  */
 - (void)requestReconnectTokenForLoginSecret:(NSString*)loginSecret
                                  parameters:(NSDictionary*)parameters
-                                    success:(void (^)(NSDictionary*))success
+                                    success:(void (^)(NSDictionary*responseObject))success
                                     failure:(SEAPIRequestFailureBlock)failure;
 
 /**
@@ -450,7 +450,7 @@ typedef void (^SEAPIRequestFailureBlock)(SEError* error);
  */
 - (void)requestRefreshTokenForLoginSecret:(NSString*)loginSecret
                                parameters:(NSDictionary*)parameters
-                                  success:(void (^)(NSDictionary*))success
+                                  success:(void (^)(NSDictionary*responseObject))success
                                   failure:(SEAPIRequestFailureBlock)failure;
 
 @end
