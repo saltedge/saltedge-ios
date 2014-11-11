@@ -144,6 +144,27 @@ typedef void (^SEAPIRequestFailureBlock)(SEError* error);
                                   failure:(SEAPIRequestFailureBlock)failure;
 
 /**
+ Fetches a set of providers based on given parameters.
+
+ @param parameters Optional constraints set to the fetch query. See an example above.
+ @param success The callback block if the request succeeds.
+ @param failure The callback block if the request fails.
+
+ @code
+ // parameters example
+ {
+    "from_id": 577,
+    "from_date": "2014-06-08"
+ }
+ @endcode
+
+ @see https://docs.saltedge.com/reference/#providers-list
+ */
+- (void)fetchProvidersListWithParameters:(NSDictionary*)parameters
+                                 success:(void (^)(NSSet* providers))success
+                                 failure:(SEAPIRequestFailureBlock)failure;
+
+/**
  Fetches all accounts tied to a login.
 
  @param loginSecret The secret of the login whose accounts are going to be fetched.
