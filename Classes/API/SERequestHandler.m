@@ -173,7 +173,7 @@ typedef NS_ENUM(NSInteger, SERequestMethod) {
 {
     if ([[self HTTPMethodsWithoutBody] containsObject:[request.HTTPMethod uppercaseString]]) {
         NSString* query = [self urlQueryFormatForParameters:parameters];
-        request.URL = [NSURL URLWithString:[request.URL.absoluteString stringByAppendingFormat:request.URL.query ? @"&%@" : @"?%@", query]];
+        request.URL = [NSURL URLWithString:[request.URL.absoluteString stringByAppendingFormat:request.URL.query ? @"&%@" : @"?%@", [query stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]]];
     } else {
         NSError* error;
         NSData* data = [NSJSONSerialization dataWithJSONObject:parameters options:0 error:&error];

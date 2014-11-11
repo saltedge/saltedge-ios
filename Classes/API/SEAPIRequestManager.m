@@ -201,6 +201,28 @@ static CGFloat const kLoginPollDelayTime = 5.0f;
                                    } full:YES];
 }
 
+- (void)fetchProvidersListWithParameters:(NSDictionary *)parameters
+                                 success:(void (^)(NSSet *))success
+                                 failure:(SEAPIRequestFailureBlock)failure
+{
+    [self requestPaginatedResourceWithPath:kProvidersPath
+                                 container:@[].mutableCopy
+                                   headers:sessionHeaders
+                                parameters:parameters
+                                   success:^(NSArray* providerDictionaries) {
+                                       if (!success) { return; }
+                                       NSMutableSet* providerObjects = [NSMutableSet setWithCapacity:providerDictionaries.count];
+                                       for (NSDictionary* providerDictionary in providerDictionaries) {
+                                           [providerObjects addObject:[SEProvider objectFromDictionary:providerDictionary]];
+                                       }
+                                       success((NSSet*) providerObjects);
+                                   }
+                                   failure:^(SEError* error) {
+                                       if (!failure) { return; }
+                                       failure(error);
+                                   } full:YES];
+}
+
 - (void)fetchFullAccountsListForLoginSecret:(NSString*)loginSecret
                                 success:(void (^)(NSSet* accounts))success
                                 failure:(SEAPIRequestFailureBlock)failure
