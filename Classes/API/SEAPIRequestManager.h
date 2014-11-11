@@ -146,6 +146,10 @@ typedef void (^SEAPIRequestFailureBlock)(SEError* error);
 /**
  Fetches a set of providers based on given parameters.
 
+ @param parameters Optional constraints set to the fetch query. See an example above.
+ @param success The callback block if the request succeeds.
+ @param failure The callback block if the request fails.
+
  @code
  // parameters example
  {
@@ -154,9 +158,7 @@ typedef void (^SEAPIRequestFailureBlock)(SEError* error);
  }
  @endcode
 
- @param parameters Optional constraints set to the fetch query. See an example above.
- @param success The callback block if the request succeeds.
- @param failure The callback block if the request fails.
+ @see https://docs.saltedge.com/reference/#providers-list
  */
 - (void)fetchProvidersListWithParameters:(NSDictionary*)parameters
                                  success:(void (^)(NSSet* providers))success
