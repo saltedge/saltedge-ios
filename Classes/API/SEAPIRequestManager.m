@@ -202,7 +202,7 @@ static CGFloat const kLoginPollDelayTime = 5.0f;
 }
 
 - (void)fetchProvidersListWithParameters:(NSDictionary *)parameters
-                                 success:(void (^)(NSSet *))success
+                                 success:(void (^)(NSSet* providers))success
                                  failure:(SEAPIRequestFailureBlock)failure
 {
     [self requestPaginatedResourceWithPath:kProvidersPath
