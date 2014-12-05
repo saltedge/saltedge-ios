@@ -652,13 +652,12 @@ static CGFloat const kLoginPollDelayTime = 5.0f;
                        }];
 }
 
-- (void)learnCategorizationForLogintSecret:(NSString*)loginSecret
-                                 fromArray:(NSArray*)learningArray
-                                   success:(void (^)(NSDictionary* responseObject))success
-                                   failure:(SEAPIRequestFailureBlock)failure
+- (void)learnCategorizationForLoginSecret:(NSString*)loginSecret
+                             transactions:(NSArray*)learningArray
+                                  success:(void (^)(NSDictionary* responseObject))success
+                                  failure:(SEAPIRequestFailureBlock)failure
 {
     NSAssert(learningArray != nil, @"learningArray cannot be nil.");
-    NSAssert([learningArray count] > 0, @"learningArray cannot be empty.");
 
     [SERequestHandler sendPOSTRequestWithURL:[self baseURLStringByAppendingPathComponent:kLearnPath]
                                   parameters:@{ kDataKey: learningArray }
