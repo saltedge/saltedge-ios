@@ -33,6 +33,7 @@ static NSString* const kTransactionsPath        = @"api/v2/transactions";
 static NSString* const kProvidersPath           = @"api/v2/providers";
 static NSString* const kOAuthProvidersPath      = @"api/v2/oauth_providers";
 static NSString* const kCustomersPath           = @"api/v2/customers";
+static NSString* const kLearnPath               = @"api/v2/categories/learn";
 static NSString* const kLoginInteractive        = @"interactive";
 static NSString* const kPendingTransactions     = @"pending";
 
