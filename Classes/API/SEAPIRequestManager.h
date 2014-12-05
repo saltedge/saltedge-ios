@@ -499,5 +499,4 @@ typedef void (^SEAPIRequestFailureBlock)(SEError* error);
                                    success:(void (^)(NSDictionary* responseObject))success
                                    failure:(SEAPIRequestFailureBlock)failure;
 
-
 @end

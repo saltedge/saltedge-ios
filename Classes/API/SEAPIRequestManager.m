@@ -557,7 +557,6 @@ static CGFloat const kLoginPollDelayTime = 5.0f;
                                  failure:(SEAPIRequestFailureBlock)failure
                                     full:(BOOL)full
 {
-
     [SERequestHandler sendGETRequestWithURL:[self baseURLStringByAppendingPathComponent:path]
                                  parameters:parameters
                                     headers:headers
