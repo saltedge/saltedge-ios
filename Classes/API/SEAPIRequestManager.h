@@ -498,9 +498,9 @@ typedef void (^SEAPIRequestFailureBlock)(SEError* error);
  
  @see https://docs.saltedge.com/reference/#categories-learn
  */
-- (void)learnCategorizationForLoginSecret:(NSString*)loginSecret
-                             transactions:(NSArray*)learningArray
-                                  success:(void (^)(NSDictionary* responseObject))success
-                                  failure:(SEAPIRequestFailureBlock)failure;
+- (void)learnTransactionCategoriesForLoginSecret:(NSString*)loginSecret
+                                    transactions:(NSArray*)learningArray
+                                         success:(void (^)(NSDictionary* responseObject))success
+                                         failure:(SEAPIRequestFailureBlock)failure;
 
 @end

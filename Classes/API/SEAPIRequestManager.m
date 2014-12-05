@@ -652,10 +652,10 @@ static CGFloat const kLoginPollDelayTime = 5.0f;
                        }];
 }
 
-- (void)learnCategorizationForLoginSecret:(NSString*)loginSecret
-                             transactions:(NSArray*)learningArray
-                                  success:(void (^)(NSDictionary* responseObject))success
-                                  failure:(SEAPIRequestFailureBlock)failure
+- (void)learnTransactionCategoriesForLoginSecret:(NSString*)loginSecret
+                                    transactions:(NSArray*)learningArray
+                                         success:(void (^)(NSDictionary* responseObject))success
+                                         failure:(SEAPIRequestFailureBlock)failure
 {
     NSAssert(learningArray != nil, @"learningArray cannot be nil.");
 
