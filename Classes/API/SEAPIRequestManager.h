@@ -475,7 +475,7 @@ typedef void (^SEAPIRequestFailureBlock)(SEError* error);
                                   failure:(SEAPIRequestFailureBlock)failure;
 
 /**
- Changes the category of some transactions, thus improving the categorization accuracy.
+ Changes the categories of some transactions, thus improving the categorization accuracy.
 
  @param loginSecret The login secret for which the transactions' categories are to be changed.
  @param learningArray The array containing learning information. See an example above.
