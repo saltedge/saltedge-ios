@@ -557,7 +557,6 @@ static CGFloat const kLoginPollDelayTime = 5.0f;
                                  failure:(SEAPIRequestFailureBlock)failure
                                     full:(BOOL)full
 {
-
     [SERequestHandler sendGETRequestWithURL:[self baseURLStringByAppendingPathComponent:path]
                                  parameters:parameters
                                     headers:headers
@@ -651,6 +650,26 @@ static CGFloat const kLoginPollDelayTime = 5.0f;
                            [self.loginFetchingDelegate login:self.createdLogin failedToFetchWithMessage:failure.message];
                            self.createdLogin = nil;
                        }];
+}
+
+- (void)learnTransactionCategoriesForLoginSecret:(NSString*)loginSecret
+                                    transactions:(NSArray*)learningArray
+                                         success:(void (^)(NSDictionary* responseObject))success
+                                         failure:(SEAPIRequestFailureBlock)failure
+{
+    NSAssert(learningArray != nil, @"learningArray cannot be nil.");
+
+    [SERequestHandler sendPOSTRequestWithURL:[self baseURLStringByAppendingPathComponent:kLearnPath]
+                                  parameters:@{ kDataKey: learningArray }
+                                     headers:sessionHeaders
+                                     success:^(NSDictionary* responseObject) {
+                                         if (success) {
+                                             success(responseObject);
+                                         }
+                                     }
+                                     failure:^(NSDictionary* errorObject) {
+                                         [self failureBlockWithBlock:failure errorObject:errorObject];
+                                     }];
 }
 
 #pragma mark - Helper methods
