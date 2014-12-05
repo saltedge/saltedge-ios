@@ -653,6 +653,27 @@ static CGFloat const kLoginPollDelayTime = 5.0f;
                        }];
 }
 
+- (void)learnCategorizationForLogintSecret:(NSString*)loginSecret
+                                 fromArray:(NSArray*)learningArray
+                                   success:(void (^)(NSDictionary* responseObject))success
+                                   failure:(SEAPIRequestFailureBlock)failure
+{
+    NSAssert(learningArray != nil, @"learningArray cannot be nil.");
+    NSAssert([learningArray count] > 0, @"learningArray cannot be empty.");
+
+    [SERequestHandler sendPOSTRequestWithURL:[self baseURLStringByAppendingPathComponent:kLearnPath]
+                                  parameters:@{ kDataKey: learningArray }
+                                     headers:sessionHeaders
+                                     success:^(NSDictionary* responseObject) {
+                                         if (success) {
+                                             success(responseObject);
+                                         }
+                                     }
+                                     failure:^(NSDictionary* errorObject) {
+                                         [self failureBlockWithBlock:failure errorObject:errorObject];
+                                     }];
+}
+
 #pragma mark - Helper methods
 
 - (BOOL)isLoginFetchingDelegateSuitableForDelegation

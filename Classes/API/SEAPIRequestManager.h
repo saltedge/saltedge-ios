@@ -474,4 +474,30 @@ typedef void (^SEAPIRequestFailureBlock)(SEError* error);
                                   success:(void (^)(NSDictionary* responseObject))success
                                   failure:(SEAPIRequestFailureBlock)failure;
 
+/**
+ Changes the category of some transactions, thus improving  the categorization accuracy.
+
+ @param loginSecret The login secret for which the refresh token is requested.
+ @param learningArray The array containing learning information, described in the code above.
+ @param success The callback block if the request succeeds.
+ @param failure The callback block if the request fails.
+ 
+ @warning learningArray cannot be neither nil nor empty.
+ 
+ @code
+ // parameters example, listing only the required fields
+ {
+ "transaction_id": 123,
+ "category_code": "paycheck"
+ }
+ @endcode
+ 
+ @see https://docs.saltedge.com/reference/#categories-learn
+ */
+- (void)learnCategorizationForLogintSecret:(NSString*)loginSecret
+                                 fromArray:(NSArray*)learningArray
+                                   success:(void (^)(NSDictionary* responseObject))success
+                                   failure:(SEAPIRequestFailureBlock)failure;
+
+
 @end
