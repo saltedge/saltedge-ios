@@ -1,7 +1,7 @@
 //
 //  Constants.h
 //
-//  Copyright (c) 2014 Salt Edge. https://saltedge.com
+//  Copyright (c) 2015 Salt Edge. https://saltedge.com
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -41,7 +41,6 @@ static NSString* const kPendingTransactions     = @"pending";
 static NSString* const kLoginActionReconnect = @"reconnect";
 static NSString* const kLoginActionCreate    = @"create";
 static NSString* const kLoginActionRefresh   = @"refresh";
-static NSString* const kLoginActionRemove    = @"remove";
 
 /* Provider input fields types */
 static NSString* const SEProviderFieldTypeText     = @"text";
