@@ -30,7 +30,7 @@
 typedef void (^SEAPIRequestFailureBlock)(SEError* error);
 
 /**
- SEAPIRequestManager is a class designed to provide convinient methods in communicating with the Salt Edge API.
+ SEAPIRequestManager is a class designed to provide convenient methods in communicating with the Salt Edge API.
  */
 @interface SEAPIRequestManager : NSObject
 
