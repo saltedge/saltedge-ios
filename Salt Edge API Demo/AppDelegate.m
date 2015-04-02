@@ -38,9 +38,9 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    static NSString* const clientId  = @"z26aBwivo8o14w"; // insert your client ID here
-    static NSString* const appSecret = @"Lyxal2A_JT02iqD2wufF-A2ZV7OUgD1EGmWiny6Yyz8"; // insert your app secret here
-    static NSString* const customerIdentifier = @"int main(void){return 0}"; // insert customer identifier here
+    static NSString* const clientId  = nil; // insert your client ID here
+    static NSString* const appSecret = nil; // insert your app secret here
+    static NSString* const customerIdentifier = nil; // insert customer identifier here
 
     if (!clientId || !appSecret || !customerIdentifier) {
         [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Client ID, App Secret or Customer Identifier is not set. Please see AppDelegate.m or consult the README file." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil] show];

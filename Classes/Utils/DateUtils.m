@@ -54,6 +54,7 @@ static NSDateFormatter* iso8601DateFormatter, *ymdDateFormatter;
         [iso8601DateFormatter setDateFormat:@"yyyy'-'MM'-'dd'T'HH':'mm':'ss'Z'"];
         NSTimeZone* tz = [NSTimeZone timeZoneWithName:@"UTC"];
         [iso8601DateFormatter setTimeZone:tz];
+        [iso8601DateFormatter setLocale:[NSLocale localeWithLocaleIdentifier:@"en_US"]];
     });
     return iso8601DateFormatter;
 }
@@ -66,6 +67,7 @@ static NSDateFormatter* iso8601DateFormatter, *ymdDateFormatter;
         [ymdDateFormatter setDateFormat:@"yyyy'-'MM'-'dd"];
         NSTimeZone* tz = [NSTimeZone timeZoneWithName:@"UTC"];
         [ymdDateFormatter setTimeZone:tz];
+        [ymdDateFormatter setLocale:[NSLocale localeWithLocaleIdentifier:@"en_US"]];
     });
     return ymdDateFormatter;
 }
