@@ -45,7 +45,9 @@
 - (void)setLogin:(SELogin *)login
 {
     _login = login;
-    [self fetchProviderFieldsWithProviderCode:login.providerCode];
+    if (_login) {
+        [self fetchProviderFieldsWithProviderCode:login.providerCode];
+    }
 }
 
 #pragma mark -
@@ -92,6 +94,7 @@
     NSArray* providers = [[[[AppDelegate delegate].providers.allObjects filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"mode != %@", @"file"]] valueForKeyPath:@"name"] sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)];
     UINavigationController* picker = [PickerTVC pickerWithItems:providers completionBlock:^(id pickedProviderName) {
         self.provider = [[[AppDelegate delegate].providers filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"name == %@", pickedProviderName]] anyObject];
+        self.login = nil;
         [self fetchProviderFieldsWithProviderCode:self.provider.code];
     }];
     [self presentViewController:picker animated:YES completion:nil];
@@ -279,6 +282,20 @@
     }
 }
 
+- (void)storeLoginDataAndSwitchToLogin:(SELogin*)login
+{
+    NSMutableSet* loginSecrets = [NSSet setWithArray:[[NSUserDefaults standardUserDefaults] arrayForKey:kLoginSecretsDefaultsKey]].mutableCopy;
+    if (!loginSecrets) {
+        loginSecrets = [NSMutableSet set];
+    }
+    [loginSecrets addObject:login.secret];
+    [[NSUserDefaults standardUserDefaults] setObject:[loginSecrets allObjects] forKey:kLoginSecretsDefaultsKey];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    LoginsTVC* loginsController = [self.tabBarController.viewControllers[2] viewControllers][0];
+    [loginsController reloadLoginsTableViewController];
+    [[[AppDelegate delegate] tabBar] setSelectedIndex:2];
+}
+
 #pragma mark - Lazy getters
 
 - (NSMutableArray*)inputControlsOrder
@@ -301,6 +318,7 @@
 
 - (void)login:(SELogin*)login failedToFetchWithMessage:(NSString *)message
 {
+    [self storeLoginDataAndSwitchToLogin:login];
     [SVProgressHUD showErrorWithStatus:message];
 }
 
@@ -335,16 +353,7 @@
 - (void)loginSuccessfullyFinishedFetching:(SELogin *)login
 {
     _login = nil;
-    NSMutableSet* loginSecrets = [NSSet setWithArray:[[NSUserDefaults standardUserDefaults] arrayForKey:kLoginSecretsDefaultsKey]].mutableCopy;
-    if (!loginSecrets) {
-        loginSecrets = [NSMutableSet set];
-    }
-    [loginSecrets addObject:login.secret];
-    [[NSUserDefaults standardUserDefaults] setObject:[loginSecrets allObjects] forKey:kLoginSecretsDefaultsKey];
-    [[NSUserDefaults standardUserDefaults] synchronize];
-    LoginsTVC* loginsController = [self.tabBarController.viewControllers[2] viewControllers][0];
-    [loginsController reloadLoginsTableViewController];
-    [[[AppDelegate delegate] tabBar] setSelectedIndex:2];
+    [self storeLoginDataAndSwitchToLogin:login];
     [SVProgressHUD dismiss];
 }
 
