@@ -35,7 +35,7 @@ Copy the `Classes` folder into your project.
 2. Replace the `clientId`, `appSecret` and `customerIdentifier` constants in [AppDelegate.m:41-43](https://github.com/saltedge/saltedge-ios/blob/master/Salt%20Edge%20API%20Demo/AppDelegate.m#L41-L43) with your Client ID and corresponding App secret
 3. Run the app
 
-*Note*: You can find your Client ID and App secret at your [profile](https://www.saltedge.com/clients/profile/settings) page.
+*Note*: You can find your Client ID and App secret at your [secrets](https://www.saltedge.com/clients/profile/secrets) page.
 
 ## SEWebView
 
