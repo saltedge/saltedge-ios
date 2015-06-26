@@ -49,13 +49,21 @@ static NSURL* homeURL, *emptyCallbackURL;
 {
     NSError* error = nil;
     NSURL* successCallbackURL = [[NSURL alloc] initWithScheme:SECallbackScheme host:SECallbackHost path:@"/{\"data\":{\"login_id\":22, \"state\":\"success\"}}"];
+    NSURL* duplicatedCallbackURL = [[NSURL alloc] initWithScheme:SECallbackScheme host:SECallbackHost path:@"/{\"data\":{\"duplicated_login_id\":91, \"state\":\"error\"}}"];
     NSURL* badCallbackURL = [[NSURL alloc] initWithScheme:SECallbackScheme host:SECallbackHost path:@"/Not a valid JSON string"];
-    NSDictionary* expectedCallbackParameters = @{ @"data" : @{ @"login_id": @22, @"state" : @"success" } };
-    BOOL successCallbacksEqual = [[successCallbackURL se_callbackParametersWithError:&error] isEqualToDictionary:expectedCallbackParameters];
+    NSDictionary* expectedSuccessCallbackParameters = @{ @"data" : @{ @"login_id": @22, @"state" : @"success" } };
+    NSDictionary* expectedDuplicatedCallbackParameters = @{ @"data" : @{ @"duplicated_login_id" : @91, @"state" : @"error" }};
+    BOOL successCallbacksEqual = [[successCallbackURL se_callbackParametersWithError:&error] isEqualToDictionary:expectedSuccessCallbackParameters];
+    BOOL duplicatedCallbacksEqual = [[duplicatedCallbackURL se_callbackParametersWithError:&error] isEqualToDictionary:expectedDuplicatedCallbackParameters];
+
 
     // Succcess callback URL
     XCTAssertNil(error, @"Error should be nil due to success of successful callback parameters serialization");
-    XCTAssertTrue(successCallbacksEqual, @"The parameters should be equal to those given in the path string");
+    XCTAssertTrue(successCallbacksEqual, @"The success callback parameters should be equal to those given in the path string");
+
+    // Duplicated callback URL
+    XCTAssertNil(error, @"Error should be nil due to success of duplicated callback parameters serialization");
+    XCTAssertTrue(duplicatedCallbacksEqual, @"The duplicated callback parameters should be equal to those given in the path string");
 
     // Home URL
     XCTAssertNil([homeURL se_callbackParametersWithError:&error], @"Usual URL without the callback scheme should not have any callback parameters in it");

@@ -33,13 +33,22 @@
  Invoked when a callback is triggered from the Salt Edge Connect page.
 
  @param webView The web view which displays the Salt Edge Connect page from which the callback is triggered.
- @param response The payload within the callback. It contains two keys: "login_id" and "state". See an example response above.
+ @param response The payload within the callback. It contains three keys: "login_id", "secret" and "state". Note that if the login is duplicated, you will receive a payload with the key "duplicated_login_id" and the "state" being "error". See an example response above.
 
  @code
+ // usual response
  {
     "data": {
         "login_id": 997671551,
+        "secret": "Dk4WGvf71TMMp4ZQSodLa-n5Ay8WStFG0-gd-k2jPUM",
         "state": "success"
+    }
+ }
+ // if the login is duplicated
+ {
+    "data": {
+        "duplicated_login_id": 997674446,
+        "state": "error"
     }
  }
  @endcode
