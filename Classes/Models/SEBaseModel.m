@@ -41,20 +41,22 @@ static NSArray* dateTimePropertiesNames, *datePropertyNames;
     
     id object = [[self alloc] init];
     [dictionary enumerateKeysAndObjectsUsingBlock:^(NSString* key, id value, BOOL* stop) {
-        NSString* propertyName = [key se_camelCaseCounterpart];
-        NSString* setterMethodName = [NSString stringWithFormat:@"set%@:", [propertyName se_uppercaseFirstCharacter]];
-        SEL selector = NSSelectorFromString(setterMethodName);
-        if ([object respondsToSelector:selector]) {
-            id valueToSet = value;
-            if ([dateTimePropertiesNames containsObject:propertyName] && ![valueToSet isEqual:[NSNull null]]) {
-                valueToSet = [DateUtils dateFromISO8601String:value];
-            } else if ([datePropertyNames containsObject:propertyName] && ![valueToSet isEqual:[NSNull null]]) {
-                valueToSet = [DateUtils dateFromYMDString:value];
-            }
+        if (![value isEqual:[NSNull null]]) {
+            NSString* propertyName = [key se_camelCaseCounterpart];
+            NSString* setterMethodName = [NSString stringWithFormat:@"set%@:", [propertyName se_uppercaseFirstCharacter]];
+            SEL selector = NSSelectorFromString(setterMethodName);
+            if ([object respondsToSelector:selector]) {
+                id valueToSet = value;
+                if ([dateTimePropertiesNames containsObject:propertyName]) {
+                    valueToSet = [DateUtils dateFromISO8601String:value];
+                } else if ([datePropertyNames containsObject:propertyName]) {
+                    valueToSet = [DateUtils dateFromYMDString:value];
+                }
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
-            [object performSelector:selector withObject:valueToSet];
+                [object performSelector:selector withObject:valueToSet];
 #pragma clang diagnostic pop
+            }
         }
     }];
     return object;
