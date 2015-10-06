@@ -634,7 +634,7 @@ static CGFloat const kLoginPollDelayTime = 5.0f;
                            if ([fetchedLogin.stage isEqualToString:kLoginStageInteractive]) {
                                [self.loginFetchingDelegate loginRequestedInteractiveInput:fetchedLogin];
                            } else if ([fetchedLogin.stage isEqualToString:kLoginStageFinish]) {
-                               if ([fetchedLogin.lastFailMessage isEqual:[NSNull null]] || [fetchedLogin.lastFailMessage isEqualToString:@""]) {
+                               if (!fetchedLogin.lastFailMessage || [fetchedLogin.lastFailMessage isEqualToString:@""]) {
                                    notifiedAboutStart = NO;
                                    [self.loginFetchingDelegate loginSuccessfullyFinishedFetching:fetchedLogin];
                                } else {
