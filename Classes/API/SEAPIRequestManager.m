@@ -123,6 +123,7 @@ static CGFloat const kLoginPollDelayTime = 5.0f;
                                              success(createdLogin);
                                          }
                                          if ([self isLoginFetchingDelegateSuitableForDelegation]) {
+                                             [self notifyDelegateWithStartingFetchOfLogin:createdLogin];
                                              [self pollLoginWithSecret:createdLogin.secret];
                                          }
                                      }
@@ -369,6 +370,7 @@ static CGFloat const kLoginPollDelayTime = 5.0f;
                                         }
                                         self.loginFetchingDelegate = delegate;
                                         if ([self isLoginFetchingDelegateSuitableForDelegation]) {
+                                            [self notifyDelegateWithStartingFetchOfLogin:reconnectedLogin];
                                             [self pollLoginWithSecret:reconnectedLogin.secret];
                                         }
                                     }
@@ -616,29 +618,20 @@ static CGFloat const kLoginPollDelayTime = 5.0f;
 - (void)pollLoginWithSecret:(NSString*)loginSecret
 {
     typedef void (^PollLoginBlock)();
-    static PollLoginBlock pollBlock;
-    pollBlock = ^() {
+    PollLoginBlock pollBlock = ^() {
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(kLoginPollDelayTime * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             [self pollLoginWithSecret:loginSecret];
         });
     };
 
-    static BOOL notifiedAboutStart = NO;
-
     [self fetchLoginWithSecret:loginSecret
                        success:^(SELogin* fetchedLogin) {
-                           if (!notifiedAboutStart && [self.loginFetchingDelegate respondsToSelector:@selector(loginStartedFetching:)]) {
-                               [self.loginFetchingDelegate loginStartedFetching:fetchedLogin];
-                               notifiedAboutStart = YES;
-                           }
                            if ([fetchedLogin.stage isEqualToString:kLoginStageInteractive]) {
                                [self.loginFetchingDelegate loginRequestedInteractiveInput:fetchedLogin];
                            } else if ([fetchedLogin.stage isEqualToString:kLoginStageFinish]) {
                                if (!fetchedLogin.lastFailMessage || [fetchedLogin.lastFailMessage isEqualToString:@""]) {
-                                   notifiedAboutStart = NO;
                                    [self.loginFetchingDelegate loginSuccessfullyFinishedFetching:fetchedLogin];
                                } else {
-                                   notifiedAboutStart = NO;
                                    [self.loginFetchingDelegate login:fetchedLogin failedToFetchWithMessage:fetchedLogin.lastFailMessage];
                                }
                            } else {
@@ -646,7 +639,6 @@ static CGFloat const kLoginPollDelayTime = 5.0f;
                            }
                        }
                        failure:^(SEError* failure) {
-                           notifiedAboutStart = NO;
                            [self.loginFetchingDelegate login:self.createdLogin failedToFetchWithMessage:failure.message];
                            self.createdLogin = nil;
                        }];
@@ -701,6 +693,13 @@ static CGFloat const kLoginPollDelayTime = 5.0f;
     NSMutableDictionary* mutableSessionHeaders = sessionHeaders.mutableCopy;
     mutableSessionHeaders[kLoginSecretHeaderKey] = loginSecret;
     return [NSDictionary dictionaryWithDictionary:mutableSessionHeaders];
+}
+
+- (void)notifyDelegateWithStartingFetchOfLogin:(SELogin*)login
+{
+    if ([self.loginFetchingDelegate respondsToSelector:@selector(loginStartedFetching:)]) {
+        [self.loginFetchingDelegate loginStartedFetching:login];
+    }
 }
 
 @end
