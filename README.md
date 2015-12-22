@@ -170,7 +170,7 @@ Set up the `clientId`, `appSecret` and `customerIdentifier` constants to your Cl
 
 ## Versioning
 
-The current version of the SDK is [2.5.4](https://github.com/saltedge/saltedge-ios/releases/tag/v2.5.4), and is in compliance with the Salt Edge API's [current version](https://docs.saltedge.com/#version_management). Any backward-incompatible changes in the API will result in changes to the SDK.
+The current version of the SDK is [2.5.5](https://github.com/saltedge/saltedge-ios/releases/tag/v2.5.5), and is in compliance with the Salt Edge API's [current version](https://docs.saltedge.com/#version_management). Any backward-incompatible changes in the API will result in changes to the SDK.
 
 ## License
 
