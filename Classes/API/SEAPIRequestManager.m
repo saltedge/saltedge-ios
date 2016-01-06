@@ -66,7 +66,7 @@ static CGFloat const kLoginPollDelayTime = 5.0f;
         NSAssert(sessionHeaders != nil, @"Session configuration not set. Did you forget to link your client ID and app secret?");
     });
 
-    SEAPIRequestManager* manager = [[[self class] alloc] initWithBaseURL:kRootURL];
+    SEAPIRequestManager* manager = [[[self class] alloc] init];
     return manager;
 }
 
@@ -522,10 +522,10 @@ static CGFloat const kLoginPollDelayTime = 5.0f;
 #pragma mark -
 #pragma mark - Private API
 
-- (instancetype)initWithBaseURL:(NSString*)baseURL
+- (instancetype)init
 {
     if (self = [super init]) {
-        self.baseURL = baseURL;
+        _baseURL = kRootURL;
     }
     return self;
 }
