@@ -45,7 +45,7 @@ A small `UIWebView` replacement for using [Salt Edge Connect](https://docs.salte
 
 #### Swift
 
-You can use the SaltEdge iOS SDK in Swift projects as well. To do so, follow the installation instructions, and in addition to that [create a bridging header](https://developer.apple.com/library/ios/documentation/Swift/Conceptual/BuildingCocoaApps/MixandMatch.html#//apple_ref/doc/uid/TP40014216-CH10-ID122) and import the classes you wish to use in Swift into that bridging header.
+You can use the SaltEdge iOS SDK in Swift projects as well. To do so, follow the installation instructions, and in addition to that, [create a bridging header](https://developer.apple.com/library/ios/documentation/Swift/Conceptual/BuildingCocoaApps/MixandMatch.html#//apple_ref/doc/uid/TP40014216-CH10-ID122) and import the classes you wish to use in Swift into that bridging header.
 
 * Import the class and delegate files into your view controller (Objective-C only)
 * Add a `SEWebView` instance to your view controllers' view, also set a `stateDelegate` for the web view
@@ -140,7 +140,7 @@ func webView(webView: SEWebView!, receivedCallbackWithResponse response: [NSObje
 }
 
 func webView(webView: SEWebView!, receivedCallbackWithError error: NSError!) {
-  // handle the error...
+    // handle the error...
 }
 ```
 
@@ -148,7 +148,7 @@ Keep in mind that you can also implement the `UIWebView` delegate methods:
 
 ```swift
 func webView(webView: UIWebView, shouldStartLoadWithRequest request: NSURLRequest, navigationType: UIWebViewNavigationType) -> Bool {
-  // the method will be called after SEWebView has finished processing it
+    // the method will be called after SEWebView has finished processing it
 }
 ```
 
