@@ -78,9 +78,6 @@ static NSString* const kConnectURLKey    = @"connect_url";
 {
     self.title = @"Connect";
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Providers" style:UIBarButtonItemStylePlain target:self action:@selector(showProviders)];
-    SVProgressHUD* hud = [SVProgressHUD performSelector:@selector(sharedView)];
-    [hud setHudBackgroundColor:[UIColor blackColor]];
-    [hud setHudForegroundColor:[UIColor whiteColor]];
 }
 
 - (void)setupConnectWebView
