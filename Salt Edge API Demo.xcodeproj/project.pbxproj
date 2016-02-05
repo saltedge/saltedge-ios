@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		0A1BEB7619EBD0E5000C0D64 /* PickerTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A1BEB7519EBD0E5000C0D64 /* PickerTVC.m */; };
+		0A1DC3C71C62263D00001CD1 /* SELoginAttempt.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A1DC3C61C62263D00001CD1 /* SELoginAttempt.m */; };
+		0A1DC3CA1C6228D700001CD1 /* SELoginAttemptStage.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A1DC3C91C6228D700001CD1 /* SELoginAttemptStage.m */; };
+		0A1DC3CD1C6258A300001CD1 /* LoginAttemptsTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A1DC3CC1C6258A300001CD1 /* LoginAttemptsTVC.m */; };
 		0A3F86FF19A1F05E00B7E5E2 /* SEAPIRequestManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A3F86E019A1F05E00B7E5E2 /* SEAPIRequestManager.m */; };
 		0A3F870019A1F05E00B7E5E2 /* NSString+SEModelsSerializingAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A3F86E419A1F05E00B7E5E2 /* NSString+SEModelsSerializingAdditions.m */; };
 		0A3F870119A1F05E00B7E5E2 /* SEAccount.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A3F86E719A1F05E00B7E5E2 /* SEAccount.m */; };
@@ -54,6 +57,7 @@
 		0AD2C2E019E7EEF1003D2FD0 /* SEError.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AD2C2DF19E7EEF1003D2FD0 /* SEError.m */; };
 		0AE487131A02AC8B00F5CEBF /* NSURL+SECallbacksAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AE4870F1A02AC8B00F5CEBF /* NSURL+SECallbacksAdditions.m */; };
 		0AE487141A02AC8B00F5CEBF /* SEWebView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AE487111A02AC8B00F5CEBF /* SEWebView.m */; };
+		0AF891711C636A260078241B /* SingleLoginAttemptTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AF891701C636A260078241B /* SingleLoginAttemptTVC.m */; };
 		0AF898811986632F00F1A270 /* NSURL+SECallbacksAdditionsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AF898801986632F00F1A270 /* NSURL+SECallbacksAdditionsTests.m */; };
 		0AF898841986633E00F1A270 /* ConnectWebViewVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AF898831986633E00F1A270 /* ConnectWebViewVC.m */; };
 		0AF898901986740200F1A270 /* TabBarVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AF8988F1986740200F1A270 /* TabBarVC.m */; };
@@ -75,6 +79,12 @@
 /* Begin PBXFileReference section */
 		0A1BEB7419EBD0E5000C0D64 /* PickerTVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PickerTVC.h; sourceTree = "<group>"; };
 		0A1BEB7519EBD0E5000C0D64 /* PickerTVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PickerTVC.m; sourceTree = "<group>"; };
+		0A1DC3C51C62263D00001CD1 /* SELoginAttempt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SELoginAttempt.h; sourceTree = "<group>"; };
+		0A1DC3C61C62263D00001CD1 /* SELoginAttempt.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SELoginAttempt.m; sourceTree = "<group>"; };
+		0A1DC3C81C6228D700001CD1 /* SELoginAttemptStage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SELoginAttemptStage.h; sourceTree = "<group>"; };
+		0A1DC3C91C6228D700001CD1 /* SELoginAttemptStage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SELoginAttemptStage.m; sourceTree = "<group>"; };
+		0A1DC3CB1C6258A300001CD1 /* LoginAttemptsTVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginAttemptsTVC.h; sourceTree = "<group>"; };
+		0A1DC3CC1C6258A300001CD1 /* LoginAttemptsTVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginAttemptsTVC.m; sourceTree = "<group>"; };
 		0A2A656119F7CC3D00BC5378 /* SELoginFetchingDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SELoginFetchingDelegate.h; sourceTree = "<group>"; };
 		0A3F86DF19A1F05E00B7E5E2 /* SEAPIRequestManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SEAPIRequestManager.h; sourceTree = "<group>"; };
 		0A3F86E019A1F05E00B7E5E2 /* SEAPIRequestManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SEAPIRequestManager.m; sourceTree = "<group>"; };
@@ -156,6 +166,8 @@
 		0AE487101A02AC8B00F5CEBF /* SEWebView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SEWebView.h; sourceTree = "<group>"; };
 		0AE487111A02AC8B00F5CEBF /* SEWebView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SEWebView.m; sourceTree = "<group>"; };
 		0AE487121A02AC8B00F5CEBF /* SEWebViewDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SEWebViewDelegate.h; sourceTree = "<group>"; };
+		0AF8916F1C636A260078241B /* SingleLoginAttemptTVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SingleLoginAttemptTVC.h; sourceTree = "<group>"; };
+		0AF891701C636A260078241B /* SingleLoginAttemptTVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SingleLoginAttemptTVC.m; sourceTree = "<group>"; };
 		0AF898801986632F00F1A270 /* NSURL+SECallbacksAdditionsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSURL+SECallbacksAdditionsTests.m"; sourceTree = "<group>"; };
 		0AF898821986633E00F1A270 /* ConnectWebViewVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConnectWebViewVC.h; sourceTree = "<group>"; };
 		0AF898831986633E00F1A270 /* ConnectWebViewVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConnectWebViewVC.m; sourceTree = "<group>"; };
@@ -243,6 +255,10 @@
 				0AD2C2DF19E7EEF1003D2FD0 /* SEError.m */,
 				0A3F86EA19A1F05E00B7E5E2 /* SELogin.h */,
 				0A3F86EB19A1F05E00B7E5E2 /* SELogin.m */,
+				0A1DC3C51C62263D00001CD1 /* SELoginAttempt.h */,
+				0A1DC3C61C62263D00001CD1 /* SELoginAttempt.m */,
+				0A1DC3C81C6228D700001CD1 /* SELoginAttemptStage.h */,
+				0A1DC3C91C6228D700001CD1 /* SELoginAttemptStage.m */,
 				0A3F86EC19A1F05E00B7E5E2 /* SEProvider.h */,
 				0A3F86ED19A1F05E00B7E5E2 /* SEProvider.m */,
 				0A3F86EE19A1F05E00B7E5E2 /* SEProviderField.h */,
@@ -406,6 +422,10 @@
 				0AF898831986633E00F1A270 /* ConnectWebViewVC.m */,
 				0AAB6D2519827ACD009DCDD5 /* LoginsTVC.h */,
 				0AAB6D2619827ACD009DCDD5 /* LoginsTVC.m */,
+				0A1DC3CB1C6258A300001CD1 /* LoginAttemptsTVC.h */,
+				0A1DC3CC1C6258A300001CD1 /* LoginAttemptsTVC.m */,
+				0AF8916F1C636A260078241B /* SingleLoginAttemptTVC.h */,
+				0AF891701C636A260078241B /* SingleLoginAttemptTVC.m */,
 				0A1BEB7419EBD0E5000C0D64 /* PickerTVC.h */,
 				0A1BEB7519EBD0E5000C0D64 /* PickerTVC.m */,
 				0AF8988E1986740200F1A270 /* TabBarVC.h */,
@@ -509,7 +529,8 @@
 		0AAB6CD919827AAA009DCDD5 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0510;
+				LastSwiftUpdateCheck = 0720;
+				LastUpgradeCheck = 0720;
 				ORGANIZATIONNAME = "Salt Edge";
 				TargetAttributes = {
 					0AAB6D0119827AAA009DCDD5 = {
@@ -619,9 +640,11 @@
 				0A1BEB7619EBD0E5000C0D64 /* PickerTVC.m in Sources */,
 				0A3F870019A1F05E00B7E5E2 /* NSString+SEModelsSerializingAdditions.m in Sources */,
 				0A939E9F19DA9F0E005BD28C /* TransactionTableViewCell.m in Sources */,
+				0A1DC3CD1C6258A300001CD1 /* LoginAttemptsTVC.m in Sources */,
 				0A4DBC591A024C2900DC27C3 /* NSURL+SEQueryArgmuentsAdditions.m in Sources */,
 				0A3F870419A1F05E00B7E5E2 /* SEProvider.m in Sources */,
 				0AAB6D4F19827ACD009DCDD5 /* UIView+Framing.m in Sources */,
+				0A1DC3CA1C6228D700001CD1 /* SELoginAttemptStage.m in Sources */,
 				0AAB6D5519827ACD009DCDD5 /* TransactionsTVC.m in Sources */,
 				0AAB6CF119827AAA009DCDD5 /* main.m in Sources */,
 				0AF898901986740200F1A270 /* TabBarVC.m in Sources */,
@@ -634,11 +657,13 @@
 				0A3F86FF19A1F05E00B7E5E2 /* SEAPIRequestManager.m in Sources */,
 				0A3F870619A1F05E00B7E5E2 /* SEProviderFieldOption.m in Sources */,
 				0AB068DA1A010E7E00596A3B /* SEAPIRequestManager+SEOAuthLoginHandlingAdditions.m in Sources */,
+				0AF891711C636A260078241B /* SingleLoginAttemptTVC.m in Sources */,
 				0A3F870319A1F05E00B7E5E2 /* SELogin.m in Sources */,
 				0A3F870219A1F05E00B7E5E2 /* SEBaseModel.m in Sources */,
 				0A3F870A19A1F05E00B7E5E2 /* DateUtils.m in Sources */,
 				0AAB6D5319827ACD009DCDD5 /* LoginsTVC.m in Sources */,
 				0A6568A019F91DD0004A1EB1 /* UIControl+SELoginInputFieldsAdditions.m in Sources */,
+				0A1DC3C71C62263D00001CD1 /* SELoginAttempt.m in Sources */,
 				0A3F870119A1F05E00B7E5E2 /* SEAccount.m in Sources */,
 				0A65689919F91CDF004A1EB1 /* CredentialsVC.m in Sources */,
 				0A65689819F91CDF004A1EB1 /* CreateLoginVC.m in Sources */,
@@ -710,6 +735,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -724,7 +750,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 			};
@@ -756,7 +782,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -768,11 +794,15 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CLANG_ENABLE_MODULES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Salt Edge API Demo/Salt Edge API Demo-Prefix.pch";
 				INFOPLIST_FILE = "Salt Edge API Demo/Salt Edge API Demo-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.saltedge.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -783,10 +813,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CLANG_ENABLE_MODULES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Salt Edge API Demo/Salt Edge API Demo-Prefix.pch";
 				INFOPLIST_FILE = "Salt Edge API Demo/Salt Edge API Demo-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.saltedge.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -808,6 +841,7 @@
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = "Salt Edge API DemoTests/Salt Edge API DemoTests-Info.plist";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.saltedge.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
@@ -826,6 +860,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Salt Edge API Demo/Salt Edge API Demo-Prefix.pch";
 				INFOPLIST_FILE = "Salt Edge API DemoTests/Salt Edge API DemoTests-Info.plist";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.saltedge.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;

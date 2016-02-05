@@ -1,5 +1,5 @@
 //
-//  SELogin.m
+//  SELoginAttempt.h
 //
 //  Copyright (c) 2015 Salt Edge. https://saltedge.com
 //
@@ -21,50 +21,30 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 
-#import "SELogin.h"
+#import "SEBaseModel.h"
+#import "SELoginAttemptStage.h"
 
-static NSString* const kLoginLastAttemptKey = @"last_attempt";
+/**
+ SELoginAttempt represents an attempt to fetch a login.
 
-@implementation SELogin
+ @warning When fetching a login attempt or getting it from a login object via login.lastAttempt, it may not have all fields present.
+ */
 
-+ (instancetype)objectFromDictionary:(NSDictionary *)dictionary
-{
-    SELogin* object = [super objectFromDictionary:dictionary];
-    object.lastAttempt = [SELoginAttempt objectFromDictionary:dictionary[kLoginLastAttemptKey]];
-    return object;
-}
+@interface SELoginAttempt : SEBaseModel
 
-- (NSString*)stage
-{
-    return self.lastAttempt.lastStage.name;
-}
-
-- (NSString*)lastFailMessage
-{
-    return self.lastAttempt.failMessage;
-}
-
-- (BOOL)isEqualToLogin:(SELogin*)login
-{
-    return ([self.id integerValue] == [login.id integerValue]);
-}
-
-- (BOOL)isEqual:(id)object
-{
-    if (self == object) {
-        return YES;
-    }
-
-    if (![object isKindOfClass:[self class]]) {
-        return NO;
-    }
-
-    return [self isEqualToLogin:object];
-}
-
-- (NSUInteger)hash
-{
-    return self.id.unsignedIntegerValue;
-}
+@property (nonatomic, strong) NSNumber* id;
+@property (nonatomic, strong) SELoginAttemptStage* lastStage;
+@property (nonatomic, strong) NSArray* stages;
+@property (nonatomic, strong) NSNumber* finished;
+@property (nonatomic, strong) NSNumber* finishedRecent;
+@property (nonatomic, strong) NSNumber* interactive;
+@property (nonatomic, strong) NSNumber* partial;
+@property (nonatomic, strong) NSNumber* automaticFetch;
+@property (nonatomic, strong) NSDate* createdAt;
+@property (nonatomic, strong) NSDate* updatedAt;
+@property (nonatomic, strong) NSDate* successAt;
+@property (nonatomic, strong) NSDate* failAt;
+@property (nonatomic, strong) NSString* failErrorClass;
+@property (nonatomic, strong) NSString* failMessage;
 
 @end

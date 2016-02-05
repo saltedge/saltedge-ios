@@ -1,5 +1,5 @@
 //
-//  SELogin.m
+//  SELoginAttemptStage.h
 //
 //  Copyright (c) 2015 Salt Edge. https://saltedge.com
 //
@@ -21,50 +21,18 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 
-#import "SELogin.h"
+#import "SEBaseModel.h"
 
-static NSString* const kLoginLastAttemptKey = @"last_attempt";
+/**
+ SELoginAttemptStage represents a stage within an attempt of a login fetch process.
+ */
 
-@implementation SELogin
+@interface SELoginAttemptStage : SEBaseModel
 
-+ (instancetype)objectFromDictionary:(NSDictionary *)dictionary
-{
-    SELogin* object = [super objectFromDictionary:dictionary];
-    object.lastAttempt = [SELoginAttempt objectFromDictionary:dictionary[kLoginLastAttemptKey]];
-    return object;
-}
-
-- (NSString*)stage
-{
-    return self.lastAttempt.lastStage.name;
-}
-
-- (NSString*)lastFailMessage
-{
-    return self.lastAttempt.failMessage;
-}
-
-- (BOOL)isEqualToLogin:(SELogin*)login
-{
-    return ([self.id integerValue] == [login.id integerValue]);
-}
-
-- (BOOL)isEqual:(id)object
-{
-    if (self == object) {
-        return YES;
-    }
-
-    if (![object isKindOfClass:[self class]]) {
-        return NO;
-    }
-
-    return [self isEqualToLogin:object];
-}
-
-- (NSUInteger)hash
-{
-    return self.id.unsignedIntegerValue;
-}
+@property (nonatomic, strong) NSString* name;
+@property (nonatomic, strong) NSString* interactiveHtml;
+@property (nonatomic, strong) NSArray* interactiveFieldsNames;
+@property (nonatomic, strong) NSDate* createdAt;
+@property (nonatomic, strong) NSDate* updatedAt;
 
 @end

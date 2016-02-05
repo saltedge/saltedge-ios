@@ -21,15 +21,17 @@
 #import "CreateLoginVC.h"
 #import "SELoginFetchingDelegate.h"
 #import "SEProvider.h"
+#import "LoginAttemptsTVC.h"
 
 typedef NS_ENUM(NSUInteger, SELoginActionMethod){
     SELoginActionMethodAPI = 0,
     SELoginActionMethodWebView
 };
 
-static NSString* const kLoginRefreshAction   = @"Refresh";
-static NSString* const kLoginReconnectAction = @"Reconnect";
-static NSString* const kLoginRemoveAction    = @"Remove";
+static NSString* const kLoginRefreshAction      = @"Refresh";
+static NSString* const kLoginReconnectAction    = @"Reconnect";
+static NSString* const kLoginViewAttemptsAction = @"View Attempts";
+static NSString* const kLoginRemoveAction       = @"Remove";
 
 static NSString* const kLoginActionMethodWebView = @"Web view";
 static NSString* const kLoginActionMethodAPI     = @"API";
@@ -69,7 +71,7 @@ static NSString* const kAccountCellReuseIdentifier = @"AccountTableViewCell";
 
 - (void)actionsPressed
 {
-    UIActionSheet* actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:kLoginRemoveAction otherButtonTitles:kLoginReconnectAction, kLoginRefreshAction, nil];
+    UIActionSheet* actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:kLoginRemoveAction otherButtonTitles:kLoginReconnectAction, kLoginRefreshAction, kLoginViewAttemptsAction, nil];
     [actionSheet showInView:self.view];
 }
 
@@ -103,6 +105,13 @@ static NSString* const kAccountCellReuseIdentifier = @"AccountTableViewCell";
 - (void)showWebViewOrAPIAlert
 {
     [[[UIAlertView alloc] initWithTitle:@"Choose a method for the action" message:nil delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:kLoginActionMethodWebView, kLoginActionMethodAPI, nil] show];
+}
+
+- (void)showLoginAttempts
+{
+    LoginAttemptsTVC* loginAttempts = [self.storyboard instantiateViewControllerWithIdentifier:@"LoginAttemptsTVC"];
+    loginAttempts.login = self.login;
+    [self.navigationController pushViewController:loginAttempts animated:YES];
 }
 
 - (void)refreshCurrentLoginViaAPI
@@ -232,6 +241,8 @@ static NSString* const kAccountCellReuseIdentifier = @"AccountTableViewCell";
     if ([buttonTitle isEqualToString:kLoginRefreshAction] || [buttonTitle isEqualToString:kLoginReconnectAction]) {
         self.desiredLoginAction = buttonTitle;
         [self showWebViewOrAPIAlert];
+    } else if ([buttonTitle isEqualToString:kLoginViewAttemptsAction]) {
+        [self showLoginAttempts];
     } else if ([buttonTitle isEqualToString:kLoginRemoveAction]) {
         [self removeLogin];
         [self.navigationController popViewControllerAnimated:YES];

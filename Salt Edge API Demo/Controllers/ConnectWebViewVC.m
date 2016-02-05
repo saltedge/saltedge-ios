@@ -134,8 +134,7 @@ static NSString* const kConnectURLKey    = @"connect_url";
     SEAPIRequestManager* manager = [SEAPIRequestManager manager];
     [SVProgressHUD showWithStatus:@"Requesting token..." maskType:SVProgressHUDMaskTypeGradient];
     if (!self.login) {
-        NSString* customerId = [AppDelegate delegate].customerId;
-        [manager requestCreateTokenWithParameters:@{ @"country_code" : self.provider.countryCode, @"provider_code" : self.provider.code, @"return_to" : @"http://httpbin.org", @"customer_id" : customerId } success:^(NSDictionary* responseObject) {
+        [manager requestCreateTokenWithParameters:@{ @"country_code" : self.provider.countryCode, @"provider_code" : self.provider.code, @"return_to" : @"http://httpbin.org" } success:^(NSDictionary* responseObject) {
             [self loadConnectPageWithURLString:responseObject[kDataKey][kConnectURLKey]];
         } failure:^(SEError* error) {
             NSLog(@"%@", error);
@@ -197,8 +196,7 @@ static NSString* const kConnectURLKey    = @"connect_url";
 
 - (void)webView:(SEWebView *)webView receivedCallbackWithResponse:(NSDictionary *)response
 {
-    NSString* loginState = response[SELoginDataKey][SELoginStateKey];
-
+    NSString* loginState = response[SELoginDataKey][SELoginStageKey];
     if ([loginState isEqualToString:SELoginStateSuccess]) {
         [self switchToLoginsViewController];
         [SVProgressHUD dismiss];
@@ -211,7 +209,7 @@ static NSString* const kConnectURLKey    = @"connect_url";
         [loginSecrets addObject:loginSecret];
         [[NSUserDefaults standardUserDefaults] setObject:[loginSecrets allObjects] forKey:kLoginSecretsDefaultsKey];
         [[NSUserDefaults standardUserDefaults] synchronize];
-        if (self.login && !self.login.interactive.boolValue) {
+        if (self.login && !self.login.lastAttempt.interactive.boolValue) {
             [SVProgressHUD showWithStatus:@"Loading..." maskType:SVProgressHUDMaskTypeGradient];
         }
     } else if ([loginState isEqualToString:SELoginStateError]) {

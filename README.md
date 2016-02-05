@@ -4,7 +4,7 @@ A handful of classes to help you interact with the Salt Edge API from your iOS a
 
 ## Requirements
 
-iOS 6+, ARC.
+iOS 7+, ARC.
 
 ## Installation
 ### CocoaPods
@@ -263,7 +263,7 @@ Set up the `clientId`, `appSecret` and `customerIdentifier` constants to your Cl
 
 ## Versioning
 
-The current version of the SDK is [2.6.0](https://github.com/saltedge/saltedge-ios/releases/tag/v2.6.0), and is in compliance with the Salt Edge API's [current version](https://docs.saltedge.com/#version_management). Any backward-incompatible changes in the API will result in changes to the SDK.
+The current version of the SDK is [3.0.0](https://github.com/saltedge/saltedge-ios/releases/tag/v3.0.0), and is in compliance with the Salt Edge API's [current version](https://docs.saltedge.com/#version_management). Any backward-incompatible changes in the API will result in changes to the SDK.
 
 ## License
 

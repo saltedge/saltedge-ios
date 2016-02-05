@@ -63,7 +63,7 @@
             if ((callbackParameters[SELoginDataKey][SELoginSecretKey] ||
                  callbackParameters[SELoginDataKey][SELoginIDKey] ||
                  callbackParameters[SELoginDataKey][SELoginDuplicatedIDKey])
-                && callbackParameters[SELoginDataKey][SELoginStateKey]) {
+                && callbackParameters[SELoginDataKey][SELoginStageKey]) {
                 if ([self.stateDelegate respondsToSelector:@selector(webView:receivedCallbackWithResponse:)]) {
                     [self.stateDelegate webView:self receivedCallbackWithResponse:callbackParameters];
                 }

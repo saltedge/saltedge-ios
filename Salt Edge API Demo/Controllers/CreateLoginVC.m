@@ -229,8 +229,7 @@
 - (void)createLogin
 {
     NSMutableDictionary* parameters = @{ kCountryCodeKey : self.provider.countryCode,
-                                         kProviderCodeKey : self.provider.code,
-                                         kCustomerIdKey : [AppDelegate delegate].customerId,
+                                         kProviderCodeKey : self.provider.code
                                          }.mutableCopy;
 
     [SVProgressHUD showWithStatus:@"Creating login..." maskType:SVProgressHUDMaskTypeGradient];
@@ -326,10 +325,10 @@
 {
     CredentialsVC* credentialsVC = [self.storyboard instantiateViewControllerWithIdentifier:@"CredentialsVC"];
     NSPredicate* predicate = [NSPredicate predicateWithBlock:^BOOL(SEProviderField* field, NSDictionary* bindings) {
-        return [login.interactiveFieldsNames containsObject:field.name];
+        return [login.lastAttempt.lastStage.interactiveFieldsNames containsObject:field.name];
     }];
     credentialsVC.credentialFields = [self.provider.interactiveFields filteredArrayUsingPredicate:predicate];
-    credentialsVC.interactiveHtml = login.interactiveHtml;
+    credentialsVC.interactiveHtml = login.lastAttempt.lastStage.interactiveHtml;
     credentialsVC.completionBlock = ^(NSDictionary* credentials) {
         [SVProgressHUD showWithStatus:@"Sending credentials..." maskType:SVProgressHUDMaskTypeGradient];
         SEAPIRequestManager* manager = [SEAPIRequestManager manager];

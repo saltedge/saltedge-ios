@@ -69,7 +69,7 @@
         XCTAssertTrue([obj isMemberOfClass:[SEProviderField class]], @"Provider fields should be of type SEProviderField");
     }
 
-    NSArray* datesKeys = @[@"createdAt", @"updatedAt", @"deletedAt", @"lastFailAt", @"lastSuccessAt", @"lastRequestAt"];
+    NSArray* datesKeys = @[@"createdAt", @"updatedAt", @"deletedAt", @"lastFailAt", @"lastSuccessAt", @"lastRequestAt", @"nextRefreshPossibleAt", @"successAt", @"failAt"];
 
     for (NSString* key in providerDictionary.allKeys) {
         if (![key isEqualToString:@"required_fields"]) {

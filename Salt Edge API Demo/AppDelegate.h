@@ -10,15 +10,14 @@
 
 @class TabBarVC;
 
-static NSString* const kLoginSecretsDefaultsKey = @"LoginSecretsArray";
-static NSString* const kCustomerIdDefaultsKey   = @"CustomerIdKey";
+static NSString* const kLoginSecretsDefaultsKey   = @"LoginSecretsArray";
+static NSString* const kCustomerSecretDefaultsKey = @"CustomerSecretKey";
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
 @property (strong, readonly)  TabBarVC* tabBar;
 @property (strong, nonatomic) NSSet* providers;
-@property (strong, nonatomic) NSString* customerId;
 
 + (instancetype)delegate;
 - (NSString*)applicationURLString;

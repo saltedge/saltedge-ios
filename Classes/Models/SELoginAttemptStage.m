@@ -1,5 +1,5 @@
 //
-//  SELogin.m
+//  SELoginAttemptStage.m
 //
 //  Copyright (c) 2015 Salt Edge. https://saltedge.com
 //
@@ -21,50 +21,8 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 
-#import "SELogin.h"
+#import "SELoginAttemptStage.h"
 
-static NSString* const kLoginLastAttemptKey = @"last_attempt";
-
-@implementation SELogin
-
-+ (instancetype)objectFromDictionary:(NSDictionary *)dictionary
-{
-    SELogin* object = [super objectFromDictionary:dictionary];
-    object.lastAttempt = [SELoginAttempt objectFromDictionary:dictionary[kLoginLastAttemptKey]];
-    return object;
-}
-
-- (NSString*)stage
-{
-    return self.lastAttempt.lastStage.name;
-}
-
-- (NSString*)lastFailMessage
-{
-    return self.lastAttempt.failMessage;
-}
-
-- (BOOL)isEqualToLogin:(SELogin*)login
-{
-    return ([self.id integerValue] == [login.id integerValue]);
-}
-
-- (BOOL)isEqual:(id)object
-{
-    if (self == object) {
-        return YES;
-    }
-
-    if (![object isKindOfClass:[self class]]) {
-        return NO;
-    }
-
-    return [self isEqualToLogin:object];
-}
-
-- (NSUInteger)hash
-{
-    return self.id.unsignedIntegerValue;
-}
+@implementation SELoginAttemptStage
 
 @end

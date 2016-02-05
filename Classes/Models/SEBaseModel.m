@@ -31,7 +31,7 @@ static NSArray* dateTimePropertiesNames, *datePropertyNames;
 
 + (void)initialize
 {
-    dateTimePropertiesNames = @[@"createdAt", @"updatedAt", @"deletedAt", @"lastFailAt", @"lastSuccessAt", @"lastRequestAt"];
+    dateTimePropertiesNames = @[@"createdAt", @"updatedAt", @"deletedAt", @"lastFailAt", @"lastSuccessAt", @"lastRequestAt", @"nextRefreshPossibleAt", @"successAt", @"failAt"];
     datePropertyNames = @[@"madeOn"];
 }
 

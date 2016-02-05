@@ -22,6 +22,7 @@
 //  THE SOFTWARE.
 
 #import "SEBaseModel.h"
+#import "SELoginAttempt.h"
 
 /**
  SELogin represents a login within the Salt Edge system.
@@ -30,27 +31,17 @@
  */
 @interface SELogin : SEBaseModel
 
-@property (nonatomic, strong) NSNumber* id;
-@property (nonatomic, strong) NSString* secret;
-@property (nonatomic, strong) NSNumber* finished;
-@property (nonatomic, strong) NSNumber* finishedRecent;
-@property (nonatomic, strong) NSNumber* partial;
-@property (nonatomic, strong) NSString* providerCode;
-@property (nonatomic, strong) NSString* providerName;
-@property (nonatomic, strong) NSNumber* automaticFetch;
-@property (nonatomic, strong) NSNumber* interactive;
-@property (nonatomic, strong) NSString* interactiveHtml;
-@property (nonatomic, strong) NSArray*  interactiveFieldsNames;
-@property (nonatomic, strong) NSString* customerEmail;
-@property (nonatomic, strong) NSDate*   createdAt;
-@property (nonatomic, strong) NSDate*   updatedAt;
-@property (nonatomic, strong) NSDate*   lastFailAt;
-@property (nonatomic, strong) NSString* lastFailMessage;
-@property (nonatomic, strong) NSDate*   lastRequestAt;
-@property (nonatomic, strong) NSDate*   lastSuccessAt;
-@property (nonatomic, strong) NSString* status;
-@property (nonatomic, strong) NSString* stage;
-@property (nonatomic, strong) NSString* countryCode;
+@property (nonatomic, strong) NSNumber*       id;
+@property (nonatomic, strong) SELoginAttempt* lastAttempt;
+@property (nonatomic, strong) NSString*       secret;
+@property (nonatomic, strong) NSString*       status;
+@property (nonatomic, strong) NSString*       countryCode;
+@property (nonatomic, strong) NSString*       providerCode;
+@property (nonatomic, strong) NSString*       providerName;
+@property (nonatomic, strong) NSDate*         createdAt;
+@property (nonatomic, strong) NSDate*         updatedAt;
+@property (nonatomic, strong) NSDate*         lastSuccessAt;
+@property (nonatomic, strong) NSDate*         nextRefreshPossibleAt;
 
 /**
  Tests whether the caller and the parameter are equal.
@@ -58,5 +49,21 @@
  @return YES if the logins' ids are equal, otherwise NO.
  */
 - (BOOL)isEqualToLogin:(SELogin*)login;
+
+/**
+ Convenience method for getting the last login stage from the last attempt.
+ This will be equal to the caller's lastAttempt.lastStage.name
+
+ @return The login stage from the last attempt.
+ */
+- (NSString*)stage;
+
+/**
+ Convenience method for getting the last fail message from the last attempt.
+ This will be equal to the caller's lastAttempt.failMessage
+
+ @return The login stage from the last attempt.
+ */
+- (NSString*)lastFailMessage;
 
 @end

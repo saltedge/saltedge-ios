@@ -127,7 +127,7 @@ static NSString* const kLoginTableViewCellReuseIdentifier = @"LoginTableViewCell
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kLoginTableViewCellReuseIdentifier forIndexPath:indexPath];
     SELogin* theLogin = self.logins[indexPath.row];
     cell.textLabel.text = theLogin.providerName;
-    cell.detailTextLabel.text = theLogin.customerEmail;
+    cell.detailTextLabel.text = theLogin.status;
     return cell;
 }
 

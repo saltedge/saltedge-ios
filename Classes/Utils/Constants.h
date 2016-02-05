@@ -26,14 +26,15 @@
 
 /* Routes and paths */
 static NSString* const kRootURL                 = @"https://www.saltedge.com";
-static NSString* const kTokensPath              = @"api/v2/tokens";
-static NSString* const kLoginPath               = @"api/v2/login";
-static NSString* const kAccountsPath            = @"api/v2/accounts";
-static NSString* const kTransactionsPath        = @"api/v2/transactions";
-static NSString* const kProvidersPath           = @"api/v2/providers";
-static NSString* const kOAuthProvidersPath      = @"api/v2/oauth_providers";
-static NSString* const kCustomersPath           = @"api/v2/customers";
-static NSString* const kLearnPath               = @"api/v2/categories/learn";
+static NSString* const kTokensPath              = @"api/v3/tokens";
+static NSString* const kLoginPath               = @"api/v3/login";
+static NSString* const kAttemptsPath            = @"api/v3/attempts";
+static NSString* const kAccountsPath            = @"api/v3/accounts";
+static NSString* const kTransactionsPath        = @"api/v3/transactions";
+static NSString* const kProvidersPath           = @"api/v3/providers";
+static NSString* const kOAuthProvidersPath      = @"api/v3/oauth_providers";
+static NSString* const kCustomersPath           = @"api/v3/customers";
+static NSString* const kLearnPath               = @"api/v3/categories/learn";
 static NSString* const kLoginInteractive        = @"interactive";
 static NSString* const kPendingTransactions     = @"pending";
 
@@ -63,7 +64,7 @@ static NSString* const kCountryCodeKey           = @"country_code";
 static NSString* const kProviderCodeKey          = @"provider_code";
 static NSString* const kReturnToKey              = @"return_to";
 static NSString* const kRedirectURLKey           = @"redirect_url";
-static NSString* const kCustomerIdKey            = @"customer_id";
+static NSString* const kCustomerSecretKey        = @"secret";
 static NSString* const kAccountIdKey             = @"account_id";
 static NSString* const kFromMadeOnKey            = @"from_made_on";
 static NSString* const kToMadeOnKey              = @"to_made_on";
