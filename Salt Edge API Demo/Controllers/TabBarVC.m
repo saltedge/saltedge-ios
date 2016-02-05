@@ -3,7 +3,7 @@
 //  Salt Edge API Demo
 //
 //  Created by nemesis on 7/28/14.
-//  Copyright (c) 2015 Salt Edge. All rights reserved.
+//  Copyright (c) 2016 Salt Edge. All rights reserved.
 //
 
 #import "TabBarVC.h"
