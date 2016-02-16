@@ -27,7 +27,7 @@
 
 - (NSString*)description
 {
-    return [NSString stringWithFormat:@"*** ERROR: %@ -> %@. REQUEST: %@", self.errorClass, self.message, self.request];
+    return [NSString stringWithFormat:@"*** ERROR: %@ -> %@. REQUEST: %@", self.errorClass, self.errorMessage, self.request];
 }
 
 @end

@@ -97,7 +97,7 @@ static NSString* const kLoginAttemptTableViewCellReuseIdentifier = @"LoginAttemp
                                          [SVProgressHUD dismiss];
                                      }failure:^(SEError* error) {
                                          NSLog(@"Error: %@", error);
-                                         [SVProgressHUD showErrorWithStatus:error.message];
+                                         [SVProgressHUD showErrorWithStatus:error.errorMessage];
                                      }];
 }
 

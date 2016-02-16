@@ -80,7 +80,7 @@
             [self showProviders];
             [SVProgressHUD dismiss];
         } failure:^(SEError* error) {
-            [SVProgressHUD showErrorWithStatus:error.message];
+            [SVProgressHUD showErrorWithStatus:error.errorMessage];
         }];
     }
 }
@@ -113,7 +113,7 @@
                                [SVProgressHUD dismiss];
                            }
                            failure:^(SEError* error) {
-                               [SVProgressHUD showErrorWithStatus:error.message];
+                               [SVProgressHUD showErrorWithStatus:error.errorMessage];
                            }];
 }
 
@@ -242,7 +242,7 @@
                                        [SVProgressHUD showWithStatus:@"Fetching login..." maskType:SVProgressHUDMaskTypeGradient];
                                    }
                                    failure:^(SEError* error) {
-                                       [SVProgressHUD showErrorWithStatus:error.message];
+                                       [SVProgressHUD showErrorWithStatus:error.errorMessage];
                                    } delegate:self];
     } else {
         parameters[kReturnToKey] = [[AppDelegate delegate] applicationURLString];
@@ -251,7 +251,7 @@
                                             [[UIApplication sharedApplication] openURL:[NSURL URLWithString:responseObject[kDataKey][kRedirectURLKey]]];
                                         }
                                         failure:^(SEError* error) {
-                                            [SVProgressHUD showErrorWithStatus:error.message];
+                                            [SVProgressHUD showErrorWithStatus:error.errorMessage];
                                         } delegate:self];
     }
 }
@@ -267,7 +267,7 @@
                               credentials:credentialsDictionary
                                   success:nil
                                   failure:^(SEError* error) {
-                                      [SVProgressHUD showErrorWithStatus:error.message];
+                                      [SVProgressHUD showErrorWithStatus:error.errorMessage];
                                   } delegate:self];
     } else {
         [manager reconnectOAuthLoginWithSecret:self.login.secret
@@ -276,7 +276,7 @@
                                            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:responseObject[kDataKey][kRedirectURLKey]]];
                                        }
                                        failure:^(SEError* error) {
-                                           [SVProgressHUD showErrorWithStatus:error.message];
+                                           [SVProgressHUD showErrorWithStatus:error.errorMessage];
                                        }];
     }
 }
@@ -340,7 +340,7 @@
                                                              }];
                                                          }
                                                          failure:^(SEError* error) {
-                                                             [SVProgressHUD showErrorWithStatus:error.message];
+                                                             [SVProgressHUD showErrorWithStatus:error.errorMessage];
                                                          }
                                                         delegate: self];
     };

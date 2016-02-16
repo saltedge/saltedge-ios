@@ -90,7 +90,7 @@ static NSString* const kLoginTableViewCellReuseIdentifier = @"LoginTableViewCell
                     self.isLoadingLogins = NO;
                 }
             } failure:^(SEError* error) {
-                [SVProgressHUD showErrorWithStatus:error.message];
+                [SVProgressHUD showErrorWithStatus:error.errorMessage];
                 self.isLoadingLogins = NO;
             }];
         }

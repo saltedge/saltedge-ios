@@ -54,7 +54,7 @@ static NSString* const kTransactionCellReuseIdentifier = @"TransactionTableViewC
         [SVProgressHUD dismiss];
     } failure:^(SEError* error) {
         NSLog(@"%@", error);
-        [SVProgressHUD showErrorWithStatus:error.message];
+        [SVProgressHUD showErrorWithStatus:error.errorMessage];
     }];
 }
 

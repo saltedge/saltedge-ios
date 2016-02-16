@@ -109,7 +109,7 @@ static NSString* const kConnectURLKey    = @"connect_url";
             [self showProviders];
             [SVProgressHUD dismiss];
         } failure:^(SEError* error) {
-            [SVProgressHUD showErrorWithStatus:error.message];
+            [SVProgressHUD showErrorWithStatus:error.errorMessage];
         }];
     }
 }
@@ -144,14 +144,14 @@ static NSString* const kConnectURLKey    = @"connect_url";
             [self loadConnectPageWithURLString:responseObject[kDataKey][kConnectURLKey]];
         } failure:^(SEError* error) {
             NSLog(@"%@", error);
-            [SVProgressHUD showErrorWithStatus:error.message];
+            [SVProgressHUD showErrorWithStatus:error.errorMessage];
         }];
     } else {
         [manager requestReconnectTokenForLoginSecret:self.login.secret parameters:@{ @"return_to": @"http://httpbin.org" } success:^(NSDictionary* responseObject) {
             [self loadConnectPageWithURLString:responseObject[kDataKey][kConnectURLKey]];
         } failure:^(SEError* error) {
             NSLog(@"%@", error);
-            [SVProgressHUD showErrorWithStatus:error.message];
+            [SVProgressHUD showErrorWithStatus:error.errorMessage];
         }];
     }
 }

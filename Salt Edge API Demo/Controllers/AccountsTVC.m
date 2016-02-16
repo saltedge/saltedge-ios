@@ -93,12 +93,12 @@ static NSString* const kAccountCellReuseIdentifier = @"AccountTableViewCell";
             [SVProgressHUD dismiss];
         } failure:^(SEError* error) {
             NSLog(@"Error: %@", error);
-            [SVProgressHUD showErrorWithStatus:error.message];
+            [SVProgressHUD showErrorWithStatus:error.errorMessage];
         }];
 
     } failure:^(SEError* error) {
         NSLog(@"Error: %@", error);
-        [SVProgressHUD showErrorWithStatus:error.message];
+        [SVProgressHUD showErrorWithStatus:error.errorMessage];
     }];
 }
 
@@ -127,7 +127,7 @@ static NSString* const kAccountCellReuseIdentifier = @"AccountTableViewCell";
                                         }
                                     }
                                     failure:^(SEError* error) {
-                                        [SVProgressHUD showErrorWithStatus:error.message];
+                                        [SVProgressHUD showErrorWithStatus:error.errorMessage];
                                     } delegate:self];
     } else {
         [manager refreshOAuthLoginWithSecret:self.login.secret
@@ -136,7 +136,7 @@ static NSString* const kAccountCellReuseIdentifier = @"AccountTableViewCell";
                                          [[UIApplication sharedApplication] openURL:[NSURL URLWithString:responseObject[kDataKey][kRedirectURLKey]]];
                                      }
                                      failure:^(SEError* error) {
-                                         [SVProgressHUD showErrorWithStatus:error.message];
+                                         [SVProgressHUD showErrorWithStatus:error.errorMessage];
                                      }];
     }
 }
@@ -187,7 +187,7 @@ static NSString* const kAccountCellReuseIdentifier = @"AccountTableViewCell";
             [SVProgressHUD showErrorWithStatus:@"Couldn't remove login"];
         }
     } failure:^(SEError* error) {
-        [SVProgressHUD showErrorWithStatus:error.message];
+        [SVProgressHUD showErrorWithStatus:error.errorMessage];
     }];
 }
 

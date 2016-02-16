@@ -68,7 +68,7 @@
             [SEAPIRequestManager linkCustomerSecret:customerSecret];
             setWindowRootViewController();
         } failure:^(SEError* error) {
-            [SVProgressHUD showErrorWithStatus:error.message];
+            [SVProgressHUD showErrorWithStatus:error.errorMessage];
         }];
     } else {
         [SEAPIRequestManager linkCustomerSecret:customerSecret];

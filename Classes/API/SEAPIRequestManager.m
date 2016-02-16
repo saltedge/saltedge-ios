@@ -700,7 +700,7 @@ static CGFloat const kLoginPollDelayTime = 5.0f;
                            }
                        }
                        failure:^(SEError* failure) {
-                           [self.loginFetchingDelegate login:self.createdLogin failedToFetchWithMessage:failure.message];
+                           [self.loginFetchingDelegate login:self.createdLogin failedToFetchWithMessage:failure.errorMessage];
                            self.createdLogin = nil;
                        }];
 }

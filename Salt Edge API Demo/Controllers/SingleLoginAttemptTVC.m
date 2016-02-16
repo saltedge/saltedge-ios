@@ -49,7 +49,7 @@ static NSString* const kStageCreatedAtKey               = @"created_at";
                             [self.tableView reloadData];
                             [SVProgressHUD dismiss];
                         } failure:^(SEError* error) {
-                            [SVProgressHUD showErrorWithStatus:error.message];
+                            [SVProgressHUD showErrorWithStatus:error.errorMessage];
                         }];
 }
 
