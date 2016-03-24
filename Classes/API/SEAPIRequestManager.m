@@ -35,18 +35,22 @@
 #import "SELoginAttempt.h"
 
 /* HTTP Headers */
-static NSString* const kAppSecretHeaderKey       = @"App-secret";
-static NSString* const kClientIdHeaderKey        = @"Client-id";
-static NSString* const kCustomerSecretHeaderKey  = @"Customer-secret";
-static NSString* const kLoginSecretHeaderKey     = @"Login-secret";
-static NSString* const kContentTypeHeaderKey     = @"Content-type";
-static NSString* const kJSONContentTypeValue     = @"application/json";
+static NSString* const kAppSecretHeaderKey        = @"App-secret";
+static NSString* const kClientIdHeaderKey         = @"Client-id";
+static NSString* const kCustomerSecretHeaderKey   = @"Customer-secret";
+static NSString* const kLoginSecretHeaderKey      = @"Login-secret";
+static NSString* const kContentTypeHeaderKey      = @"Content-type";
+static NSString* const kJSONContentTypeValue      = @"application/json";
 
 /* HTTP Session config */
 static NSDictionary* sessionHeaders;
 
 /* Login polling */
 static CGFloat const kLoginPollDelayTime = 5.0f;
+
+/* Other */
+static NSString* const kJavascriptCallbackTypeKey = @"javascript_callback_type";
+static NSString* const kiFrameCallbackType        = @"iframe";
 
 @interface SEAPIRequestManager(/* Private */)
 
@@ -538,11 +542,9 @@ static CGFloat const kLoginPollDelayTime = 5.0f;
     NSAssert(parameters[kProviderCodeKey] != nil, @"Provider code cannot be nil.");
     NSAssert(parameters[kReturnToKey] != nil, @"Return to cannot be nil.");
 
-    NSDictionary* dataParameters = @{ kDataKey: parameters };
-
     [self requestTokenWithAction:kLoginActionCreate
                        headers:sessionHeaders
-                    parameters:dataParameters
+                    parameters:parameters
                        success:success
                        failure:failure];
 }
@@ -596,10 +598,15 @@ static CGFloat const kLoginPollDelayTime = 5.0f;
                      success:(void (^)(NSDictionary* responseObject))success
                      failure:(SEAPIRequestFailureBlock)failure
 {
+
+    NSMutableDictionary* mutableParams = parameters.mutableCopy;
+    mutableParams[kJavascriptCallbackTypeKey] = kiFrameCallbackType;
+    NSDictionary* dataParameters = @{ kDataKey: mutableParams };
+
     NSString* tokenPath = [[self baseURLStringByAppendingPathComponent:kTokensPath] stringByAppendingPathComponent:path];
 
     [SERequestHandler sendPOSTRequestWithURL:tokenPath
-                                  parameters:parameters
+                                  parameters:dataParameters
                                      headers:headers
                                      success:^(NSDictionary* responseObject) {
                                          if (success) {
