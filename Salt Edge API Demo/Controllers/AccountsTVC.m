@@ -3,7 +3,7 @@
 //  SaltEdge API Demo
 //
 //  Created by nemesis on 7/21/14.
-//  Copyright (c) 2015 Salt Edge. All rights reserved.
+//  Copyright (c) 2016 Salt Edge. All rights reserved.
 //
 
 #import "AccountsTVC.h"
@@ -21,15 +21,17 @@
 #import "CreateLoginVC.h"
 #import "SELoginFetchingDelegate.h"
 #import "SEProvider.h"
+#import "LoginAttemptsTVC.h"
 
 typedef NS_ENUM(NSUInteger, SELoginActionMethod){
     SELoginActionMethodAPI = 0,
     SELoginActionMethodWebView
 };
 
-static NSString* const kLoginRefreshAction   = @"Refresh";
-static NSString* const kLoginReconnectAction = @"Reconnect";
-static NSString* const kLoginRemoveAction    = @"Remove";
+static NSString* const kLoginRefreshAction      = @"Refresh";
+static NSString* const kLoginReconnectAction    = @"Reconnect";
+static NSString* const kLoginViewAttemptsAction = @"View Attempts";
+static NSString* const kLoginRemoveAction       = @"Remove";
 
 static NSString* const kLoginActionMethodWebView = @"Web view";
 static NSString* const kLoginActionMethodAPI     = @"API";
@@ -69,7 +71,7 @@ static NSString* const kAccountCellReuseIdentifier = @"AccountTableViewCell";
 
 - (void)actionsPressed
 {
-    UIActionSheet* actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:kLoginRemoveAction otherButtonTitles:kLoginReconnectAction, kLoginRefreshAction, nil];
+    UIActionSheet* actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:kLoginRemoveAction otherButtonTitles:kLoginReconnectAction, kLoginRefreshAction, kLoginViewAttemptsAction, nil];
     [actionSheet showInView:self.view];
 }
 
@@ -91,18 +93,25 @@ static NSString* const kAccountCellReuseIdentifier = @"AccountTableViewCell";
             [SVProgressHUD dismiss];
         } failure:^(SEError* error) {
             NSLog(@"Error: %@", error);
-            [SVProgressHUD showErrorWithStatus:error.message];
+            [SVProgressHUD showErrorWithStatus:error.errorMessage];
         }];
 
     } failure:^(SEError* error) {
         NSLog(@"Error: %@", error);
-        [SVProgressHUD showErrorWithStatus:error.message];
+        [SVProgressHUD showErrorWithStatus:error.errorMessage];
     }];
 }
 
 - (void)showWebViewOrAPIAlert
 {
     [[[UIAlertView alloc] initWithTitle:@"Choose a method for the action" message:nil delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:kLoginActionMethodWebView, kLoginActionMethodAPI, nil] show];
+}
+
+- (void)showLoginAttempts
+{
+    LoginAttemptsTVC* loginAttempts = [self.storyboard instantiateViewControllerWithIdentifier:@"LoginAttemptsTVC"];
+    loginAttempts.login = self.login;
+    [self.navigationController pushViewController:loginAttempts animated:YES];
 }
 
 - (void)refreshCurrentLoginViaAPI
@@ -118,7 +127,7 @@ static NSString* const kAccountCellReuseIdentifier = @"AccountTableViewCell";
                                         }
                                     }
                                     failure:^(SEError* error) {
-                                        [SVProgressHUD showErrorWithStatus:error.message];
+                                        [SVProgressHUD showErrorWithStatus:error.errorMessage];
                                     } delegate:self];
     } else {
         [manager refreshOAuthLoginWithSecret:self.login.secret
@@ -127,7 +136,7 @@ static NSString* const kAccountCellReuseIdentifier = @"AccountTableViewCell";
                                          [[UIApplication sharedApplication] openURL:[NSURL URLWithString:responseObject[kDataKey][kRedirectURLKey]]];
                                      }
                                      failure:^(SEError* error) {
-                                         [SVProgressHUD showErrorWithStatus:error.message];
+                                         [SVProgressHUD showErrorWithStatus:error.errorMessage];
                                      }];
     }
 }
@@ -178,7 +187,7 @@ static NSString* const kAccountCellReuseIdentifier = @"AccountTableViewCell";
             [SVProgressHUD showErrorWithStatus:@"Couldn't remove login"];
         }
     } failure:^(SEError* error) {
-        [SVProgressHUD showErrorWithStatus:error.message];
+        [SVProgressHUD showErrorWithStatus:error.errorMessage];
     }];
 }
 
@@ -232,6 +241,8 @@ static NSString* const kAccountCellReuseIdentifier = @"AccountTableViewCell";
     if ([buttonTitle isEqualToString:kLoginRefreshAction] || [buttonTitle isEqualToString:kLoginReconnectAction]) {
         self.desiredLoginAction = buttonTitle;
         [self showWebViewOrAPIAlert];
+    } else if ([buttonTitle isEqualToString:kLoginViewAttemptsAction]) {
+        [self showLoginAttempts];
     } else if ([buttonTitle isEqualToString:kLoginRemoveAction]) {
         [self removeLogin];
         [self.navigationController popViewControllerAnimated:YES];

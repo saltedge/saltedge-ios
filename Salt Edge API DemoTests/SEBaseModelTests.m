@@ -3,7 +3,7 @@
 //  SaltEdge API Demo
 //
 //  Created by nemesis on 7/24/14.
-//  Copyright (c) 2015 Salt Edge. All rights reserved.
+//  Copyright (c) 2016 Salt Edge. All rights reserved.
 //
 
 #import <XCTest/XCTest.h>
@@ -69,7 +69,7 @@
         XCTAssertTrue([obj isMemberOfClass:[SEProviderField class]], @"Provider fields should be of type SEProviderField");
     }
 
-    NSArray* datesKeys = @[@"createdAt", @"updatedAt", @"deletedAt", @"lastFailAt", @"lastSuccessAt", @"lastRequestAt"];
+    NSArray* datesKeys = @[@"createdAt", @"updatedAt", @"deletedAt", @"lastFailAt", @"lastSuccessAt", @"lastRequestAt", @"nextRefreshPossibleAt", @"successAt", @"failAt"];
 
     for (NSString* key in providerDictionary.allKeys) {
         if (![key isEqualToString:@"required_fields"]) {

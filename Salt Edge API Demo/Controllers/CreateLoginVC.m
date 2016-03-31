@@ -3,7 +3,7 @@
 //  SaltEdge API Demo
 //
 //  Created by nemesis on 7/22/14.
-//  Copyright (c) 2015 Salt Edge. All rights reserved.
+//  Copyright (c) 2016 Salt Edge. All rights reserved.
 //
 
 #import "CreateLoginVC.h"
@@ -80,7 +80,7 @@
             [self showProviders];
             [SVProgressHUD dismiss];
         } failure:^(SEError* error) {
-            [SVProgressHUD showErrorWithStatus:error.message];
+            [SVProgressHUD showErrorWithStatus:error.errorMessage];
         }];
     }
 }
@@ -113,7 +113,7 @@
                                [SVProgressHUD dismiss];
                            }
                            failure:^(SEError* error) {
-                               [SVProgressHUD showErrorWithStatus:error.message];
+                               [SVProgressHUD showErrorWithStatus:error.errorMessage];
                            }];
 }
 
@@ -229,8 +229,7 @@
 - (void)createLogin
 {
     NSMutableDictionary* parameters = @{ kCountryCodeKey : self.provider.countryCode,
-                                         kProviderCodeKey : self.provider.code,
-                                         kCustomerIdKey : [AppDelegate delegate].customerId,
+                                         kProviderCodeKey : self.provider.code
                                          }.mutableCopy;
 
     [SVProgressHUD showWithStatus:@"Creating login..." maskType:SVProgressHUDMaskTypeGradient];
@@ -243,7 +242,7 @@
                                        [SVProgressHUD showWithStatus:@"Fetching login..." maskType:SVProgressHUDMaskTypeGradient];
                                    }
                                    failure:^(SEError* error) {
-                                       [SVProgressHUD showErrorWithStatus:error.message];
+                                       [SVProgressHUD showErrorWithStatus:error.errorMessage];
                                    } delegate:self];
     } else {
         parameters[kReturnToKey] = [[AppDelegate delegate] applicationURLString];
@@ -252,7 +251,7 @@
                                             [[UIApplication sharedApplication] openURL:[NSURL URLWithString:responseObject[kDataKey][kRedirectURLKey]]];
                                         }
                                         failure:^(SEError* error) {
-                                            [SVProgressHUD showErrorWithStatus:error.message];
+                                            [SVProgressHUD showErrorWithStatus:error.errorMessage];
                                         } delegate:self];
     }
 }
@@ -268,7 +267,7 @@
                               credentials:credentialsDictionary
                                   success:nil
                                   failure:^(SEError* error) {
-                                      [SVProgressHUD showErrorWithStatus:error.message];
+                                      [SVProgressHUD showErrorWithStatus:error.errorMessage];
                                   } delegate:self];
     } else {
         [manager reconnectOAuthLoginWithSecret:self.login.secret
@@ -277,7 +276,7 @@
                                            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:responseObject[kDataKey][kRedirectURLKey]]];
                                        }
                                        failure:^(SEError* error) {
-                                           [SVProgressHUD showErrorWithStatus:error.message];
+                                           [SVProgressHUD showErrorWithStatus:error.errorMessage];
                                        }];
     }
 }
@@ -326,10 +325,10 @@
 {
     CredentialsVC* credentialsVC = [self.storyboard instantiateViewControllerWithIdentifier:@"CredentialsVC"];
     NSPredicate* predicate = [NSPredicate predicateWithBlock:^BOOL(SEProviderField* field, NSDictionary* bindings) {
-        return [login.interactiveFieldsNames containsObject:field.name];
+        return [login.lastAttempt.lastStage.interactiveFieldsNames containsObject:field.name];
     }];
     credentialsVC.credentialFields = [self.provider.interactiveFields filteredArrayUsingPredicate:predicate];
-    credentialsVC.interactiveHtml = login.interactiveHtml;
+    credentialsVC.interactiveHtml = login.lastAttempt.lastStage.interactiveHtml;
     credentialsVC.completionBlock = ^(NSDictionary* credentials) {
         [SVProgressHUD showWithStatus:@"Sending credentials..." maskType:SVProgressHUDMaskTypeGradient];
         SEAPIRequestManager* manager = [SEAPIRequestManager manager];
@@ -341,7 +340,7 @@
                                                              }];
                                                          }
                                                          failure:^(SEError* error) {
-                                                             [SVProgressHUD showErrorWithStatus:error.message];
+                                                             [SVProgressHUD showErrorWithStatus:error.errorMessage];
                                                          }
                                                         delegate: self];
     };

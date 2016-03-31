@@ -1,5 +1,5 @@
 //
-//  SEBaseModel.h
+//  SELoginAttempt.h
 //
 //  Copyright (c) 2016 Salt Edge. https://saltedge.com
 //
@@ -21,20 +21,30 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 
-#import <Foundation/Foundation.h>
+#import "SEBaseModel.h"
+#import "SELoginAttemptStage.h"
 
 /**
- SEBaseModel represent a base model for the entities used within the Salt Edge system.
+ SELoginAttempt represents an attempt to fetch a login.
+
+ @warning When fetching a login attempt or getting it from a login object via login.lastAttempt, it may not have all fields present.
  */
-@interface SEBaseModel : NSObject
 
-/**
- Creates an object from the given dictionary representation. This method is used within the SEAPIRequestManager for serializing JSON objects into objects that inherit from the base model - SELogin, SEProvider, SEAccount, et al.
+@interface SELoginAttempt : SEBaseModel
 
- @param dictionary The dictionary containing the object representation.
-
- @warning dictionary cannot be nil.
- */
-+ (instancetype)objectFromDictionary:(NSDictionary*)dictionary;
+@property (nonatomic, strong) NSNumber* id;
+@property (nonatomic, strong) SELoginAttemptStage* lastStage;
+@property (nonatomic, strong) NSArray* stages;
+@property (nonatomic, strong) NSNumber* finished;
+@property (nonatomic, strong) NSNumber* finishedRecent;
+@property (nonatomic, strong) NSNumber* interactive;
+@property (nonatomic, strong) NSNumber* partial;
+@property (nonatomic, strong) NSNumber* automaticFetch;
+@property (nonatomic, strong) NSDate* createdAt;
+@property (nonatomic, strong) NSDate* updatedAt;
+@property (nonatomic, strong) NSDate* successAt;
+@property (nonatomic, strong) NSDate* failAt;
+@property (nonatomic, strong) NSString* failErrorClass;
+@property (nonatomic, strong) NSString* failMessage;
 
 @end

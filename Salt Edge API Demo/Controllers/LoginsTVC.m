@@ -3,7 +3,7 @@
 //  SaltEdge API Demo
 //
 //  Created by nemesis on 7/21/14.
-//  Copyright (c) 2015 Salt Edge. All rights reserved.
+//  Copyright (c) 2016 Salt Edge. All rights reserved.
 //
 
 #import "LoginsTVC.h"
@@ -90,7 +90,7 @@ static NSString* const kLoginTableViewCellReuseIdentifier = @"LoginTableViewCell
                     self.isLoadingLogins = NO;
                 }
             } failure:^(SEError* error) {
-                [SVProgressHUD showErrorWithStatus:error.message];
+                [SVProgressHUD showErrorWithStatus:error.errorMessage];
                 self.isLoadingLogins = NO;
             }];
         }
@@ -127,7 +127,7 @@ static NSString* const kLoginTableViewCellReuseIdentifier = @"LoginTableViewCell
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kLoginTableViewCellReuseIdentifier forIndexPath:indexPath];
     SELogin* theLogin = self.logins[indexPath.row];
     cell.textLabel.text = theLogin.providerName;
-    cell.detailTextLabel.text = theLogin.customerEmail;
+    cell.detailTextLabel.text = theLogin.status;
     return cell;
 }
 

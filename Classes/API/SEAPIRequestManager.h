@@ -1,7 +1,7 @@
 //
 //  SEAPIRequestManager.h
 //
-//  Copyright (c) 2015 Salt Edge. https://saltedge.com
+//  Copyright (c) 2016 Salt Edge. https://saltedge.com
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -23,7 +23,7 @@
 
 #import <Foundation/Foundation.h>
 
-@class SEProvider, SELogin, SEError;
+@class SEProvider, SELogin, SEError, SELoginAttempt;
 
 @protocol SELoginFetchingDelegate;
 
@@ -47,6 +47,15 @@ typedef void (^SEAPIRequestFailureBlock)(SEError* error);
  */
 + (void)linkClientId:(NSString*)clientId appSecret:(NSString*)appSecret;
 
+
+/**
+ Links your Customer Secret to the request manager. All outgoing requests related to logins will have the proper customer-related HTTP headers set by default.
+
+ @param customerSecret The string identifying the customer.
+ @see https://docs.saltedge.com/reference/#customers-create
+ */
++ (void)linkCustomerSecret:(NSString*)customerSecret;
+
 /**
  Creates a new customer or returns an error if such customer exists.
 
@@ -55,6 +64,7 @@ typedef void (^SEAPIRequestFailureBlock)(SEError* error);
  @param failure The callback block if the request fails.
 
  @warning identifier cannot be nil.
+ @see https://docs.saltedge.com/reference/#customers-create
  */
 - (void)createCustomerWithIdentifier:(NSString*)identifier
                              success:(void (^)(NSDictionary* responseObject))success
@@ -73,7 +83,6 @@ typedef void (^SEAPIRequestFailureBlock)(SEError* error);
  @code
  // parameters example, listing only the required fields
  {
-    "customer_id": "AtQX6Q8vRyMrPjUVtW7J_O1n06qYQ25bvUJ8CIC80-8",
     "country_code": "XF",
     "provider_code": "fakebank_simple_xf",
     "credentials": {
@@ -103,7 +112,6 @@ typedef void (^SEAPIRequestFailureBlock)(SEError* error);
  @code
  // parameters example, listing only the required fields
  {
-    "customer_id": "AtQX6Q8vRyMrPjUVtW7J_O1n06qYQ25bvUJ8CIC80-8",
     "country_code": "XO",
     "provider_code": "paypal_xo",
     "return_to": "your-app-url://home.local"
@@ -283,6 +291,30 @@ typedef void (^SEAPIRequestFailureBlock)(SEError* error);
                      failure:(SEAPIRequestFailureBlock)failure;
 
 /**
+ Fetches a certain attempt for a login.
+
+ @param attemptId The id of the attempt that is going to be fetched.
+ @param loginSecret The secret of the login whose attempt is going to be fetched.
+ @param success The callback block if the request succeeds.
+ @param failure The callback block if the request fails.
+ */
+- (void)fetchAttemptWithId:(NSNumber*)attemptId
+        forLoginWithSecret:(NSString*)loginSecret
+                   success:(void (^)(SELoginAttempt*))success
+                   failure:(SEAPIRequestFailureBlock)failure;
+
+/**
+ Fetches all attempts of a login.
+
+ @param loginSecret The secret of the login whose attempts will be requested.
+ @param success The callback block if the request succeeds.
+ @param failure The callback block if the request fails.
+ */
+- (void)fetchAttemptsForLoginWithSecret:(NSString*)loginSecret
+                                success:(void (^)(NSArray* attempts))success
+                                failure:(SEAPIRequestFailureBlock)failure;
+
+/**
  Provides an interactive login with a set of credentials.
 
  @param loginSecret The secret of the login which is currently in interactive state.
@@ -406,14 +438,13 @@ typedef void (^SEAPIRequestFailureBlock)(SEError* error);
  @param success The callback block if the request succeeds.
  @param failure The callback block if the request fails.
 
- @warning parameters cannot be nil. Required fields are: "country_code", "provider_code", "customer_id", "return_to"
+ @warning parameters cannot be nil. Required fields are: "country_code", "provider_code", "return_to"
 
  @code
  // parameters example, listing only the required fields
  {
     "country_code": "XO"
     "provider_code": "paypal_xo",
-    "customer_id": "customer id string",
     "return_to": "http://example.com"
  }
  @endcode

@@ -1,5 +1,5 @@
 //
-//  SEBaseModel.h
+//  SELoginAttemptStage.m
 //
 //  Copyright (c) 2016 Salt Edge. https://saltedge.com
 //
@@ -21,20 +21,8 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 
-#import <Foundation/Foundation.h>
+#import "SELoginAttemptStage.h"
 
-/**
- SEBaseModel represent a base model for the entities used within the Salt Edge system.
- */
-@interface SEBaseModel : NSObject
-
-/**
- Creates an object from the given dictionary representation. This method is used within the SEAPIRequestManager for serializing JSON objects into objects that inherit from the base model - SELogin, SEProvider, SEAccount, et al.
-
- @param dictionary The dictionary containing the object representation.
-
- @warning dictionary cannot be nil.
- */
-+ (instancetype)objectFromDictionary:(NSDictionary*)dictionary;
+@implementation SELoginAttemptStage
 
 @end

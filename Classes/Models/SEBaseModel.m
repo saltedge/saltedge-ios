@@ -1,7 +1,7 @@
 //
 //  SEBaseModel.m
 //
-//  Copyright (c) 2015 Salt Edge. https://saltedge.com
+//  Copyright (c) 2016 Salt Edge. https://saltedge.com
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -31,7 +31,7 @@ static NSArray* dateTimePropertiesNames, *datePropertyNames;
 
 + (void)initialize
 {
-    dateTimePropertiesNames = @[@"createdAt", @"updatedAt", @"deletedAt", @"lastFailAt", @"lastSuccessAt", @"lastRequestAt"];
+    dateTimePropertiesNames = @[@"createdAt", @"updatedAt", @"deletedAt", @"lastFailAt", @"lastSuccessAt", @"lastRequestAt", @"nextRefreshPossibleAt", @"successAt", @"failAt"];
     datePropertyNames = @[@"madeOn"];
 }
 

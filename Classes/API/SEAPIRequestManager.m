@@ -1,7 +1,7 @@
 //
 //  SEAPIRequestManager.m
 //
-//  Copyright (c) 2015 Salt Edge. https://saltedge.com
+//  Copyright (c) 2016 Salt Edge. https://saltedge.com
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -32,19 +32,25 @@
 #import "SERequestHandler.h"
 #import "SEError.h"
 #import "SELoginFetchingDelegate.h"
+#import "SELoginAttempt.h"
 
 /* HTTP Headers */
-static NSString* const kAppSecretHeaderKey       = @"App-secret";
-static NSString* const kClientIdHeaderKey        = @"Client-id";
-static NSString* const kLoginSecretHeaderKey     = @"Login-secret";
-static NSString* const kContentTypeHeaderKey     = @"Content-type";
-static NSString* const kJSONContentTypeValue     = @"application/json";
+static NSString* const kAppSecretHeaderKey        = @"App-secret";
+static NSString* const kClientIdHeaderKey         = @"Client-id";
+static NSString* const kCustomerSecretHeaderKey   = @"Customer-secret";
+static NSString* const kLoginSecretHeaderKey      = @"Login-secret";
+static NSString* const kContentTypeHeaderKey      = @"Content-type";
+static NSString* const kJSONContentTypeValue      = @"application/json";
 
 /* HTTP Session config */
 static NSDictionary* sessionHeaders;
 
 /* Login polling */
 static CGFloat const kLoginPollDelayTime = 5.0f;
+
+/* Other */
+static NSString* const kJavascriptCallbackTypeKey = @"javascript_callback_type";
+static NSString* const kiFrameCallbackType        = @"iframe";
 
 @interface SEAPIRequestManager(/* Private */)
 
@@ -76,7 +82,15 @@ static CGFloat const kLoginPollDelayTime = 5.0f;
     NSAssert(clientId != nil, @"Client ID cannot be nil");
     NSAssert(appSecret != nil, @"App secret cannot be nil");
 
-    sessionHeaders = @{ kClientIdHeaderKey : clientId, kAppSecretHeaderKey : appSecret, kContentTypeHeaderKey : kJSONContentTypeValue };
+    NSDictionary* appHeadersDictionary = @{ kClientIdHeaderKey : clientId, kAppSecretHeaderKey : appSecret, kContentTypeHeaderKey : kJSONContentTypeValue };
+    sessionHeaders = [self sessionHeadersMergedWithDictionary:appHeadersDictionary];
+}
+
++ (void)linkCustomerSecret:(NSString *)customerSecret
+{
+    NSAssert(customerSecret != nil, @"Customer Secret cannot be nil");
+
+    sessionHeaders = [self sessionHeadersMergedWithDictionary:@{ kCustomerSecretHeaderKey : customerSecret }];
 }
 
 #pragma mark - Instance Methods
@@ -107,9 +121,9 @@ static CGFloat const kLoginPollDelayTime = 5.0f;
                           failure:(SEAPIRequestFailureBlock)failure
                          delegate:(id<SELoginFetchingDelegate>)delegate
 {
+    NSAssert(sessionHeaders[kCustomerSecretHeaderKey] != nil, @"Customer Secret cannot be nil.");
     NSAssert(parameters[kCountryCodeKey] != nil, @"Country code cannot be nil.");
     NSAssert(parameters[kProviderCodeKey] != nil, @"Provider code cannot be nil.");
-    NSAssert(parameters[kCustomerIdKey] != nil, @"Customer ID cannot be nil.");
     NSAssert(parameters[kCredentialsKey] != nil, @"Credentials cannot be nil.");
 
     [SERequestHandler sendPOSTRequestWithURL:[self baseURLStringByAppendingPathComponent:kLoginPath]
@@ -137,9 +151,9 @@ static CGFloat const kLoginPollDelayTime = 5.0f;
                                failure:(SEAPIRequestFailureBlock)failure
                               delegate:(id<SELoginFetchingDelegate>)delegate
 {
+    NSAssert(sessionHeaders[kCustomerSecretHeaderKey] != nil, @"Customer Secret cannot be nil.");
     NSAssert(parameters[kCountryCodeKey] != nil, @"Country code cannot be nil.");
     NSAssert(parameters[kProviderCodeKey] != nil, @"Provider code cannot be nil.");
-    NSAssert(parameters[kCustomerIdKey] != nil, @"Customer ID cannot be nil.");
     NSAssert(parameters[kReturnToKey] != nil, @"Return to URL cannot be nil.");
 
     NSString* OAuthCreatePath = [[self baseURLStringByAppendingPathComponent:kOAuthProvidersPath] stringByAppendingPathComponent:kLoginActionCreate];
@@ -228,6 +242,7 @@ static CGFloat const kLoginPollDelayTime = 5.0f;
                                 success:(void (^)(NSSet* accounts))success
                                 failure:(SEAPIRequestFailureBlock)failure
 {
+    NSAssert(sessionHeaders[kCustomerSecretHeaderKey] != nil, @"Customer Secret cannot be nil.");
     NSAssert(loginSecret != nil, @"Login secret cannot be nil.");
 
     [SERequestHandler sendGETRequestWithURL:[self baseURLStringByAppendingPathComponent:kAccountsPath]
@@ -305,6 +320,7 @@ static CGFloat const kLoginPollDelayTime = 5.0f;
                      success:(void (^)(SELogin* login))success
                      failure:(SEAPIRequestFailureBlock)failure
 {
+    NSAssert(sessionHeaders[kCustomerSecretHeaderKey] != nil, @"Customer Secret cannot be nil.");
     NSAssert(loginSecret != nil, @"Login secret cannot be nil.");
 
     [SERequestHandler sendGETRequestWithURL:[self baseURLStringByAppendingPathComponent:kLoginPath]
@@ -320,12 +336,53 @@ static CGFloat const kLoginPollDelayTime = 5.0f;
                                     }];
 }
 
+- (void)fetchAttemptWithId:(NSNumber *)attemptId
+        forLoginWithSecret:(NSString *)loginSecret
+                   success:(void (^)(SELoginAttempt*))success
+                   failure:(SEAPIRequestFailureBlock)failure
+{
+    NSAssert(sessionHeaders[kCustomerSecretHeaderKey] != nil, @"Customer Secret cannot be nil.");
+    NSAssert(attemptId != nil, @"Attempt id cannot be nil.");
+    NSAssert(loginSecret != nil, @"Login secret cannot be nil.");
+
+    NSString* attemptPath = [[self baseURLStringByAppendingPathComponent:kAttemptsPath] stringByAppendingPathComponent:attemptId.description];
+    [SERequestHandler sendGETRequestWithURL:attemptPath
+                                 parameters:nil
+                                    headers:[self sessionHeadersWithLoginSecret:loginSecret]
+                                    success:^(NSDictionary* responseObject) {
+                                        success([SELoginAttempt objectFromDictionary:responseObject[kDataKey]]);
+                                    }
+                                    failure:^(NSDictionary* error) {
+                                        [self failureBlockWithBlock:failure errorObject:error];
+                                    }];
+}
+
+- (void)fetchAttemptsForLoginWithSecret:(NSString *)loginSecret
+                                success:(void (^)(NSArray *))success
+                                failure:(SEAPIRequestFailureBlock)failure
+{
+    [self requestPaginatedResourceWithPath:kAttemptsPath
+                                 container:@[].mutableCopy
+                                   headers:[self sessionHeadersWithLoginSecret:loginSecret]
+                                parameters:nil
+                                   success:^(NSArray* attemptsArray) {
+                                       NSMutableArray* serializedAttempts = [NSMutableArray arrayWithCapacity:attemptsArray.count];
+                                       for (NSDictionary* attemptDictionary in attemptsArray) {
+                                           [serializedAttempts addObject:[SELoginAttempt objectFromDictionary:attemptDictionary]];
+                                       }
+                                       success([NSArray arrayWithArray:serializedAttempts]);
+                                   }
+                                   failure:failure
+                                      full:YES];
+}
+
 - (void)provideInteractiveCredentialsForLoginWithSecret:(NSString*)loginSecret
                                             credentials:(NSDictionary*)credentials
                                                 success:(void (^)(SELogin* login))success
                                                 failure:(SEAPIRequestFailureBlock)failure
                                                delegate:(id<SELoginFetchingDelegate>)delegate
 {
+    NSAssert(sessionHeaders[kCustomerSecretHeaderKey] != nil, @"Customer Secret cannot be nil.");
     NSAssert(loginSecret != nil, @"Login secret cannot be nil.");
     NSAssert(credentials != nil, @"Credentials cannot be nil.");
 
@@ -355,6 +412,7 @@ static CGFloat const kLoginPollDelayTime = 5.0f;
                          failure:(SEAPIRequestFailureBlock)failure
                         delegate:(id<SELoginFetchingDelegate>)delegate
 {
+    NSAssert(sessionHeaders[kCustomerSecretHeaderKey] != nil, @"Customer Secret cannot be nil.");
     NSAssert(loginSecret != nil, @"Login secret cannot be nil.");
     NSAssert(credentials != nil, @"Credentials cannot be nil.");
 
@@ -384,6 +442,7 @@ static CGFloat const kLoginPollDelayTime = 5.0f;
                               success:(void (^)(NSDictionary* responseObject))success
                               failure:(SEAPIRequestFailureBlock)failure
 {
+    NSAssert(sessionHeaders[kCustomerSecretHeaderKey] != nil, @"Customer Secret cannot be nil.");
     NSAssert(loginSecret != nil, @"Login secret cannot be nil.");
     NSAssert(parameters[kReturnToKey] != nil, @"Return to URL cannot be nil.");
 
@@ -407,6 +466,7 @@ static CGFloat const kLoginPollDelayTime = 5.0f;
                        failure:(SEAPIRequestFailureBlock)failure
                       delegate:(id<SELoginFetchingDelegate>)delegate
 {
+    NSAssert(sessionHeaders[kCustomerSecretHeaderKey] != nil, @"Customer Secret cannot be nil.");
     NSAssert(loginSecret != nil, @"Login secret cannot be nil.");
 
     NSString* refreshPath = [[self baseURLStringByAppendingPathComponent:kLoginPath] stringByAppendingPathComponent:kLoginActionRefresh];
@@ -434,6 +494,7 @@ static CGFloat const kLoginPollDelayTime = 5.0f;
                             success:(void (^)(NSDictionary* responseObject))success
                             failure:(SEAPIRequestFailureBlock)failure
 {
+    NSAssert(sessionHeaders[kCustomerSecretHeaderKey] != nil, @"Customer Secret cannot be nil.");
     NSAssert(loginSecret != nil, @"Login secret cannot be nil.");
     NSAssert(parameters[kReturnToKey] != nil, @"Return to URL cannot be nil.");
 
@@ -456,6 +517,7 @@ static CGFloat const kLoginPollDelayTime = 5.0f;
                       success:(void (^)(NSDictionary* responseObject))success
                       failure:(SEAPIRequestFailureBlock)failure
 {
+    NSAssert(sessionHeaders[kCustomerSecretHeaderKey] != nil, @"Customer Secret cannot be nil.");
     NSAssert(loginSecret != nil, @"Login secret cannot be nil.");
 
     [SERequestHandler sendDELETERequestWithURL:[self baseURLStringByAppendingPathComponent:kLoginPath]
@@ -475,16 +537,14 @@ static CGFloat const kLoginPollDelayTime = 5.0f;
                                  success:(void (^)(NSDictionary* responseObject))success
                                  failure:(SEAPIRequestFailureBlock)failure
 {
+    NSAssert(sessionHeaders[kCustomerSecretHeaderKey] != nil, @"Customer Secret cannot be nil.");
     NSAssert(parameters[kCountryCodeKey] != nil, @"Country code cannot be nil.");
     NSAssert(parameters[kProviderCodeKey] != nil, @"Provider code cannot be nil.");
     NSAssert(parameters[kReturnToKey] != nil, @"Return to cannot be nil.");
-    NSAssert(parameters[kCustomerIdKey] != nil, @"Customer ID cannot be nil.");
-
-    NSDictionary* dataParameters = @{ kDataKey: parameters };
 
     [self requestTokenWithAction:kLoginActionCreate
                        headers:sessionHeaders
-                    parameters:dataParameters
+                    parameters:parameters
                        success:success
                        failure:failure];
 }
@@ -494,6 +554,7 @@ static CGFloat const kLoginPollDelayTime = 5.0f;
                                     success:(void (^)(NSDictionary* responseObject))success
                                     failure:(SEAPIRequestFailureBlock)failure
 {
+    NSAssert(sessionHeaders[kCustomerSecretHeaderKey] != nil, @"Customer Secret cannot be nil.");
     NSAssert(loginSecret != nil, @"Login secret cannot be nil.");
     NSAssert(parameters[kReturnToKey] != nil, @"Return to cannot be nil.");
 
@@ -509,6 +570,7 @@ static CGFloat const kLoginPollDelayTime = 5.0f;
                                   success:(void (^)(NSDictionary* responseObject))success
                                   failure:(SEAPIRequestFailureBlock)failure
 {
+    NSAssert(sessionHeaders[kCustomerSecretHeaderKey] != nil, @"Customer Secret cannot be nil.");
     NSAssert(loginSecret != nil, @"Login secret cannot be nil.");
     NSAssert(parameters[kReturnToKey] != nil, @"Return to cannot be nil.");
 
@@ -536,10 +598,15 @@ static CGFloat const kLoginPollDelayTime = 5.0f;
                      success:(void (^)(NSDictionary* responseObject))success
                      failure:(SEAPIRequestFailureBlock)failure
 {
+
+    NSMutableDictionary* mutableParams = parameters.mutableCopy;
+    mutableParams[kJavascriptCallbackTypeKey] = kiFrameCallbackType;
+    NSDictionary* dataParameters = @{ kDataKey: mutableParams };
+
     NSString* tokenPath = [[self baseURLStringByAppendingPathComponent:kTokensPath] stringByAppendingPathComponent:path];
 
     [SERequestHandler sendPOSTRequestWithURL:tokenPath
-                                  parameters:parameters
+                                  parameters:dataParameters
                                      headers:headers
                                      success:^(NSDictionary* responseObject) {
                                          if (success) {
@@ -584,6 +651,7 @@ static CGFloat const kLoginPollDelayTime = 5.0f;
                                 success:(void (^)(NSSet* transactions))success
                                 failure:(SEAPIRequestFailureBlock)failure
 {
+    NSAssert(sessionHeaders[kCustomerSecretHeaderKey] != nil, @"Customer Secret cannot be nil.");
     NSAssert(accountId != nil, @"Account id cannot be nil.");
     NSAssert(loginSecret != nil, @"Login secret cannot be nil.");
 
@@ -626,10 +694,10 @@ static CGFloat const kLoginPollDelayTime = 5.0f;
 
     [self fetchLoginWithSecret:loginSecret
                        success:^(SELogin* fetchedLogin) {
-                           if ([fetchedLogin.stage isEqualToString:kLoginStageInteractive]) {
+                           if ([[fetchedLogin stage] isEqualToString:kLoginStageInteractive]) {
                                [self.loginFetchingDelegate loginRequestedInteractiveInput:fetchedLogin];
-                           } else if ([fetchedLogin.stage isEqualToString:kLoginStageFinish]) {
-                               if (!fetchedLogin.lastFailMessage || [fetchedLogin.lastFailMessage isEqualToString:@""]) {
+                           } else if ([[fetchedLogin stage] isEqualToString:kLoginStageFinish]) {
+                               if (![fetchedLogin lastFailMessage] || [[fetchedLogin lastFailMessage] isEqualToString:@""]) {
                                    [self.loginFetchingDelegate loginSuccessfullyFinishedFetching:fetchedLogin];
                                } else {
                                    [self.loginFetchingDelegate login:fetchedLogin failedToFetchWithMessage:fetchedLogin.lastFailMessage];
@@ -639,7 +707,7 @@ static CGFloat const kLoginPollDelayTime = 5.0f;
                            }
                        }
                        failure:^(SEError* failure) {
-                           [self.loginFetchingDelegate login:self.createdLogin failedToFetchWithMessage:failure.message];
+                           [self.loginFetchingDelegate login:self.createdLogin failedToFetchWithMessage:failure.errorMessage];
                            self.createdLogin = nil;
                        }];
 }
@@ -649,6 +717,7 @@ static CGFloat const kLoginPollDelayTime = 5.0f;
                                          success:(void (^)(NSDictionary* responseObject))success
                                          failure:(SEAPIRequestFailureBlock)failure
 {
+    NSAssert(sessionHeaders[kCustomerSecretHeaderKey] != nil, @"Customer Secret cannot be nil.");
     NSAssert(learningArray != nil, @"learningArray cannot be nil.");
 
     [SERequestHandler sendPOSTRequestWithURL:[self baseURLStringByAppendingPathComponent:kLearnPath]
@@ -690,8 +759,17 @@ static CGFloat const kLoginPollDelayTime = 5.0f;
 
 + (NSDictionary*)sessionHeadersWithLoginSecret:(NSString*)loginSecret
 {
+    return [self sessionHeadersMergedWithDictionary:@{ kLoginSecretHeaderKey : loginSecret }];
+}
+
++ (NSDictionary*)sessionHeadersMergedWithDictionary:(NSDictionary*)dictionary
+{
+    if (!sessionHeaders) {
+        sessionHeaders = [NSDictionary dictionary];
+    }
+
     NSMutableDictionary* mutableSessionHeaders = sessionHeaders.mutableCopy;
-    mutableSessionHeaders[kLoginSecretHeaderKey] = loginSecret;
+    [mutableSessionHeaders addEntriesFromDictionary:dictionary];
     return [NSDictionary dictionaryWithDictionary:mutableSessionHeaders];
 }
 

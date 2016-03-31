@@ -9,7 +9,7 @@
 	<key>CFBundleExecutable</key>
 	<string>${EXECUTABLE_NAME}</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.saltedge.$(PRODUCT_NAME:rfc1034identifier)</string>
+	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
@@ -23,12 +23,12 @@
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
+			<key>CFBundleURLName</key>
+			<string>com.saltedge.Salt-Edge-API-Demo</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>SaltEdge-API-Demo</string>
 			</array>
-			<key>CFBundleURLName</key>
-			<string>com.saltedge.Salt-Edge-API-Demo</string>
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>

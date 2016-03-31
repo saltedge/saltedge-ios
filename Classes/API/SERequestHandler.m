@@ -1,7 +1,7 @@
 //
 //  SERequestHandler.m
 //
-//  Copyright (c) 2015 Salt Edge. https://saltedge.com
+//  Copyright (c) 2016 Salt Edge. https://saltedge.com
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -47,12 +47,12 @@ typedef NS_ENUM(NSInteger, SERequestMethod) {
     SERequestMethodPUT
 };
 
-@interface SERequestHandler (/* Private */) <NSURLConnectionDataDelegate>
+static NSURLSession* _requestHandlerURLSession;
 
-@property (nonatomic, strong) NSMutableData* responseData;
-@property (nonatomic, copy)   SERequestHandlerFailureBlock successBlock;
-@property (nonatomic, copy)   SERequestHandlerFailureBlock failureBlock;
-@property (nonatomic)         NSInteger responseStatusCode;
+@interface SERequestHandler (/* Private */)
+
+@property (nonatomic, copy) SERequestHandlerFailureBlock successBlock;
+@property (nonatomic, copy) SERequestHandlerFailureBlock failureBlock;
 
 @end
 
@@ -60,6 +60,16 @@ typedef NS_ENUM(NSInteger, SERequestMethod) {
 
 #pragma mark -
 #pragma mark - Public API
+
++ (void)initialize
+{
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        NSURLSessionConfiguration* sessionConfig = [NSURLSessionConfiguration defaultSessionConfiguration];
+        sessionConfig.requestCachePolicy = NSURLRequestReloadIgnoringLocalCacheData;
+        _requestHandlerURLSession = [NSURLSession sessionWithConfiguration:sessionConfig];
+    });
+}
 
 + (void)sendDELETERequestWithURL:(NSString*)url
                       parameters:(NSDictionary*)parameters
@@ -148,7 +158,34 @@ typedef NS_ENUM(NSInteger, SERequestMethod) {
         }
     }
 
-    [NSURLConnection connectionWithRequest:request delegate:self];
+    NSURLSessionDataTask* task = [_requestHandlerURLSession dataTaskWithRequest:request completionHandler:^(NSData* responseData, NSURLResponse* response, NSError* responseError) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (responseError) {
+                self.failureBlock(@{ kErrorClassKey : responseError.domain,
+                                     kMessageKey : responseError.localizedDescription,
+                                     kRequestKey : request
+                                     });
+                return;
+            }
+
+            NSInteger responseStatusCode = [(NSHTTPURLResponse*)response statusCode];
+            NSError* error;
+            NSDictionary* data = [NSJSONSerialization JSONObjectWithData:responseData options:0 error:&error];
+            if (error) {
+                self.failureBlock(@{ kErrorClassKey : error.domain,
+                                     kMessageKey : error.localizedDescription,
+                                     kRequestKey : request });
+            } else {
+                if ((responseStatusCode >= 200 && responseStatusCode < 300)) {
+                    self.successBlock(data);
+                } else {
+                    self.failureBlock(data);
+                }
+            }
+        });
+    }];
+
+    [task resume];
 }
 
 - (NSString*)stringForMethod:(SERequestMethod)method
@@ -202,54 +239,6 @@ typedef NS_ENUM(NSInteger, SERequestMethod) {
 - (NSArray*)HTTPMethodsWithoutBody
 {
     return @[kRequestMethodGET, kRequestMethodDELETE];
-}
-
-- (BOOL)connection:(NSURLConnection *)connection canAuthenticateAgainstProtectionSpace:(NSURLProtectionSpace *)protectionSpace
-{
-    return [protectionSpace.authenticationMethod isEqualToString:NSURLAuthenticationMethodServerTrust];
-}
-
-- (void)connection:(NSURLConnection*)connection didReceiveResponse:(NSURLResponse*)response
-{
-    self.responseData = [[NSMutableData alloc] init];
-    self.responseStatusCode = [(NSHTTPURLResponse*)response statusCode];
-}
-
-- (void)connection:(NSURLConnection*)connection didReceiveData:(NSData*)data
-{
-    [self.responseData appendData:data];
-}
-
-- (void)connectionDidFinishLoading:(NSURLConnection*)connection
-{
-    NSError* error;
-    NSDictionary* data = [NSJSONSerialization JSONObjectWithData:self.responseData options:0 error:&error];
-    if (error) {
-        self.failureBlock(@{ kErrorClassKey : error.domain,
-                             kMessageKey : error.localizedDescription,
-                             kRequestKey : connection.currentRequest });
-    } else {
-        if ((self.responseStatusCode >= 200 && self.responseStatusCode < 300)) {
-            self.successBlock(data);
-        } else {
-            self.failureBlock(data);
-        }
-    }
-}
-
-- (void)connection:(NSURLConnection*)connection didFailWithError:(NSError*)error
-{
-    if (self.failureBlock) {
-        self.failureBlock(@{ kErrorClassKey : error.domain,
-                             kMessageKey : error.localizedDescription,
-                             kRequestKey : connection.currentRequest
-                             });
-    }
-}
-
-- (NSCachedURLResponse*)connection:(NSURLConnection *)connection willCacheResponse:(NSCachedURLResponse *)cachedResponse
-{
-    return nil;
 }
 
 @end

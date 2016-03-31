@@ -1,5 +1,5 @@
 //
-//  SEBaseModel.h
+//  SELoginAttempt.m
 //
 //  Copyright (c) 2016 Salt Edge. https://saltedge.com
 //
@@ -21,20 +21,28 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 
-#import <Foundation/Foundation.h>
+#import "SELoginAttempt.h"
+#import "SELoginAttemptStage.h"
 
-/**
- SEBaseModel represent a base model for the entities used within the Salt Edge system.
- */
-@interface SEBaseModel : NSObject
+static NSString* const kLoginAttemptLastStageKey = @"last_stage";
+static NSString* const kLoginAttemptStagesKey    = @"stages";
 
-/**
- Creates an object from the given dictionary representation. This method is used within the SEAPIRequestManager for serializing JSON objects into objects that inherit from the base model - SELogin, SEProvider, SEAccount, et al.
+@implementation SELoginAttempt
 
- @param dictionary The dictionary containing the object representation.
-
- @warning dictionary cannot be nil.
- */
-+ (instancetype)objectFromDictionary:(NSDictionary*)dictionary;
++ (instancetype)objectFromDictionary:(NSDictionary *)dictionary
+{
+    SELoginAttempt* object = [super objectFromDictionary:dictionary];
+    if (dictionary[kLoginAttemptLastStageKey]) {
+        object.lastStage = [SELoginAttemptStage objectFromDictionary:dictionary[kLoginAttemptLastStageKey]];
+    }
+    if (dictionary[kLoginAttemptStagesKey]) {
+        NSMutableArray* stagesObjects = [NSMutableArray arrayWithCapacity:[dictionary[kLoginAttemptStagesKey] count]];
+        for (NSDictionary* stageDictionary in dictionary[kLoginAttemptStagesKey]) {
+            [stagesObjects addObject:[SELoginAttemptStage objectFromDictionary:stageDictionary]];
+        }
+        object.stages = [NSArray arrayWithArray:stagesObjects];
+    }
+    return object;
+}
 
 @end

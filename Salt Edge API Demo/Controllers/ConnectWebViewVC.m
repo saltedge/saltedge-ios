@@ -3,7 +3,7 @@
 //  SaltEdge API Demo
 //
 //  Created by nemesis on 7/17/14.
-//  Copyright (c) 2015 Salt Edge. All rights reserved.
+//  Copyright (c) 2016 Salt Edge. All rights reserved.
 //
 
 #import "ConnectWebViewVC.h"
@@ -109,7 +109,7 @@ static NSString* const kConnectURLKey    = @"connect_url";
             [self showProviders];
             [SVProgressHUD dismiss];
         } failure:^(SEError* error) {
-            [SVProgressHUD showErrorWithStatus:error.message];
+            [SVProgressHUD showErrorWithStatus:error.errorMessage];
         }];
     }
 }
@@ -134,8 +134,7 @@ static NSString* const kConnectURLKey    = @"connect_url";
     SEAPIRequestManager* manager = [SEAPIRequestManager manager];
     [SVProgressHUD showWithStatus:@"Requesting token..." maskType:SVProgressHUDMaskTypeGradient];
     if (!self.login) {
-        NSString* customerId = [AppDelegate delegate].customerId;
-        [manager requestCreateTokenWithParameters:@{ @"country_code" : self.provider.countryCode, @"provider_code" : self.provider.code, @"return_to" : @"http://httpbin.org", @"customer_id" : customerId } success:^(NSDictionary* responseObject) {
+        [manager requestCreateTokenWithParameters:@{ @"country_code" : self.provider.countryCode, @"provider_code" : self.provider.code, @"return_to" : @"http://httpbin.org" } success:^(NSDictionary* responseObject) {
             [self loadConnectPageWithURLString:responseObject[kDataKey][kConnectURLKey]];
         } failure:^(SEError* error) {
             NSLog(@"%@", error);
@@ -145,14 +144,14 @@ static NSString* const kConnectURLKey    = @"connect_url";
             [self loadConnectPageWithURLString:responseObject[kDataKey][kConnectURLKey]];
         } failure:^(SEError* error) {
             NSLog(@"%@", error);
-            [SVProgressHUD showErrorWithStatus:error.message];
+            [SVProgressHUD showErrorWithStatus:error.errorMessage];
         }];
     } else {
         [manager requestReconnectTokenForLoginSecret:self.login.secret parameters:@{ @"return_to": @"http://httpbin.org" } success:^(NSDictionary* responseObject) {
             [self loadConnectPageWithURLString:responseObject[kDataKey][kConnectURLKey]];
         } failure:^(SEError* error) {
             NSLog(@"%@", error);
-            [SVProgressHUD showErrorWithStatus:error.message];
+            [SVProgressHUD showErrorWithStatus:error.errorMessage];
         }];
     }
 }
@@ -197,8 +196,7 @@ static NSString* const kConnectURLKey    = @"connect_url";
 
 - (void)webView:(SEWebView *)webView receivedCallbackWithResponse:(NSDictionary *)response
 {
-    NSString* loginState = response[SELoginDataKey][SELoginStateKey];
-
+    NSString* loginState = response[SELoginDataKey][SELoginStageKey];
     if ([loginState isEqualToString:SELoginStateSuccess]) {
         [self switchToLoginsViewController];
         [SVProgressHUD dismiss];
@@ -211,7 +209,7 @@ static NSString* const kConnectURLKey    = @"connect_url";
         [loginSecrets addObject:loginSecret];
         [[NSUserDefaults standardUserDefaults] setObject:[loginSecrets allObjects] forKey:kLoginSecretsDefaultsKey];
         [[NSUserDefaults standardUserDefaults] synchronize];
-        if (self.login && !self.login.interactive.boolValue) {
+        if (self.login && !self.login.lastAttempt.interactive.boolValue) {
             [SVProgressHUD showWithStatus:@"Loading..." maskType:SVProgressHUDMaskTypeGradient];
         }
     } else if ([loginState isEqualToString:SELoginStateError]) {
