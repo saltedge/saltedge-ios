@@ -14,7 +14,12 @@ Add the pod to your `Podfile`
 ```ruby
 # ... snip ...
 
-pod 'SaltEdge-iOS'
+# To use Spectre API v3
+pod 'SaltEdge-iOS', '~> 3.0.0'
+
+# To use Spectre API v2
+pod 'SaltEdge-iOS', '~> 2.6.0'
+
 ```
 
 Install the pod
