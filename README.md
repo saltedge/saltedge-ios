@@ -14,7 +14,12 @@ Add the pod to your `Podfile`
 ```ruby
 # ... snip ...
 
-pod 'SaltEdge-iOS'
+# To use Spectre API v3
+pod 'SaltEdge-iOS', '~> 3.0.0'
+
+# To use Spectre API v2
+pod 'SaltEdge-iOS', '~> 2.6.0'
+
 ```
 
 Install the pod
@@ -263,7 +268,7 @@ Set up the `clientId`, `appSecret` and `customerIdentifier` constants to your Cl
 
 ## Versioning
 
-The current version of the SDK is [3.0.0](https://github.com/saltedge/saltedge-ios/releases/tag/v3.0.0), and is in compliance with the Salt Edge API's [current version](https://docs.saltedge.com/#version_management). Any backward-incompatible changes in the API will result in changes to the SDK.
+The current version of the SDK is [3.0.0](https://github.com/saltedge/saltedge-ios/releases/tag/v3.0.0), and is in compliance with the Salt Edge API's [current version](https://docs.saltedge.com/guides/versioning/). Any backward-incompatible changes in the API will result in changes to the SDK.
 
 ## License
 
