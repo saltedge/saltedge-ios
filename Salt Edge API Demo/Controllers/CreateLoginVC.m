@@ -27,7 +27,7 @@
 #import "CredentialsVC.h"
 #import "LoginsTVC.h"
 
-@interface CreateLoginVC() <SELoginFetchingDelegate>
+@interface CreateLoginVC() <SELoginFetchingDelegate, UITextFieldDelegate>
 
 @property (nonatomic, strong) SEProvider* provider;
 @property (nonatomic, strong) UILabel* instructionsLabel;
@@ -228,6 +228,8 @@
 
 - (void)createLogin
 {
+    [self.view endEditing:YES];
+
     NSMutableDictionary* parameters = @{ kCountryCodeKey : self.provider.countryCode,
                                          kProviderCodeKey : self.provider.code
                                          }.mutableCopy;
@@ -258,6 +260,8 @@
 
 - (void)reconnectLogin
 {
+    [self.view endEditing:YES];
+
     NSDictionary* credentialsDictionary = [self credentials];
 
     [SVProgressHUD showWithStatus:@"Reconnecting login..." maskType:SVProgressHUDMaskTypeGradient];
@@ -359,6 +363,16 @@
 - (void)OAuthLoginCannotBeFetched
 {
     [SVProgressHUD showErrorWithStatus:@"OAuth login cannot be fetched"];
+}
+
+#pragma mark - UITextField Delegate
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    if (textField.returnKeyType == UIReturnKeyDone) {
+        [textField resignFirstResponder];
+    }
+    return YES;
 }
 
 @end
