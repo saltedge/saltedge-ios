@@ -2,4 +2,6 @@ source 'https://github.com/CocoaPods/Specs.git'
 
 platform :ios, '7.0'
 
-pod 'SVProgressHUD'
+target 'Salt Edge API Demo' do
+  pod 'SVProgressHUD'
+end
