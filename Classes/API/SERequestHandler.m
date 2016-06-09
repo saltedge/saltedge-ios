@@ -23,6 +23,7 @@
 
 #import "SERequestHandler.h"
 #import "SEError.h"
+#import "SERequestHandlerURLSessionDelegate.h"
 
 static NSString* const kRequestMethodPOST   = @"POST";
 static NSString* const kRequestMethodGET    = @"GET";
@@ -30,7 +31,7 @@ static NSString* const kRequestMethodDELETE = @"DELETE";
 static NSString* const kRequestMethodPUT    = @"PUT";
 
 static NSString* const kErrorClassKey = @"error_class";
-static NSString* const kMessageKey    = @"message";
+static NSString* const kMessageKey    = @"error_message";
 static NSString* const kRequestKey    = @"request";
 static NSString* const kParametersKey = @"parameters";
 
@@ -67,7 +68,7 @@ static NSURLSession* _requestHandlerURLSession;
     dispatch_once(&onceToken, ^{
         NSURLSessionConfiguration* sessionConfig = [NSURLSessionConfiguration defaultSessionConfiguration];
         sessionConfig.requestCachePolicy = NSURLRequestReloadIgnoringLocalCacheData;
-        _requestHandlerURLSession = [NSURLSession sessionWithConfiguration:sessionConfig];
+        _requestHandlerURLSession = [NSURLSession sessionWithConfiguration:sessionConfig delegate:[SERequestHandlerURLSessionDelegate sharedInstance] delegateQueue:nil];
     });
 }
 

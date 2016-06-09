@@ -53,6 +53,8 @@
 		0AAB6D7019827D9B009DCDD5 /* SELoginTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AAB6D6F19827D9B009DCDD5 /* SELoginTests.m */; };
 		0AAB6D7219827E45009DCDD5 /* SEAccountTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AAB6D7119827E45009DCDD5 /* SEAccountTests.m */; };
 		0AAB6D7419827ECE009DCDD5 /* SETransactionTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AAB6D7319827ECE009DCDD5 /* SETransactionTests.m */; };
+		0AAF30481D0954AA0097B0EA /* SERequestHandlerURLSessionDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AAF30471D0954A90097B0EA /* SERequestHandlerURLSessionDelegate.m */; };
+		0AAF304B1D0955EC0097B0EA /* saltedge.com.cer in Resources */ = {isa = PBXBuildFile; fileRef = 0AAF304A1D0955EC0097B0EA /* saltedge.com.cer */; };
 		0AB068DA1A010E7E00596A3B /* SEAPIRequestManager+SEOAuthLoginHandlingAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AB068D91A010E7E00596A3B /* SEAPIRequestManager+SEOAuthLoginHandlingAdditions.m */; };
 		0AD2C2E019E7EEF1003D2FD0 /* SEError.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AD2C2DF19E7EEF1003D2FD0 /* SEError.m */; };
 		0AE487131A02AC8B00F5CEBF /* NSURL+SECallbacksAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AE4870F1A02AC8B00F5CEBF /* NSURL+SECallbacksAdditions.m */; };
@@ -157,6 +159,9 @@
 		0AAB6D6F19827D9B009DCDD5 /* SELoginTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SELoginTests.m; sourceTree = "<group>"; };
 		0AAB6D7119827E45009DCDD5 /* SEAccountTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SEAccountTests.m; sourceTree = "<group>"; };
 		0AAB6D7319827ECE009DCDD5 /* SETransactionTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SETransactionTests.m; sourceTree = "<group>"; };
+		0AAF30461D0954A90097B0EA /* SERequestHandlerURLSessionDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SERequestHandlerURLSessionDelegate.h; sourceTree = "<group>"; };
+		0AAF30471D0954A90097B0EA /* SERequestHandlerURLSessionDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SERequestHandlerURLSessionDelegate.m; sourceTree = "<group>"; };
+		0AAF304A1D0955EC0097B0EA /* saltedge.com.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = saltedge.com.cer; sourceTree = "<group>"; };
 		0AB068D81A010E7E00596A3B /* SEAPIRequestManager+SEOAuthLoginHandlingAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "SEAPIRequestManager+SEOAuthLoginHandlingAdditions.h"; sourceTree = "<group>"; };
 		0AB068D91A010E7E00596A3B /* SEAPIRequestManager+SEOAuthLoginHandlingAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "SEAPIRequestManager+SEOAuthLoginHandlingAdditions.m"; sourceTree = "<group>"; };
 		0AB068DB1A01106C00596A3B /* SEAPIRequestManager_private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SEAPIRequestManager_private.h; sourceTree = "<group>"; };
@@ -213,6 +218,7 @@
 				0A3F86E219A1F05E00B7E5E2 /* Categories */,
 				0A3F86E519A1F05E00B7E5E2 /* Models */,
 				0AE4870C1A02AC8B00F5CEBF /* SEWebView */,
+				0AAF30491D0955BE0097B0EA /* Supporting Files */,
 				0A3F86FB19A1F05E00B7E5E2 /* Utils */,
 			);
 			path = Classes;
@@ -223,6 +229,8 @@
 			children = (
 				5897167B19E6ACB3001E2AA9 /* SERequestHandler.h */,
 				5897167C19E6ACB3001E2AA9 /* SERequestHandler.m */,
+				0AAF30461D0954A90097B0EA /* SERequestHandlerURLSessionDelegate.h */,
+				0AAF30471D0954A90097B0EA /* SERequestHandlerURLSessionDelegate.m */,
 				0A3F86DF19A1F05E00B7E5E2 /* SEAPIRequestManager.h */,
 				0A3F86E019A1F05E00B7E5E2 /* SEAPIRequestManager.m */,
 				0AB068DB1A01106C00596A3B /* SEAPIRequestManager_private.h */,
@@ -445,6 +453,15 @@
 			path = Protocols;
 			sourceTree = "<group>";
 		};
+		0AAF30491D0955BE0097B0EA /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				0AAF304A1D0955EC0097B0EA /* saltedge.com.cer */,
+			);
+			name = "Supporting Files";
+			path = "Utils/Supporting Files";
+			sourceTree = "<group>";
+		};
 		0AE4870C1A02AC8B00F5CEBF /* SEWebView */ = {
 			isa = PBXGroup;
 			children = (
@@ -566,6 +583,7 @@
 				0AAB6D6319827AEA009DCDD5 /* Main.storyboard in Resources */,
 				0AAB6CFD19827AAA009DCDD5 /* Images.xcassets in Resources */,
 				0A939EA019DA9F0E005BD28C /* TransactionTableViewCell.xib in Resources */,
+				0AAF304B1D0955EC0097B0EA /* saltedge.com.cer in Resources */,
 				0AAB6CEF19827AAA009DCDD5 /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -637,6 +655,7 @@
 				0AAB6D6619827AFB009DCDD5 /* AppDelegate.m in Sources */,
 				0A6568A419F91E20004A1EB1 /* OptionSelectButton.m in Sources */,
 				0AE487131A02AC8B00F5CEBF /* NSURL+SECallbacksAdditions.m in Sources */,
+				0AAF30481D0954AA0097B0EA /* SERequestHandlerURLSessionDelegate.m in Sources */,
 				0A1BEB7619EBD0E5000C0D64 /* PickerTVC.m in Sources */,
 				0A3F870019A1F05E00B7E5E2 /* NSString+SEModelsSerializingAdditions.m in Sources */,
 				0A939E9F19DA9F0E005BD28C /* TransactionTableViewCell.m in Sources */,
