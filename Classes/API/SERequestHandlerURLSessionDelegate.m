@@ -7,6 +7,7 @@
 //
 
 #import "SERequestHandlerURLSessionDelegate.h"
+#import "SEAPIRequestManager.h"
 
 @implementation SERequestHandlerURLSessionDelegate
 
@@ -19,7 +20,7 @@
     dispatch_once(&onceToken, ^{
         _sharedInstance = [[self alloc] init];
         NSString* cerPath = [[NSBundle mainBundle] pathForResource:@"saltedge.com" ofType:@"cer"];
-        NSAssert(cerPath != nil, @"The saltedge.com SSL certificate could not be located in the app bundle.");
+        NSAssert(cerPath != nil, @"The saltedge.com SSL certificate could not be located in the app bundle. SSL pinning will not be possible without it.");
     });
     return _sharedInstance;
 }
@@ -29,15 +30,25 @@
 - (void)URLSession:(NSURLSession *)session didReceiveChallenge:(NSURLAuthenticationChallenge *)challenge completionHandler:(void (^)(NSURLSessionAuthChallengeDisposition, NSURLCredential * _Nullable))completionHandler
 {
     SecTrustRef serverTrust = challenge.protectionSpace.serverTrust;
+
+    void (^useChallengeCredential)() = ^{
+        NSURLCredential *credential = [NSURLCredential credentialForTrust:serverTrust];
+        [[challenge sender] useCredential:credential forAuthenticationChallenge:challenge];
+        completionHandler(NSURLSessionAuthChallengeUseCredential, credential);
+    };
+
+    if (![SEAPIRequestManager SSLPinningEnabled]) {
+        useChallengeCredential();
+        return;
+    }
+
     SecCertificateRef certificate = SecTrustGetCertificateAtIndex(serverTrust, 0);
     NSData* remoteCertificateData = CFBridgingRelease(SecCertificateCopyData(certificate));
     NSString* cerPath = [[NSBundle mainBundle] pathForResource:@"saltedge.com" ofType:@"cer"];
     NSData* localCertificateData = [NSData dataWithContentsOfFile:cerPath];
 
     if ([remoteCertificateData isEqualToData:localCertificateData]) {
-        NSURLCredential *credential = [NSURLCredential credentialForTrust:serverTrust];
-        [[challenge sender] useCredential:credential forAuthenticationChallenge:challenge];
-        completionHandler(NSURLSessionAuthChallengeUseCredential, credential);
+        useChallengeCredential();
     } else {
         [[challenge sender] cancelAuthenticationChallenge:challenge];
         completionHandler(NSURLSessionAuthChallengeCancelAuthenticationChallenge, nil);

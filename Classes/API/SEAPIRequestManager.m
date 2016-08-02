@@ -44,6 +44,7 @@ static NSString* const kJSONContentTypeValue      = @"application/json";
 
 /* HTTP Session config */
 static NSDictionary* sessionHeaders;
+static SEAPIRequestManagerSSLPinningMode sslPinningMode;
 
 /* Login polling */
 static CGFloat const kLoginPollDelayTime = 5.0f;
@@ -74,6 +75,16 @@ static NSString* const kiFrameCallbackType        = @"iframe";
 
     SEAPIRequestManager* manager = [[[self class] alloc] init];
     return manager;
+}
+
++ (void)setSSLPinningMode:(SEAPIRequestManagerSSLPinningMode)mode
+{
+    sslPinningMode = mode;
+}
+
++ (BOOL)SSLPinningEnabled
+{
+    return sslPinningMode == SEAPIRequestManagerSSLPinningModeEnabled;
 }
 
 + (void)linkClientId:(NSString *)clientId appSecret:(NSString *)appSecret
@@ -583,6 +594,14 @@ static NSString* const kiFrameCallbackType        = @"iframe";
 
 #pragma mark -
 #pragma mark - Private API
+
++ (void)initialize
+{
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        sslPinningMode = SEAPIRequestManagerSSLPinningModeEnabled;
+    });
+}
 
 - (instancetype)init
 {
