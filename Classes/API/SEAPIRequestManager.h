@@ -29,6 +29,11 @@
 
 typedef void (^SEAPIRequestFailureBlock)(SEError* error);
 
+typedef NS_ENUM(NSUInteger, SEAPIRequestManagerSSLPinningMode) {
+    SEAPIRequestManagerSSLPinningModeEnabled = 0,
+    SEAPIRequestManagerSSLPinningModeDisabled
+};
+
 /**
  SEAPIRequestManager is a class designed to provide convenient methods in communicating with the Salt Edge API.
  */
@@ -40,13 +45,29 @@ typedef void (^SEAPIRequestFailureBlock)(SEError* error);
 + (instancetype)manager;
 
 /**
+ Sets the given pinning mode and uses it for all outgoing API requests.
+
+ @param mode The mode to set to. This can either be enabled or disabled. The mode is enabled by default.
+ @see SSLPinningEnabled
+ */
++ (void)setSSLPinningMode:(SEAPIRequestManagerSSLPinningMode)mode;
+
+/**
+ Checks whether SSL pinning for outgoing API requests is enabled.
+
+ @return YES if SSL pinning is enabled, NO if SSL pinning is disabled.
+ @see setSSLPinningMode:
+ */
+
++ (BOOL)SSLPinningEnabled;
+
+/**
  Links your Client ID and App Secret to the request manager. All outgoing requests will have the proper app-related HTTP headers set by default.
 
  @param clientId The ID of the client.
  @param appSecret The App Secret of the app.
  */
 + (void)linkClientId:(NSString*)clientId appSecret:(NSString*)appSecret;
-
 
 /**
  Links your Customer Secret to the request manager. All outgoing requests related to logins will have the proper customer-related HTTP headers set by default.
