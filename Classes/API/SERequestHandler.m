@@ -23,16 +23,17 @@
 
 #import "SERequestHandler.h"
 #import "SEError.h"
+#import "SERequestHandlerURLSessionDelegate.h"
 
 static NSString* const kRequestMethodPOST   = @"POST";
 static NSString* const kRequestMethodGET    = @"GET";
 static NSString* const kRequestMethodDELETE = @"DELETE";
 static NSString* const kRequestMethodPUT    = @"PUT";
 
-static NSString* const kErrorClassKey = @"error_class";
-static NSString* const kMessageKey    = @"message";
-static NSString* const kRequestKey    = @"request";
-static NSString* const kParametersKey = @"parameters";
+static NSString* const kErrorClassKey   = @"error_class";
+static NSString* const kErrorMessageKey = @"error_message";
+static NSString* const kErrorRequestKey = @"request";
+static NSString* const kParametersKey   = @"parameters";
 
 static NSString* const kEmptyURLErrorClass   = @"SEEmptyURLError";
 static NSString* const kEmptyURLErrorMessage = @"Cannot send a request to an empty URL.";
@@ -67,7 +68,7 @@ static NSURLSession* _requestHandlerURLSession;
     dispatch_once(&onceToken, ^{
         NSURLSessionConfiguration* sessionConfig = [NSURLSessionConfiguration defaultSessionConfiguration];
         sessionConfig.requestCachePolicy = NSURLRequestReloadIgnoringLocalCacheData;
-        _requestHandlerURLSession = [NSURLSession sessionWithConfiguration:sessionConfig];
+        _requestHandlerURLSession = [NSURLSession sessionWithConfiguration:sessionConfig delegate:[SERequestHandlerURLSessionDelegate sharedInstance] delegateQueue:nil];
     });
 }
 
@@ -125,8 +126,8 @@ static NSURLSession* _requestHandlerURLSession;
     if (url.length == 0) {
         if (failure) {
             failure(@{ kErrorClassKey : kEmptyURLErrorClass,
-                       kMessageKey : kEmptyURLErrorMessage,
-                       kRequestKey : @{
+                       kErrorMessageKey : kEmptyURLErrorMessage,
+                       kErrorRequestKey : @{
                                kParametersKey : parameters ? parameters : [NSNull null]
                                }
                        });
@@ -148,8 +149,8 @@ static NSURLSession* _requestHandlerURLSession;
         if (![self handleParameters:parameters assignmentInRequest:request]) {
             if (failure) {
                 failure(@{ kErrorClassKey : kBadRequestParametersErrorClass,
-                           kMessageKey : kBadRequestParametersErrorMessage,
-                           kRequestKey : @{
+                           kErrorMessageKey : kBadRequestParametersErrorMessage,
+                           kErrorRequestKey : @{
                                    kParametersKey : parameters
                                    }
                            });
@@ -162,8 +163,8 @@ static NSURLSession* _requestHandlerURLSession;
         dispatch_async(dispatch_get_main_queue(), ^{
             if (responseError) {
                 self.failureBlock(@{ kErrorClassKey : responseError.domain,
-                                     kMessageKey : responseError.localizedDescription,
-                                     kRequestKey : request
+                                     kErrorMessageKey : responseError.localizedDescription,
+                                     kErrorRequestKey : request
                                      });
                 return;
             }
@@ -173,8 +174,8 @@ static NSURLSession* _requestHandlerURLSession;
             NSDictionary* data = [NSJSONSerialization JSONObjectWithData:responseData options:0 error:&error];
             if (error) {
                 self.failureBlock(@{ kErrorClassKey : error.domain,
-                                     kMessageKey : error.localizedDescription,
-                                     kRequestKey : request });
+                                     kErrorMessageKey : error.localizedDescription,
+                                     kErrorRequestKey : request });
             } else {
                 if ((responseStatusCode >= 200 && responseStatusCode < 300)) {
                     self.successBlock(data);
@@ -217,8 +218,8 @@ static NSURLSession* _requestHandlerURLSession;
         if (error) {
             if (self.failureBlock) {
                 self.failureBlock(@{ kErrorClassKey : error.domain,
-                                     kMessageKey : error.localizedDescription,
-                                     kRequestKey : parameters });
+                                     kErrorMessageKey : error.localizedDescription,
+                                     kErrorRequestKey : parameters });
             }
             return NO;
         }
