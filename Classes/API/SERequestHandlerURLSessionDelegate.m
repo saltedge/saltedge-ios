@@ -18,6 +18,8 @@
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         _sharedInstance = [[self alloc] init];
+        NSString* cerPath = [[NSBundle mainBundle] pathForResource:@"saltedge.com" ofType:@"cer"];
+        NSAssert(cerPath != nil, @"The saltedge.com SSL certificate could not be located in the app bundle.");
     });
     return _sharedInstance;
 }
