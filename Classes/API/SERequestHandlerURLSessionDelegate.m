@@ -41,6 +41,7 @@
     } else {
         [[challenge sender] cancelAuthenticationChallenge:challenge];
         completionHandler(NSURLSessionAuthChallengeCancelAuthenticationChallenge, nil);
+        NSLog(@"*** SSL Pinning FAILED *** Request to %@://%@ cancelled.", challenge.protectionSpace.protocol, challenge.protectionSpace.host);
     }
 }
 
