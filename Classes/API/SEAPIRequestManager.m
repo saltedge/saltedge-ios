@@ -473,7 +473,7 @@ static NSString* const kiFrameCallbackType        = @"iframe";
 }
 
 - (void)refreshLoginWithSecret:(NSString*)loginSecret
-                       success:(void (^)(NSDictionary* responseObject))success
+                       success:(void (^)(SELogin* login))success
                        failure:(SEAPIRequestFailureBlock)failure
                       delegate:(id<SELoginFetchingDelegate>)delegate
 {
@@ -486,10 +486,9 @@ static NSString* const kiFrameCallbackType        = @"iframe";
                                  parameters:nil
                                     headers:[self sessionHeadersWithLoginSecret:loginSecret]
                                     success:^(NSDictionary* responseObject) {
-                                        if (success) {
-                                            success(responseObject);
-                                        }
-                                        if (![responseObject[kDataKey][kRefreshedKey] boolValue]) { return; }
+                                        if (!success) { return; }
+                                        SELogin* fetchedLogin = [SELogin objectFromDictionary:responseObject[kDataKey]];
+                                        success(fetchedLogin);
                                         self.loginFetchingDelegate = delegate;
                                         if ([self isLoginFetchingDelegateSuitableForDelegation]) {
                                             [self pollLoginWithSecret:loginSecret];

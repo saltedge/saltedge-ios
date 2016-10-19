@@ -413,7 +413,7 @@ typedef NS_ENUM(NSUInteger, SEAPIRequestManagerSSLPinningMode) {
  @see https://docs.saltedge.com/reference/#logins-refresh
  */
 - (void)refreshLoginWithSecret:(NSString*)loginSecret
-                       success:(void (^)(NSDictionary* responseObject))success
+                       success:(void (^)(SELogin* login))success
                        failure:(SEAPIRequestFailureBlock)failure
                       delegate:(id<SELoginFetchingDelegate>)delegate;
 
