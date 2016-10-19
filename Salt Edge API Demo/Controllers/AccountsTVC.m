@@ -121,10 +121,8 @@ static NSString* const kAccountCellReuseIdentifier = @"AccountTableViewCell";
     SEAPIRequestManager* manager = [SEAPIRequestManager manager];
     if (!self.loginsProvider.isOAuth) {
         [manager refreshLoginWithSecret:self.login.secret
-                                    success:^(NSDictionary* dictionary) {
-                                        if (![dictionary[kDataKey][kRefreshedKey] boolValue]) {
-                                            [SVProgressHUD showErrorWithStatus:@"Could not refresh login."];
-                                        }
+                                    success:^(SELogin* login) {
+                                        // Nothing here. Need to wait for SELoginFetchingDelegate callbacks
                                     }
                                     failure:^(SEError* error) {
                                         [SVProgressHUD showErrorWithStatus:error.errorMessage];
