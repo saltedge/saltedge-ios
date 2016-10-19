@@ -15,7 +15,7 @@ Add the pod to your `Podfile`
 # ... snip ...
 
 # To use Spectre API v3
-pod 'SaltEdge-iOS', '~> 3.1.1'
+pod 'SaltEdge-iOS', '~> 3.1.2'
 
 # To use Spectre API v2
 pod 'SaltEdge-iOS', '~> 2.6.0'
@@ -268,7 +268,7 @@ Set up the `clientId`, `appSecret` and `customerIdentifier` constants to your Cl
 
 ## Versioning
 
-The current version of the SDK is [3.1.1](https://github.com/saltedge/saltedge-ios/releases/tag/v3.1.1), and is in compliance with the Salt Edge API's [current version](https://docs.saltedge.com/guides/versioning/). Any backward-incompatible changes in the API will result in changes to the SDK.
+The current version of the SDK is [3.1.2](https://github.com/saltedge/saltedge-ios/releases/tag/v3.1.2), and is in compliance with the Salt Edge API's [current version](https://docs.saltedge.com/guides/versioning/). Any backward-incompatible changes in the API will result in changes to the SDK.
 
 ## Security
 
