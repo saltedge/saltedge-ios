@@ -548,9 +548,6 @@ static NSString* const kiFrameCallbackType        = @"iframe";
                                  failure:(SEAPIRequestFailureBlock)failure
 {
     NSAssert(sessionHeaders[kCustomerSecretHeaderKey] != nil, @"Customer Secret cannot be nil.");
-    NSAssert(parameters[kCountryCodeKey] != nil, @"Country code cannot be nil.");
-    NSAssert(parameters[kProviderCodeKey] != nil, @"Provider code cannot be nil.");
-    NSAssert(parameters[kReturnToKey] != nil, @"Return to cannot be nil.");
 
     [self requestTokenWithAction:kLoginActionCreate
                        headers:sessionHeaders
@@ -611,10 +608,10 @@ static NSString* const kiFrameCallbackType        = @"iframe";
 }
 
 - (void)requestTokenWithAction:(NSString*)path
-                     headers:(NSDictionary*)headers
-                  parameters:(NSDictionary*)parameters
-                     success:(void (^)(NSDictionary* responseObject))success
-                     failure:(SEAPIRequestFailureBlock)failure
+                       headers:(NSDictionary*)headers
+                    parameters:(NSDictionary*)parameters
+                       success:(void (^)(NSDictionary* responseObject))success
+                       failure:(SEAPIRequestFailureBlock)failure
 {
 
     NSMutableDictionary* mutableParams = parameters.mutableCopy;
