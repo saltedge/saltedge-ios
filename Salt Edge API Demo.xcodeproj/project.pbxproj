@@ -64,6 +64,7 @@
 		0AF898841986633E00F1A270 /* ConnectWebViewVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AF898831986633E00F1A270 /* ConnectWebViewVC.m */; };
 		0AF898901986740200F1A270 /* TabBarVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AF8988F1986740200F1A270 /* TabBarVC.m */; };
 		0AF898931986748C00F1A270 /* circle@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0AF898921986748C00F1A270 /* circle@2x.png */; };
+		1AAD97751F1E06CB0060E8D7 /* saltedge.com.new.cer in Resources */ = {isa = PBXBuildFile; fileRef = 1AAD97741F1E06CB0060E8D7 /* saltedge.com.new.cer */; };
 		57D00B115BB5E3AFA55044AD /* libPods-Salt Edge API Demo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9153D232815ABE07B2230E82 /* libPods-Salt Edge API Demo.a */; };
 		5897167D19E6ACB3001E2AA9 /* SERequestHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 5897167C19E6ACB3001E2AA9 /* SERequestHandler.m */; };
 /* End PBXBuildFile section */
@@ -180,6 +181,7 @@
 		0AF8988E1986740200F1A270 /* TabBarVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TabBarVC.h; sourceTree = "<group>"; };
 		0AF8988F1986740200F1A270 /* TabBarVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TabBarVC.m; sourceTree = "<group>"; };
 		0AF898921986748C00F1A270 /* circle@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "circle@2x.png"; sourceTree = "<group>"; };
+		1AAD97741F1E06CB0060E8D7 /* saltedge.com.new.cer */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = saltedge.com.new.cer; sourceTree = "<group>"; };
 		5897167B19E6ACB3001E2AA9 /* SERequestHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SERequestHandler.h; sourceTree = "<group>"; };
 		5897167C19E6ACB3001E2AA9 /* SERequestHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SERequestHandler.m; sourceTree = "<group>"; };
 		883CD7F0496123DB214D94AE /* Pods-Salt Edge API Demo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Salt Edge API Demo.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Salt Edge API Demo/Pods-Salt Edge API Demo.debug.xcconfig"; sourceTree = "<group>"; };
@@ -456,6 +458,7 @@
 		0AAF304C1D097DC20097B0EA /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				1AAD97741F1E06CB0060E8D7 /* saltedge.com.new.cer */,
 				0AAF304D1D097DC20097B0EA /* saltedge.com.cer */,
 			);
 			path = "Supporting Files";
@@ -578,6 +581,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1AAD97751F1E06CB0060E8D7 /* saltedge.com.new.cer in Resources */,
 				0AF898931986748C00F1A270 /* circle@2x.png in Resources */,
 				0AAB6D6319827AEA009DCDD5 /* Main.storyboard in Resources */,
 				0AAB6CFD19827AAA009DCDD5 /* Images.xcassets in Resources */,
