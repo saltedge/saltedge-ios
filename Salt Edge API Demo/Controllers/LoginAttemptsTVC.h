@@ -3,7 +3,7 @@
 //  Salt Edge API Demo
 //
 //  Created by Constantin Lungu on 2/3/16.
-//  Copyright © 2016 Salt Edge. All rights reserved.
+//  Copyright (c) 2017 Salt Edge. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
