@@ -21,8 +21,6 @@
         _sharedInstance = [[self alloc] init];
         NSString* cerPath = [[NSBundle mainBundle] pathForResource:@"saltedge.com" ofType:@"cer"];
         NSAssert(cerPath != nil, @"The saltedge.com SSL certificate could not be located in the app bundle. SSL pinning will not be possible without it.");
-        NSString* newCerPath = [[NSBundle mainBundle] pathForResource:@"saltedge.com.new" ofType:@"cer"];
-        NSAssert(newCerPath != nil, @"The saltedge.com.new SSL certificate could not be located in the app bundle. SSL pinning will not be possible without it.");
     });
     return _sharedInstance;
 }
@@ -48,10 +46,8 @@
     NSData* remoteCertificateData = CFBridgingRelease(SecCertificateCopyData(certificate));
     NSString* cerPath = [[NSBundle mainBundle] pathForResource:@"saltedge.com" ofType:@"cer"];
     NSData* localCertificateData = [NSData dataWithContentsOfFile:cerPath];
-    NSString* newCerPath = [[NSBundle mainBundle] pathForResource:@"saltedge.com.new" ofType:@"cer"];
-    NSData* newLocalCertificateData = [NSData dataWithContentsOfFile:newCerPath];
 
-    if ([remoteCertificateData isEqualToData:localCertificateData] || [remoteCertificateData isEqualToData:newLocalCertificateData]) {
+    if ([remoteCertificateData isEqualToData:localCertificateData]) {
         useChallengeCredential();
     } else {
         [[challenge sender] cancelAuthenticationChallenge:challenge];
