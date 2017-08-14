@@ -581,7 +581,7 @@ static NSString* const kiFrameCallbackType        = @"iframe";
     NSAssert(loginSecret != nil, @"Login secret cannot be nil.");
     NSAssert(parameters[kReturnToKey] != nil, @"Return to cannot be nil.");
 
-    [self requestTokenWithAction:kLoginActionReconnect
+    [self requestTokenWithAction:kLoginActionRefresh
                        headers:[self sessionHeadersWithLoginSecret:loginSecret]
                     parameters:parameters
                        success:success
