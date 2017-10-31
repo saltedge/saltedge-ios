@@ -673,14 +673,6 @@ static NSString* const kiFrameCallbackType        = @"iframe";
     NSMutableDictionary* finalParameters = parameters ? parameters.mutableCopy : [NSMutableDictionary dictionary];
     finalParameters[kAccountIdKey] = accountId;
 
-    if (finalParameters[kFromMadeOnKey]) {
-        finalParameters[kFromMadeOnKey] = [DateUtils YMDStringFromDate:finalParameters[kFromMadeOnKey]];
-    }
-
-    if (finalParameters[kToMadeOnKey]) {
-        finalParameters[kToMadeOnKey] = [DateUtils YMDStringFromDate:finalParameters[kToMadeOnKey]];
-    }
-
     [self requestPaginatedResourceWithPath:transactionsPath
                                  container:@[].mutableCopy
                                    headers:[self sessionHeadersWithLoginSecret:loginSecret]

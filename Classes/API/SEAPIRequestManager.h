@@ -239,9 +239,7 @@ typedef NS_ENUM(NSUInteger, SEAPIRequestManagerSSLPinningMode) {
  @code
  // parameters example, all optional
  {
-    "from_id": 1839,
-    "from_made_on": [NSDate dateWithTimeIntervalSinceReferenceDate:0],
-    "to_made_on": [NSDate date]
+    "from_id": 1839
  }
  @endcode
 
@@ -284,9 +282,7 @@ typedef NS_ENUM(NSUInteger, SEAPIRequestManagerSSLPinningMode) {
  @code
  // parameters example, all optional
  {
-    "from_id": 2370,
-    "from_made_on": [NSDate date],
-    "to_made_on": [NSDate dateWithTimeIntervalSinceNow:oneDayInterval]
+    "from_id": 2370
  }
  @endcode
 
