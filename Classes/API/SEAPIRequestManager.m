@@ -239,7 +239,9 @@ static NSString* const kiFrameCallbackType        = @"iframe";
                                    failure:^(SEError* error) {
                                        if (!failure) { return; }
 
-                                       failure(error);
+                                       dispatch_async(dispatch_get_main_queue(), ^{
+                                           failure(error);
+                                       });
                                    } full:YES];
 }
 
@@ -394,7 +396,6 @@ static NSString* const kiFrameCallbackType        = @"iframe";
                                         if (!success) { return; }
 
                                         SELoginAttempt* attempt = [SELoginAttempt objectFromDictionary:responseObject[kDataKey]];
-
                                         dispatch_async(dispatch_get_main_queue(), ^{
                                             success(attempt);
                                         });
