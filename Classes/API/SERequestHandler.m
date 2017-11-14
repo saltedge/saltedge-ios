@@ -160,30 +160,28 @@ static NSURLSession* _requestHandlerURLSession;
     }
 
     NSURLSessionDataTask* task = [_requestHandlerURLSession dataTaskWithRequest:request completionHandler:^(NSData* responseData, NSURLResponse* response, NSError* responseError) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            if (responseError) {
-                self.failureBlock(@{ kErrorClassKey : responseError.domain,
-                                     kErrorMessageKey : responseError.localizedDescription,
-                                     kErrorRequestKey : request
-                                     });
-                return;
-            }
+        if (responseError) {
+            self.failureBlock(@{ kErrorClassKey : responseError.domain,
+                                 kErrorMessageKey : responseError.localizedDescription,
+                                 kErrorRequestKey : request
+                                 });
+            return;
+        }
 
-            NSInteger responseStatusCode = [(NSHTTPURLResponse*)response statusCode];
-            NSError* error;
-            NSDictionary* data = [NSJSONSerialization JSONObjectWithData:responseData options:0 error:&error];
-            if (error) {
-                self.failureBlock(@{ kErrorClassKey : error.domain,
-                                     kErrorMessageKey : error.localizedDescription,
-                                     kErrorRequestKey : request });
+        NSInteger responseStatusCode = [(NSHTTPURLResponse*)response statusCode];
+        NSError* error;
+        NSDictionary* data = [NSJSONSerialization JSONObjectWithData:responseData options:0 error:&error];
+        if (error) {
+            self.failureBlock(@{ kErrorClassKey : error.domain,
+                                 kErrorMessageKey : error.localizedDescription,
+                                 kErrorRequestKey : request });
+        } else {
+            if ((responseStatusCode >= 200 && responseStatusCode < 300)) {
+                self.successBlock(data);
             } else {
-                if ((responseStatusCode >= 200 && responseStatusCode < 300)) {
-                    self.successBlock(data);
-                } else {
-                    self.failureBlock(data);
-                }
+                self.failureBlock(data);
             }
-        });
+        }
     }];
 
     [task resume];

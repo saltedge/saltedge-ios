@@ -118,9 +118,11 @@ static NSString* const kiFrameCallbackType        = @"iframe";
                                   parameters:parameters
                                      headers:sessionHeaders
                                      success:^(NSDictionary* responseObject) {
-                                         if (success) {
+                                         if (!success) { return; }
+
+                                         dispatch_async(dispatch_get_main_queue(), ^{
                                              success(responseObject);
-                                         }
+                                         });
                                      }
                                      failure:^(NSDictionary* errorObject) {
                                          [self failureBlockWithBlock:failure errorObject:errorObject];
@@ -144,9 +146,13 @@ static NSString* const kiFrameCallbackType        = @"iframe";
                                          SELogin* createdLogin = [SELogin objectFromDictionary:responseDictionary[kDataKey]];
                                          self.loginFetchingDelegate = delegate;
                                          self.createdLogin = createdLogin;
+
                                          if (success) {
-                                             success(createdLogin);
+                                             dispatch_async(dispatch_get_main_queue(), ^{
+                                                 success(createdLogin);
+                                             });
                                          }
+
                                          if ([self isLoginFetchingDelegateSuitableForDelegation]) {
                                              [self notifyDelegateWithStartingFetchOfLogin:createdLogin];
                                              [self pollLoginWithSecret:createdLogin.secret];
@@ -173,9 +179,11 @@ static NSString* const kiFrameCallbackType        = @"iframe";
                                   parameters:@{ kDataKey : parameters }
                                      headers:sessionHeaders
                                      success:^(NSDictionary* responseObject) {
-                                         if (success) {
+                                         if (!success) { return; }
+
+                                         dispatch_async(dispatch_get_main_queue(), ^{
                                              success(responseObject);
-                                         }
+                                         });
                                      }
                                      failure:^(NSDictionary* errorObject) {
                                          [self failureBlockWithBlock:failure errorObject:errorObject];
@@ -195,10 +203,13 @@ static NSString* const kiFrameCallbackType        = @"iframe";
                                     headers:sessionHeaders
                                     success:^(NSDictionary* responseObject) {
                                         if (!success) { return; }
+
                                         NSDictionary* providerDictionary = responseObject[kDataKey];
                                         if (providerDictionary) {
                                             SEProvider* provider = [SEProvider objectFromDictionary:providerDictionary];
-                                            success(provider);
+                                            dispatch_async(dispatch_get_main_queue(), ^{
+                                                success(provider);
+                                            });
                                         }
                                     }
                                     failure:^(NSDictionary* errorObject) {
@@ -215,15 +226,22 @@ static NSString* const kiFrameCallbackType        = @"iframe";
                                 parameters:nil
                                    success:^(NSArray* providersDictionaries) {
                                        if (!success) { return; }
+
                                        NSMutableSet* fullProvidersList = [NSMutableSet setWithCapacity:providersDictionaries.count];
                                        for (NSDictionary* providerDictionary in providersDictionaries) {
                                             [fullProvidersList addObject:[SEProvider objectFromDictionary:providerDictionary]];
-                                        }
-                                       success((NSSet*) fullProvidersList);
+                                       }
+
+                                       dispatch_async(dispatch_get_main_queue(), ^{
+                                           success((NSSet*) fullProvidersList);
+                                       });
                                    }
                                    failure:^(SEError* error) {
                                        if (!failure) { return; }
-                                       failure(error);
+
+                                       dispatch_async(dispatch_get_main_queue(), ^{
+                                           failure(error);
+                                       });
                                    } full:YES];
 }
 
@@ -237,15 +255,22 @@ static NSString* const kiFrameCallbackType        = @"iframe";
                                 parameters:parameters
                                    success:^(NSArray* providerDictionaries) {
                                        if (!success) { return; }
+
                                        NSMutableSet* providerObjects = [NSMutableSet setWithCapacity:providerDictionaries.count];
                                        for (NSDictionary* providerDictionary in providerDictionaries) {
                                            [providerObjects addObject:[SEProvider objectFromDictionary:providerDictionary]];
                                        }
-                                       success((NSSet*) providerObjects);
+
+                                       dispatch_async(dispatch_get_main_queue(), ^{
+                                           success((NSSet*) providerObjects);
+                                       });
                                    }
                                    failure:^(SEError* error) {
                                        if (!failure) { return; }
-                                       failure(error);
+
+                                       dispatch_async(dispatch_get_main_queue(), ^{
+                                           failure(error);
+                                       });
                                    } full:YES];
 }
 
@@ -261,12 +286,16 @@ static NSString* const kiFrameCallbackType        = @"iframe";
                                     headers:[self sessionHeadersWithLoginSecret:loginSecret]
                                     success:^(NSDictionary* responseObject) {
                                         if (!success) { return; }
+
                                         NSArray* accountDictionaries = responseObject[kDataKey];
                                         NSMutableSet* accountsObjects = [NSMutableSet setWithCapacity:accountDictionaries.count];
                                         for (NSDictionary* accountDictionary in accountDictionaries) {
                                             [accountsObjects addObject:[SEAccount objectFromDictionary:accountDictionary]];
                                         }
-                                        success((NSSet*) accountsObjects);
+
+                                        dispatch_async(dispatch_get_main_queue(), ^{
+                                            success((NSSet*) accountsObjects);
+                                        });
                                     }
                                     failure:^(NSDictionary* errorObject) {
                                         [self failureBlockWithBlock:failure errorObject:errorObject];
@@ -339,8 +368,11 @@ static NSString* const kiFrameCallbackType        = @"iframe";
                                     headers:[self sessionHeadersWithLoginSecret:loginSecret]
                                     success:^(NSDictionary* responseObject) {
                                         if (!success) { return; }
+
                                         SELogin* fetchedLogin = [SELogin objectFromDictionary:responseObject[kDataKey]];
-                                        success(fetchedLogin);
+                                        dispatch_async(dispatch_get_main_queue(), ^{
+                                            success(fetchedLogin);
+                                        });
                                     }
                                     failure:^(NSDictionary* errorObject) {
                                         [self failureBlockWithBlock:failure errorObject:errorObject];
@@ -361,7 +393,12 @@ static NSString* const kiFrameCallbackType        = @"iframe";
                                  parameters:nil
                                     headers:[self sessionHeadersWithLoginSecret:loginSecret]
                                     success:^(NSDictionary* responseObject) {
-                                        success([SELoginAttempt objectFromDictionary:responseObject[kDataKey]]);
+                                        if (!success) { return; }
+
+                                        SELoginAttempt* attempt = [SELoginAttempt objectFromDictionary:responseObject[kDataKey]];
+                                        dispatch_async(dispatch_get_main_queue(), ^{
+                                            success(attempt);
+                                        });
                                     }
                                     failure:^(NSDictionary* error) {
                                         [self failureBlockWithBlock:failure errorObject:error];
@@ -377,11 +414,16 @@ static NSString* const kiFrameCallbackType        = @"iframe";
                                    headers:[self sessionHeadersWithLoginSecret:loginSecret]
                                 parameters:nil
                                    success:^(NSArray* attemptsArray) {
+                                       if (!success) { return; }
+
                                        NSMutableArray* serializedAttempts = [NSMutableArray arrayWithCapacity:attemptsArray.count];
                                        for (NSDictionary* attemptDictionary in attemptsArray) {
                                            [serializedAttempts addObject:[SELoginAttempt objectFromDictionary:attemptDictionary]];
                                        }
-                                       success([NSArray arrayWithArray:serializedAttempts]);
+
+                                       dispatch_async(dispatch_get_main_queue(), ^{
+                                           success([NSArray arrayWithArray:serializedAttempts]);
+                                       });
                                    }
                                    failure:failure
                                       full:YES];
@@ -404,9 +446,13 @@ static NSString* const kiFrameCallbackType        = @"iframe";
                                     headers:[self sessionHeadersWithLoginSecret:loginSecret]
                                     success:^(NSDictionary* responseObject) {
                                         SELogin* fetchedLogin = [SELogin objectFromDictionary:responseObject[kDataKey]];
+
                                         if (success) {
-                                            success(fetchedLogin);
+                                            dispatch_async(dispatch_get_main_queue(), ^{
+                                                success(fetchedLogin);
+                                            });
                                         }
+
                                         self.loginFetchingDelegate = delegate;
                                         if ([self isLoginFetchingDelegateSuitableForDelegation]) {
                                             [self pollLoginWithSecret:fetchedLogin.secret];
@@ -434,9 +480,13 @@ static NSString* const kiFrameCallbackType        = @"iframe";
                                     headers:[self sessionHeadersWithLoginSecret:loginSecret]
                                     success:^(NSDictionary* responseObject) {
                                         SELogin* reconnectedLogin = [SELogin objectFromDictionary:responseObject[kDataKey]];
+
                                         if (success) {
-                                            success(reconnectedLogin);
+                                            dispatch_async(dispatch_get_main_queue(), ^{
+                                                success(reconnectedLogin);
+                                            });
                                         }
+
                                         self.loginFetchingDelegate = delegate;
                                         if ([self isLoginFetchingDelegateSuitableForDelegation]) {
                                             [self notifyDelegateWithStartingFetchOfLogin:reconnectedLogin];
@@ -463,9 +513,11 @@ static NSString* const kiFrameCallbackType        = @"iframe";
                                   parameters:@{ kDataKey : parameters }
                                      headers:[self sessionHeadersWithLoginSecret:loginSecret]
                                      success:^(NSDictionary* responseObject) {
-                                         if (success) {
+                                         if (!success) { return; }
+
+                                         dispatch_async(dispatch_get_main_queue(), ^{
                                              success(responseObject);
-                                         }
+                                         });
                                      }
                                      failure:^(NSDictionary* errorObject) {
                                          [self failureBlockWithBlock:failure errorObject:errorObject];
@@ -486,9 +538,13 @@ static NSString* const kiFrameCallbackType        = @"iframe";
                                  parameters:nil
                                     headers:[self sessionHeadersWithLoginSecret:loginSecret]
                                     success:^(NSDictionary* responseObject) {
-                                        if (!success) { return; }
                                         SELogin* fetchedLogin = [SELogin objectFromDictionary:responseObject[kDataKey]];
-                                        success(fetchedLogin);
+                                        if (success) {
+                                            dispatch_async(dispatch_get_main_queue(), ^{
+                                                success(fetchedLogin);
+                                            });
+                                        }
+
                                         self.loginFetchingDelegate = delegate;
                                         if ([self isLoginFetchingDelegateSuitableForDelegation]) {
                                             [self pollLoginWithSecret:loginSecret];
@@ -514,9 +570,11 @@ static NSString* const kiFrameCallbackType        = @"iframe";
                                   parameters:@{ kDataKey : parameters }
                                      headers:[self sessionHeadersWithLoginSecret:loginSecret]
                                      success:^(NSDictionary* responseObject) {
-                                         if (success) {
+                                         if (!success) { return; }
+
+                                         dispatch_async(dispatch_get_main_queue(), ^{
                                              success(responseObject);
-                                         }
+                                         });
                                      }
                                      failure:^(NSDictionary* errorObject) {
                                          [self failureBlockWithBlock:failure errorObject:errorObject];
@@ -534,9 +592,11 @@ static NSString* const kiFrameCallbackType        = @"iframe";
                                     parameters:nil
                                        headers:[self sessionHeadersWithLoginSecret:loginSecret]
                                        success:^(NSDictionary* responseObject) {
-                                           if (success) {
+                                           if (!success) { return; }
+
+                                           dispatch_async(dispatch_get_main_queue(), ^{
                                                success(responseObject);
-                                           }
+                                           });
                                        }
                                        failure:^(NSDictionary* errorObject) {
                                            [self failureBlockWithBlock:failure errorObject:errorObject];
@@ -624,9 +684,11 @@ static NSString* const kiFrameCallbackType        = @"iframe";
                                   parameters:dataParameters
                                      headers:headers
                                      success:^(NSDictionary* responseObject) {
-                                         if (success) {
+                                         if (!success) { return; }
+
+                                         dispatch_async(dispatch_get_main_queue(), ^{
                                              success(responseObject);
-                                         }
+                                         });
                                      }
                                      failure:^(NSDictionary* errorObject) {
                                          [self failureBlockWithBlock:failure errorObject:errorObject];
@@ -646,6 +708,7 @@ static NSString* const kiFrameCallbackType        = @"iframe";
                                     headers:headers
                                     success:^(NSDictionary* responseObject) {
                                         if (!success) { return; }
+
                                         [container addObjectsFromArray:responseObject[kDataKey]];
                                         NSNumber* nextId = responseObject[kMetaKey][kNextIdKey];
                                         if (nextId && ![nextId isEqual:[NSNull null]] && full) {
@@ -679,14 +742,22 @@ static NSString* const kiFrameCallbackType        = @"iframe";
                                 parameters:[NSDictionary dictionaryWithDictionary:finalParameters]
                                    success:^(NSArray* transactionDictionaries) {
                                        if (!success) { return; }
+
                                        NSMutableSet* transactionsObjects = [NSMutableSet setWithCapacity:transactionDictionaries.count];
                                        for (NSDictionary* transactionDictionary in transactionDictionaries) {
                                            [transactionsObjects addObject:[SETransaction objectFromDictionary:transactionDictionary]];
                                        }
-                                       success((NSSet*) transactionsObjects);
+
+                                       dispatch_async(dispatch_get_main_queue(), ^{
+                                           success((NSSet*) transactionsObjects);
+                                       });
                                    }
                                    failure:^(SEError* error) {
-                                       if (failure) { failure(error); }
+                                       if (!failure) { return; }
+
+                                       dispatch_async(dispatch_get_main_queue(), ^{
+                                           failure(error);
+                                       });
                                    } full:YES];
 }
 
@@ -731,9 +802,11 @@ static NSString* const kiFrameCallbackType        = @"iframe";
                                   parameters:@{ kDataKey: learningArray }
                                      headers:sessionHeaders
                                      success:^(NSDictionary* responseObject) {
-                                         if (success) {
+                                         if (!success) { return ;}
+
+                                         dispatch_async(dispatch_get_main_queue(), ^{
                                              success(responseObject);
-                                         }
+                                         });
                                      }
                                      failure:^(NSDictionary* errorObject) {
                                          [self failureBlockWithBlock:failure errorObject:errorObject];
@@ -760,8 +833,11 @@ static NSString* const kiFrameCallbackType        = @"iframe";
 - (void)failureBlockWithBlock:(SEAPIRequestFailureBlock)failureBlock errorObject:(NSDictionary*)errorObject
 {
     if (!failureBlock) { return; }
+
     SEError* error = [SEError objectFromDictionary:errorObject];
-    failureBlock(error);
+    dispatch_async(dispatch_get_main_queue(), ^{
+        failureBlock(error);
+    });
 }
 
 + (NSDictionary*)sessionHeadersWithLoginSecret:(NSString*)loginSecret
