@@ -49,7 +49,7 @@
         return YES;
     }
     [SEAPIRequestManager linkAppId:appID appSecret:appSecret];
-    [SEAPIRequestManager setSSLPinningMode:SEAPIRequestManagerSSLPinningModeDisabled]; // No need to actually write this since SSL pinning is enabled by default.
+    [SEAPIRequestManager setSSLPinningMode:SEAPIRequestManagerSSLPinningModeEnabled]; // No need to actually write this since SSL pinning is enabled by default.
 
     void (^setWindowRootViewController)() = ^() {
         self.tabBar = [[TabBarVC alloc] init];
