@@ -136,6 +136,7 @@ typedef NS_ENUM(NSUInteger, SEAPIRequestManagerSSLPinningMode) {
  {
     "country_code": "XO",
     "provider_code": "paypal_xo",
+    "fetch_scopes": ["accounts", "transactions"], // "holder_info" available as well
     "return_to": "your-app-url://home.local"
  }
  @endcode

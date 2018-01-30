@@ -173,6 +173,7 @@ static NSString* const kiFrameCallbackType        = @"iframe";
     NSAssert(parameters[kCountryCodeKey] != nil, @"Country code cannot be nil.");
     NSAssert(parameters[kProviderCodeKey] != nil, @"Provider code cannot be nil.");
     NSAssert(parameters[kReturnToKey] != nil, @"Return to URL cannot be nil.");
+    NSAssert(parameters[kFetchScopesKey] != nil, @"Fetch scopes cannot be nil.");
 
     NSString* OAuthCreatePath = [[self baseURLStringByAppendingPathComponent:kOAuthProvidersPath] stringByAppendingPathComponent:kLoginActionCreate];
 
