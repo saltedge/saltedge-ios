@@ -609,6 +609,7 @@ static NSString* const kiFrameCallbackType        = @"iframe";
                                  failure:(SEAPIRequestFailureBlock)failure
 {
     NSAssert(sessionHeaders[kCustomerSecretHeaderKey] != nil, @"Customer Secret cannot be nil.");
+    NSAssert(parameters[kFetchScopesKey] != nil, @"Fetch scopes cannot be nil.");
 
     [self requestTokenWithAction:kLoginActionCreate
                        headers:sessionHeaders
