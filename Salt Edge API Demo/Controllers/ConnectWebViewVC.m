@@ -134,7 +134,11 @@ static NSString* const kConnectURLKey    = @"connect_url";
     SEAPIRequestManager* manager = [SEAPIRequestManager manager];
     [SVProgressHUD showWithStatus:@"Requesting token..." maskType:SVProgressHUDMaskTypeGradient];
     if (!self.login) {
-        [manager requestCreateTokenWithParameters:@{ @"country_code" : self.provider.countryCode, @"provider_code" : self.provider.code, @"return_to" : @"http://httpbin.org" } success:^(NSDictionary* responseObject) {
+        NSDictionary* parameters = @{ kCountryCodeKey : self.provider.countryCode,
+                                      kProviderCodeKey : self.provider.code,
+                                      kFetchScopesKey : @[@"accounts", @"transactions"],
+                                      kReturnToKey : @"http://httpbin.org" };
+        [manager requestCreateTokenWithParameters:parameters success:^(NSDictionary* responseObject) {
             [self loadConnectPageWithURLString:responseObject[kDataKey][kConnectURLKey]];
         } failure:^(SEError* error) {
             NSLog(@"%@", error);

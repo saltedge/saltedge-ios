@@ -26,15 +26,15 @@
 
 /* Routes and paths */
 static NSString* const kRootURL                 = @"https://www.saltedge.com";
-static NSString* const kTokensPath              = @"api/v3/tokens";
-static NSString* const kLoginPath               = @"api/v3/login";
-static NSString* const kAttemptsPath            = @"api/v3/attempts";
-static NSString* const kAccountsPath            = @"api/v3/accounts";
-static NSString* const kTransactionsPath        = @"api/v3/transactions";
-static NSString* const kProvidersPath           = @"api/v3/providers";
-static NSString* const kOAuthProvidersPath      = @"api/v3/oauth_providers";
-static NSString* const kCustomersPath           = @"api/v3/customers";
-static NSString* const kLearnPath               = @"api/v3/categories/learn";
+static NSString* const kTokensPath              = @"api/v4/tokens";
+static NSString* const kLoginPath               = @"api/v4/login";
+static NSString* const kAttemptsPath            = @"api/v4/attempts";
+static NSString* const kAccountsPath            = @"api/v4/accounts";
+static NSString* const kTransactionsPath        = @"api/v4/transactions";
+static NSString* const kProvidersPath           = @"api/v4/providers";
+static NSString* const kOAuthProvidersPath      = @"api/v4/oauth_providers";
+static NSString* const kCustomersPath           = @"api/v4/customers";
+static NSString* const kLearnPath               = @"api/v4/categories/learn";
 static NSString* const kLoginInteractive        = @"interactive";
 static NSString* const kPendingTransactions     = @"pending";
 
@@ -61,6 +61,7 @@ static NSString* const kRefreshKey               = @"refresh";
 static NSString* const kRefreshedKey             = @"refreshed";
 static NSString* const kRemovedKey               = @"removed";
 static NSString* const kCountryCodeKey           = @"country_code";
+static NSString* const kFetchScopesKey           = @"fetch_scopes";
 static NSString* const kProviderCodeKey          = @"provider_code";
 static NSString* const kReturnToKey              = @"return_to";
 static NSString* const kRedirectURLKey           = @"redirect_url";

@@ -35,12 +35,12 @@
 #import "SELoginAttempt.h"
 
 /* HTTP Headers */
-static NSString* const kAppSecretHeaderKey        = @"App-secret";
-static NSString* const kClientIdHeaderKey         = @"Client-id";
-static NSString* const kCustomerSecretHeaderKey   = @"Customer-secret";
-static NSString* const kLoginSecretHeaderKey      = @"Login-secret";
-static NSString* const kContentTypeHeaderKey      = @"Content-type";
-static NSString* const kJSONContentTypeValue      = @"application/json";
+static NSString* const kAppSecretHeaderKey      = @"Secret";
+static NSString* const kAppIdHeaderKey          = @"App-id";
+static NSString* const kCustomerSecretHeaderKey = @"Customer-secret";
+static NSString* const kLoginSecretHeaderKey    = @"Login-secret";
+static NSString* const kContentTypeHeaderKey    = @"Content-type";
+static NSString* const kJSONContentTypeValue    = @"application/json";
 
 /* HTTP Session config */
 static NSDictionary* sessionHeaders;
@@ -87,13 +87,13 @@ static NSString* const kiFrameCallbackType        = @"iframe";
     return sslPinningMode == SEAPIRequestManagerSSLPinningModeEnabled;
 }
 
-+ (void)linkClientId:(NSString *)clientId appSecret:(NSString *)appSecret
++ (void)linkAppId:(NSString *)appId appSecret:(NSString *)appSecret
 {
     NSAssert(sessionHeaders == nil, @"Session headers are already set up.");
-    NSAssert(clientId != nil, @"Client ID cannot be nil");
+    NSAssert(appId != nil, @"App ID cannot be nil");
     NSAssert(appSecret != nil, @"App secret cannot be nil");
 
-    NSDictionary* appHeadersDictionary = @{ kClientIdHeaderKey : clientId, kAppSecretHeaderKey : appSecret, kContentTypeHeaderKey : kJSONContentTypeValue };
+    NSDictionary* appHeadersDictionary = @{ kAppIdHeaderKey : appId, kAppSecretHeaderKey : appSecret, kContentTypeHeaderKey : kJSONContentTypeValue };
     sessionHeaders = [self sessionHeadersMergedWithDictionary:appHeadersDictionary];
 }
 
@@ -138,6 +138,7 @@ static NSString* const kiFrameCallbackType        = @"iframe";
     NSAssert(parameters[kCountryCodeKey] != nil, @"Country code cannot be nil.");
     NSAssert(parameters[kProviderCodeKey] != nil, @"Provider code cannot be nil.");
     NSAssert(parameters[kCredentialsKey] != nil, @"Credentials cannot be nil.");
+    NSAssert(parameters[kFetchScopesKey] != nil, @"Fetch scopes cannot be nil.");
 
     [SERequestHandler sendPOSTRequestWithURL:[self baseURLStringByAppendingPathComponent:kLoginPath]
                                   parameters:@{ kDataKey : parameters }
@@ -172,6 +173,7 @@ static NSString* const kiFrameCallbackType        = @"iframe";
     NSAssert(parameters[kCountryCodeKey] != nil, @"Country code cannot be nil.");
     NSAssert(parameters[kProviderCodeKey] != nil, @"Provider code cannot be nil.");
     NSAssert(parameters[kReturnToKey] != nil, @"Return to URL cannot be nil.");
+    NSAssert(parameters[kFetchScopesKey] != nil, @"Fetch scopes cannot be nil.");
 
     NSString* OAuthCreatePath = [[self baseURLStringByAppendingPathComponent:kOAuthProvidersPath] stringByAppendingPathComponent:kLoginActionCreate];
 
@@ -608,6 +610,7 @@ static NSString* const kiFrameCallbackType        = @"iframe";
                                  failure:(SEAPIRequestFailureBlock)failure
 {
     NSAssert(sessionHeaders[kCustomerSecretHeaderKey] != nil, @"Customer Secret cannot be nil.");
+    NSAssert(parameters[kFetchScopesKey] != nil, @"Fetch scopes cannot be nil.");
 
     [self requestTokenWithAction:kLoginActionCreate
                        headers:sessionHeaders

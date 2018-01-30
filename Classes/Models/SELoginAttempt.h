@@ -32,19 +32,19 @@
 
 @interface SELoginAttempt : SEBaseModel
 
-@property (nonatomic, strong) NSNumber* id;
+@property (nonatomic, strong) NSString*            id;
 @property (nonatomic, strong) SELoginAttemptStage* lastStage;
-@property (nonatomic, strong) NSArray* stages;
-@property (nonatomic, strong) NSNumber* finished;
-@property (nonatomic, strong) NSNumber* finishedRecent;
-@property (nonatomic, strong) NSNumber* interactive;
-@property (nonatomic, strong) NSNumber* partial;
-@property (nonatomic, strong) NSNumber* automaticFetch;
-@property (nonatomic, strong) NSDate* createdAt;
-@property (nonatomic, strong) NSDate* updatedAt;
-@property (nonatomic, strong) NSDate* successAt;
-@property (nonatomic, strong) NSDate* failAt;
-@property (nonatomic, strong) NSString* failErrorClass;
-@property (nonatomic, strong) NSString* failMessage;
+@property (nonatomic, strong) NSArray*             stages;
+@property (nonatomic, strong) NSNumber*            finished;
+@property (nonatomic, strong) NSNumber*            finishedRecent;
+@property (nonatomic, strong) NSNumber*            interactive;
+@property (nonatomic, strong) NSNumber*            partial;
+@property (nonatomic, strong) NSNumber*            automaticFetch;
+@property (nonatomic, strong) NSDate*              createdAt;
+@property (nonatomic, strong) NSDate*              updatedAt;
+@property (nonatomic, strong) NSDate*              successAt;
+@property (nonatomic, strong) NSDate*              failAt;
+@property (nonatomic, strong) NSString*            failErrorClass;
+@property (nonatomic, strong) NSString*            failMessage;
 
 @end

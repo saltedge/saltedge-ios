@@ -30,7 +30,7 @@
  */
 @interface SEAccount : SEBaseModel
 
-@property (nonatomic, strong) NSNumber*     id;
+@property (nonatomic, strong) NSString*     id;
 @property (nonatomic, strong) NSString*     name;
 @property (nonatomic, strong) NSString*     nature;
 @property (nonatomic, strong) NSNumber*     balance;
