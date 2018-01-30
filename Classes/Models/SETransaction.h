@@ -30,7 +30,7 @@
  */
 @interface SETransaction : SEBaseModel
 
-@property (nonatomic, strong) NSNumber*     id;
+@property (nonatomic, strong) NSString*     id;
 @property (nonatomic, strong) NSNumber*     duplicated;
 @property (nonatomic, strong) NSString*     mode;
 @property (nonatomic, strong) NSDate*       madeOn;

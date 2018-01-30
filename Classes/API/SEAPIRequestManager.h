@@ -62,12 +62,12 @@ typedef NS_ENUM(NSUInteger, SEAPIRequestManagerSSLPinningMode) {
 + (BOOL)SSLPinningEnabled;
 
 /**
- Links your Client ID and App Secret to the request manager. All outgoing requests will have the proper app-related HTTP headers set by default.
+ Links your App ID and App Secret to the request manager. All outgoing requests will have the proper app-related HTTP headers set by default.
 
- @param clientId The ID of the client.
+ @param appId The ID of the app.
  @param appSecret The App Secret of the app.
  */
-+ (void)linkClientId:(NSString*)clientId appSecret:(NSString*)appSecret;
++ (void)linkAppId:(NSString*)appId appSecret:(NSString*)appSecret;
 
 /**
  Links your Customer Secret to the request manager. All outgoing requests related to logins will have the proper customer-related HTTP headers set by default.
@@ -106,6 +106,7 @@ typedef NS_ENUM(NSUInteger, SEAPIRequestManagerSSLPinningMode) {
  {
     "country_code": "XF",
     "provider_code": "fakebank_simple_xf",
+    "fetch_scopes": ["accounts", "transactions"],
     "credentials": {
         "login": "username",
         "password": "secret"
@@ -462,6 +463,7 @@ typedef NS_ENUM(NSUInteger, SEAPIRequestManagerSSLPinningMode) {
  {
     "country_code": "XO"
     "provider_code": "paypal_xo",
+    "fetch_scopes": ["accounts", "transactions"],
     "return_to": "http://example.com"
  }
  @endcode

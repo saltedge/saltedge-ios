@@ -31,8 +31,8 @@
 
 @property (nonatomic, strong) NSString* name;
 @property (nonatomic, strong) NSString* interactiveHtml;
-@property (nonatomic, strong) NSArray* interactiveFieldsNames;
-@property (nonatomic, strong) NSDate* createdAt;
-@property (nonatomic, strong) NSDate* updatedAt;
+@property (nonatomic, strong) NSArray*  interactiveFieldsNames;
+@property (nonatomic, strong) NSDate*   createdAt;
+@property (nonatomic, strong) NSDate*   updatedAt;
 
 @end

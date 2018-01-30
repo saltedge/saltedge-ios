@@ -31,7 +31,7 @@
  */
 @interface SELogin : SEBaseModel
 
-@property (nonatomic, strong) NSNumber*       id;
+@property (nonatomic, strong) NSString*       id;
 @property (nonatomic, strong) SELoginAttempt* lastAttempt;
 @property (nonatomic, strong) NSString*       secret;
 @property (nonatomic, strong) NSString*       status;

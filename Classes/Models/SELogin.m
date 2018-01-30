@@ -64,7 +64,7 @@ static NSString* const kLoginLastAttemptKey = @"last_attempt";
 
 - (NSUInteger)hash
 {
-    return self.id.unsignedIntegerValue;
+    return self.id.integerValue;
 }
 
 @end
