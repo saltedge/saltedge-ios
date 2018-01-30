@@ -106,7 +106,7 @@ typedef NS_ENUM(NSUInteger, SEAPIRequestManagerSSLPinningMode) {
  {
     "country_code": "XF",
     "provider_code": "fakebank_simple_xf",
-    "fetch_scopes": ["accounts", "transactions"],
+    "fetch_scopes": ["accounts", "transactions"], // "holder_info" available as well
     "credentials": {
         "login": "username",
         "password": "secret"
@@ -463,7 +463,7 @@ typedef NS_ENUM(NSUInteger, SEAPIRequestManagerSSLPinningMode) {
  {
     "country_code": "XO"
     "provider_code": "paypal_xo",
-    "fetch_scopes": ["accounts", "transactions"],
+    "fetch_scopes": ["accounts", "transactions"], // "holder_info" available as well
     "return_to": "http://example.com"
  }
  @endcode
