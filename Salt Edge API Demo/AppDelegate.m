@@ -40,16 +40,16 @@
 {
     [self setupAppearance];
 
-    static NSString* const clientId  = nil; // insert your client ID here
+    static NSString* const appID = nil; // insert your app ID here
     static NSString* const appSecret = nil; // insert your app secret here
     static NSString* const customerIdentifier = nil; // insert customer identifier here
 
-    if (!clientId || !appSecret || !customerIdentifier) {
+    if (!appID || !appSecret || !customerIdentifier) {
         [[[UIAlertView alloc] initWithTitle:@"Error" message:@"Client ID, App Secret or Customer Identifier is not set. Please see AppDelegate.m or consult the README file." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil] show];
         return YES;
     }
-    [SEAPIRequestManager linkClientId:clientId appSecret:appSecret];
-    [SEAPIRequestManager setSSLPinningMode:SEAPIRequestManagerSSLPinningModeEnabled]; // No need to actually write this since SSL pinning is enabled by default.
+    [SEAPIRequestManager linkAppId:appID appSecret:appSecret];
+    [SEAPIRequestManager setSSLPinningMode:SEAPIRequestManagerSSLPinningModeDisabled]; // No need to actually write this since SSL pinning is enabled by default.
 
     void (^setWindowRootViewController)() = ^() {
         self.tabBar = [[TabBarVC alloc] init];

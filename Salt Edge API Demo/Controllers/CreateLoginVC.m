@@ -231,14 +231,15 @@
     [self.view endEditing:YES];
 
     NSMutableDictionary* parameters = @{ kCountryCodeKey : self.provider.countryCode,
-                                         kProviderCodeKey : self.provider.code
+                                         kProviderCodeKey : self.provider.code,
+                                         kFetchScopesKey : @[@"accounts", @"transactions"]
                                          }.mutableCopy;
 
     [SVProgressHUD showWithStatus:@"Creating login..." maskType:SVProgressHUDMaskTypeGradient];
     SEAPIRequestManager* manager = [SEAPIRequestManager manager];
 
     if (!self.provider.isOAuth) {
-        parameters[kCredentialsKey] = [self credentials];;
+        parameters[kCredentialsKey] = [self credentials];
         [manager createLoginWithParameters:parameters
                                    success:^(SELogin* login) {
                                        [SVProgressHUD showWithStatus:@"Fetching login..." maskType:SVProgressHUDMaskTypeGradient];
