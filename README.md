@@ -14,11 +14,11 @@ Add the pod to your `Podfile`
 ```ruby
 # ... snip ...
 
+# To use Spectre API v4
+pod 'SaltEdge-iOS', '~> 4.0.0'
+
 # To use Spectre API v3
 pod 'SaltEdge-iOS', '~> 3.2.4'
-
-# To use Spectre API v2
-pod 'SaltEdge-iOS', '~> 2.6.0'
 
 ```
 
@@ -37,10 +37,10 @@ Copy the `Classes` folder into your project.
 ## Connecting logins using the sample app
 
 1. Install dependencies by running `$ pod install`
-2. Replace the `clientId`, `appSecret` and `customerIdentifier` constants in [AppDelegate.m:43-45](https://github.com/saltedge/saltedge-ios/blob/master/Salt%20Edge%20API%20Demo/AppDelegate.m#L43-L45) with your Client ID and corresponding App secret
+2. Replace the `appId`, `appSecret` and `customerIdentifier` constants in [AppDelegate.m:43-45](https://github.com/saltedge/saltedge-ios/blob/master/Salt%20Edge%20API%20Demo/AppDelegate.m#L43-L45) with your Client ID and corresponding App secret
 3. Run the app
 
-*Note*: You can find your Client ID and App secret at your [secrets](https://www.saltedge.com/clients/profile/secrets) page.
+*Note*: You can find your App ID and App secret at your [secrets](https://www.saltedge.com/clients/profile/secrets) page.
 
 ## SEWebView
 
@@ -268,7 +268,7 @@ Set up the `clientId`, `appSecret` and `customerIdentifier` constants to your Cl
 
 ## Versioning
 
-The current version of the SDK is [3.2.4](https://github.com/saltedge/saltedge-ios/releases/tag/v3.2.4), and is in compliance with the Salt Edge API's [current version](https://docs.saltedge.com/guides/versioning/). Any backward-incompatible changes in the API will result in changes to the SDK.
+The current version of the SDK is [4.0.0](https://github.com/saltedge/saltedge-ios/releases/tag/v4.0.0), and is in compliance with the Salt Edge API's [current version](https://docs.saltedge.com/guides/versioning/). Any backward-incompatible changes in the API will result in changes to the SDK.
 
 ## Security
 
