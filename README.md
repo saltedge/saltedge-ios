@@ -1,4 +1,4 @@
-## Deprecated please use https://github.com/saltedge/saltedge-ios-swift instead.
+## Deprecated. Please use https://github.com/saltedge/saltedge-ios-swift instead.
 
 ## Salt Edge iOS 
 
