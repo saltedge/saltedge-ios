@@ -1,4 +1,6 @@
-## Salt Edge iOS
+## Deprecated please use https://github.com/saltedge/saltedge-ios-swift instead.
+
+## Salt Edge iOS 
 
 A handful of classes to help you interact with the Salt Edge API from your iOS app.
 
